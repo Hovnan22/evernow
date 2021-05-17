@@ -27,27 +27,25 @@ const Login = ({
   const [errors, setErrors] = useState(null);
 
   const onSubmitHandler = async (variables) => {
-    // try {
-    //   const { data: {
-    //     signIn: {
-    //       accessToken,
-    //       refreshToken,
-    //     }
-    //   } } = await onLogin({ variables });
-    //   const authTokens = {
-    //     accessToken: accessToken.token,
-    //     refreshToken: refreshToken.token,
-    //   }
-    //   setAuth(authTokens);
-    //   await StorageService.setAuthTokens(authTokens);
-    //   await AppService.initLanguage();
-    //   navigation.navigate("PrepareAccount");
-    // } catch (e) {
-    //   console.warn(e, typeof e,);
-    //   setErrors(e.message);
-    // }
-    await AppService.initLanguage();
-    navigation.navigate("PrepareAccount");
+    try {
+      const { data: {
+        signIn: {
+          accessToken,
+          refreshToken,
+        }
+      } } = await onLogin({ variables });
+      const authTokens = {
+        accessToken: accessToken.token,
+        refreshToken: refreshToken.token,
+      }
+      setAuth(authTokens);
+      await StorageService.setAuthTokens(authTokens);
+      await AppService.initLanguage();
+      navigation.navigate("PrepareAccount");
+    } catch (e) {
+      console.warn(e, typeof e,);
+      setErrors(e.message);
+    }
   };
 
   return (

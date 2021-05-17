@@ -24,7 +24,6 @@ const FirstSlider = ({
   settings,
   navigation,
 }) => {
-  console.log(user,'user.timezone')
   return (
     <AppContainer withBackground>
       <View style={[Grid.flex2, Grid.centeredY]}>

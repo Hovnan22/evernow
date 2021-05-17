@@ -37,7 +37,7 @@ const ChangeTimeZone = ({
               noPadding: true,
             })}
           >
-            <Text>{''}</Text>
+            <Text>{user.timezone}</Text>
             <AppIcon
               icon="down"
               width={12}
