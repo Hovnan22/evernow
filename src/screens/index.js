@@ -1,0 +1,11 @@
+export { default as Welcome } from './welcome';
+export { default as Login } from './login';
+export { default as Registration } from './registration';
+export { default as RecoveryPassword } from './recoveryPassword';
+export { default as Home } from './home';
+export { default as SelfMeditation } from './selfMeditation';
+export { default as Settings } from './settings';
+export { default as SettingPage } from './settingPage';
+export { default as PrepareAccount } from './prepareAccount';
+export { default as Account } from './account';
+export { default as Meditation } from './meditation';
