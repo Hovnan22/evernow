@@ -9,11 +9,9 @@ import { Camera as BaseCamera } from "expo-camera";
 
 import { CameraButton } from '../../components/selfMeditation';
 
-import {
-  AppText,
-  AppTimePicker,
-  AppGaugeChart,
-} from './';
+import AppText from './text';
+import AppTimePicker from './timePicker';
+import AppGaugeChart from './gaugeChart';
 
 import { Grid } from '../../styles';
 

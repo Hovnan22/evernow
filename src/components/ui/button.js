@@ -56,7 +56,7 @@ const AppButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[containerStyles.wrapper, containerStyles[type], style, color && { borderColor: color }, showShadows && containerStyles.shadows]}
+      style={[containerStyles.wrapper, containerStyles[type], style, color && { borderColor: color }]}
     >
       {type === 'gradient' ? _gradient : _content}
     </TouchableOpacity>
@@ -107,6 +107,7 @@ const containerStyles = StyleSheet.create({
     marginVertical: 10,
   },
   container: {
+    backgroundColor: 'transparent',
     flex: 1,
     width: '100%',
     height: '100%',
@@ -129,7 +130,7 @@ const containerStyles = StyleSheet.create({
   },
   flat: {
     borderColor: Colors.white,
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   'flat-opacity': {
     borderColor: Colors.white,

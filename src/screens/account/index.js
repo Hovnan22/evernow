@@ -1,28 +1,21 @@
 import React, {
   useState,
   useEffect,
-  useContext,
 } from "react";
-import {
-  Text,
-  View,
-} from "react-native";
+import { Text, View } from "react-native";
+import { connect } from 'react-redux';
 import i18n from "i18n-js";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import {
-  Home,
-  Settings,
-  SelfMeditation,
-} from '../../screens';
+import { SocketService } from '../../services'
 
-import {
-  AppButton,
-} from '../../components/ui';
-import {
-  Grid,
-  Typography,
-} from '../../styles';
+import Home from '../home';
+import Settings from '../settings';
+import SelfMeditation from '../selfMeditation';
+
+import { AppButton } from '../../components/ui';
+
+import { Grid, Typography } from '../../styles';
 
 import TabBar from "../../components/layout/TabBar";
 import HomeIcon from "../../../src/assets/icons/home.svg";
@@ -31,16 +24,13 @@ import SettingIcon from "../../../src/assets/icons/preference.svg";
 
 import LinearGradientLayout from "../../components/layout/LinearGradientLayout";
 import ModalWindow from "../../components/layout/ModalWindow";
-import {
-  AppContext,
-  SocketContext,
-} from '../../context';
 
 const Tab = createBottomTabNavigator();
 
-export default function Account({ navigation }) {
-  const { app: { auth } } = useContext(AppContext);
-  const { createSocketConnection, disconnect } = useContext(SocketContext);
+const Account = ({
+  auth,
+  navigation,
+}) => {
   const [modal, showModal] = useState(false);
 
   const onCloseModal = () => {
@@ -49,9 +39,9 @@ export default function Account({ navigation }) {
   };
 
   useEffect(() => {
-    createSocketConnection(auth.accessToken);
+    SocketService.createSocketConnection(auth.accessToken);
     return () => {
-      disconnect();
+      SocketService.disconnect();
     };
   }, []);
 
@@ -114,3 +104,9 @@ export default function Account({ navigation }) {
     )}
   </LinearGradientLayout>;
 }
+
+const mapStateToProps = ({ app: { auth } }) => ({
+  auth,
+})
+
+export default connect(mapStateToProps)(Account);

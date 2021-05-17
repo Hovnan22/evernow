@@ -1,7 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { View } from "react-native";
+import { connect } from 'react-redux';
 
-import AppContext, { setSettings } from "../../context/AppContext";
+import { AppService, StorageService } from '../../services';
+import { useProfile } from '../../hooks';
+import {
+  setUser,
+  setSettings,
+  setIsLoggedIn,
+} from '../../actions/app';
 
 import {
   AppButton,
@@ -12,25 +19,37 @@ import {
 import { Grid } from '../../styles';
 
 
-const SecondSlider = ({ navigation }) => {
-  const { app, dispatch } = useContext(AppContext);
+const SecondSlider = ({
+  setUser,
+  settings,
+  setSettings,
+  setIsLoggedIn,
+}) => {
+  const { data } = useProfile();
   const onChangeHandler = (value) => {
-    dispatch(setSettings({
+    setSettings({
+      ...settings,
       reminder_time: [value],
-    }));
+    });
   };
+
+  const goToAccount = async () => {
+    await StorageService.setUserData(data?.user);
+    setUser(data?.user);
+    await AppService.initLanguage();
+    setIsLoggedIn(true);
+  }
 
   return (
     <AppContainer withBackground>
       <View style={[Grid.flex2, Grid.centeredY]}>
         <AppMeditationTimeSelector
-          value={app.settings.reminder_time}
           onChange={onChangeHandler}
         />
       </View>
       <View style={[Grid.flex1, Grid.flexEndY]}>
         <AppButton
-          onPress={() => navigation.navigate("Account")}
+          onPress={goToAccount}
           title={"screen.prepareAccount.next"}
           type={"flat"}
         />
@@ -43,4 +62,14 @@ const SecondSlider = ({ navigation }) => {
   );
 }
 
-export default SecondSlider;
+const mapStateToProps = ({ app: settings }) => ({
+  settings,
+})
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user)),
+  setSettings: settings => dispatch(setSettings(settings)),
+  setIsLoggedIn: isLoggedIn => dispatch(setIsLoggedIn(isLoggedIn)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SecondSlider);

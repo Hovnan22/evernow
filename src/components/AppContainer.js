@@ -1,28 +1,59 @@
-import React, { useContext, useEffect } from "react";
-import AppContext, { setAuthorization, setSettings } from "../context/AppContext";
-import {
-  useProfile,
-  useUpdateTokens,
-} from "../hooks";
+import React, { useEffect } from "react";
+import { connect } from 'react-redux';
 
-export default function AppContainer({ children }) {
-  const { app: { auth }, dispatch } = useContext(AppContext);
-  const { data } = useProfile(auth.accessToken);
+import { StorageService } from '../services';
+
+import { setAuth } from '../actions/app';
+import { useUpdateTokens } from "../hooks";
+
+const AppContainer = ({
+  user,
+  auth,
+  setAuth,
+  children,
+}) => {
   const [onUpdateToken] = useUpdateTokens();
   useEffect(() => {
     if (auth?.refreshToken) {
       onUpdateToken({ variables: { refreshToken: auth.refreshToken } })
-        .then((result) => {
-          const { data: { updateTokens } } = result;
-          const { refreshToken, accessToken } = updateTokens;
-          dispatch(setAuthorization(accessToken.token, refreshToken.token));
+        .then(async result => {
+          const {
+            data: {
+              updateTokens: {
+                accessToken,
+                refreshToken,
+              }
+            }
+          } = result;
+
+          const authTokens = {
+            accessToken: accessToken.token,
+            refreshToken: refreshToken.token,
+          }
+
+          setAuth(authTokens);
+          await StorageService.setAuthTokens(authTokens);
         });
     }
   }, []);
   useEffect(() => {
-    dispatch(setSettings(data?.user));
-  }, [data?.user]);
-  return <>
-    {children}
-  </>;
+    StorageService.setUserData(user);
+  }, [user])
+
+  return (
+    <>
+      {children}
+    </>
+  );
 }
+
+const mapStateToProps = ({ app: { auth, user } }) => ({
+  user,
+  auth,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAuth: auth => dispatch(setAuth(auth)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

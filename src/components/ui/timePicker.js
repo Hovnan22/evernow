@@ -7,7 +7,7 @@ import {
 import i18n from "i18n-js";
 import PropTypes from "prop-types";
 
-import { AppButton } from './';
+import AppButton from './button';
 import {
   Grid,
   Typography,

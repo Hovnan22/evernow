@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
 } from "react-native";
-
-import AppContext from "../../context/AppContext";
+import { connect } from 'react-redux';
 
 import {
   AppCard,
@@ -20,8 +19,12 @@ import {
   Form,
 } from '../../styles';
 
-const FirstSlider = ({ navigation }) => {
-  const { app } = useContext(AppContext);
+const FirstSlider = ({
+  user,
+  settings,
+  navigation,
+}) => {
+  console.log(user,'user.timezone')
   return (
     <AppContainer withBackground>
       <View style={[Grid.flex2, Grid.centeredY]}>
@@ -37,7 +40,7 @@ const FirstSlider = ({ navigation }) => {
               noPadding: true,
             })}
           >
-            <Text>{app.settings.timezone}</Text>
+            <Text>{user.timezone || settings.timezone}</Text>
             <AppIcon
               icon="down"
               width={12}
@@ -57,4 +60,9 @@ const FirstSlider = ({ navigation }) => {
   );
 };
 
-export default FirstSlider;
+const mapStateToProps = ({ app: { settings, user } }) => ({
+  user,
+  settings,
+});
+
+export default connect(mapStateToProps)(FirstSlider);

@@ -1,19 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   View,
   FlatList,
   StyleSheet,
 } from "react-native";
-import moment from 'moment';
+import { connect } from 'react-redux';
+import moment from "moment-timezone";
 
-
+import { StorageService } from '../../services';
+import { useChangeTimeZone } from "../../hooks";
 import {
-  useProfile,
-  useChangeTimeZone,
-} from "../../hooks";
-import { AppContext } from "../../context";
+  changeUserData,
+  changeSetting
+} from '../../actions/app';
 
-import { ListItem } from './';
+import ListItem from './listItem';
 
 
 const regions = [
@@ -32,20 +33,26 @@ const searchSubString = (str, stack) => {
 };
 
 
-const ChooseTimeZone = ({ navigation }) => {
-  const { app: { auth } } = useContext(AppContext);
-  const [onUpdateProfile] = useChangeTimeZone(auth.accessToken);
-  const { refetch } = useProfile(auth.accessToken);
 
-  const onChangeHandler = (timezone) => {
-    onUpdateProfile({ variables: { timezone: `${timezone.title}` } }).then(() => {
-      refetch().then(() => {
-        navigation.goBack();
-      });
-    });
+const ChooseTimeZone = ({
+  navigation,
+  changeSetting,
+  changeUserData,
+}) => {
+  const timezones = moment.tz.names().filter(v => searchSubString(v, regions));
+
+  const [onUpdateProfile] = useChangeTimeZone();
+  const onChangeHandler = async (timezone) => {
+    try {
+      await onUpdateProfile({ variables: { timezone: `${timezone.title}` } });
+      changeSetting({ timezone: timezone.title });
+      changeUserData({ timezone: timezone.title });
+      navigation.pop();
+    } catch (e) {
+      console.log({ e })
+    }
   };
 
-  const timezones = moment.tz.names().filter(v => searchSubString(v, regions));
 
   return (
     <FlatList
@@ -81,7 +88,12 @@ const styles = StyleSheet.create({
     opacity: 0.2,
     borderColor: '#454F63',
   }
-})
+});
 
-export default ChooseTimeZone;
+const mapDispatchToProps = dispatch => ({
+  changeSetting: setting => dispatch(changeSetting(setting)),
+  changeUserData: data => dispatch(changeUserData(data)),
+});
+
+export default connect(null, mapDispatchToProps)(ChooseTimeZone);
 

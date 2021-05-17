@@ -1,7 +1,6 @@
 import React, {
   useState,
   useEffect,
-  useContext,
 } from 'react';
 import {
   Text,
@@ -10,6 +9,7 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
+import { connect } from 'react-redux';
 import {
   RTCView,
   mediaDevices,
@@ -22,11 +22,7 @@ import {
 } from 'react-native-permissions';
 import i18n from 'i18n-js';
 
-import {
-  AppContext,
-  SocketContext,
-} from '../../context';
-import { useProfile } from '../../hooks';
+import { SocketService } from '../../services';
 
 import {
   StreamWrapper,
@@ -39,32 +35,7 @@ import {
 import { Grid } from '../../styles';
 
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
-
-const styles = StyleSheet.create({
-  videoContainer: {
-    flex: 1 / 2,
-  },
-  video: {
-    flex: 1,
-  },
-  actions: {
-    padding: 24,
-  },
-  rtcView: {
-    flex: 1,
-    display: "flex",
-    backgroundColor: "#000",
-  },
-  centerdWhiteText: {
-    color: "#fff",
-    textAlign: "center",
-    justifyContent: "center",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-});
+const { width, height } = Dimensions.get("window");
 
 
 export async function requestCameraAndAudioPermission() {
@@ -86,8 +57,8 @@ function getCameraView() {
           mediaDevices.getUserMedia({
             audio: true,
             video: {
-              width: windowWidth,
-              height: windowHeight,
+              width: width,
+              height: height,
               frameRate: 30,
               facingMode: "user",
               deviceId: sourceInfo.deviceId,
@@ -101,15 +72,14 @@ function getCameraView() {
   });
 }
 
-export default function Meditation({ navigation }) {
-  const { app: { auth } } = useContext(AppContext);
-  const { data = {} } = useProfile(auth.accessToken);
-  const { user = {} } = data;
+const Meditation = ({
+  user,
+  navigation,
+}) => {
   const [ready, setReady] = useState(false);
   const [access, setAccess] = useState(false);
   const [stream, setStream] = useState(false);
   const [remoteStream, setRemoteStream] = useState(false);
-  const { createSocketConnection } = useContext(SocketContext);
 
   const onOpenAlert = () => Alert.alert(
     null,
@@ -129,13 +99,13 @@ export default function Meditation({ navigation }) {
   );
 
   useEffect(() => {
-    const socket = createSocketConnection();
+    const socket = SocketService.createSocketConnection();
 
     requestCameraAndAudioPermission().then(() => {
       const configuration = { iceServers: [{ url: "stun:stun.l.google.com:19302" }] };
       const channel = socket.channel(`video:${user?.room.id}`, {});
       const pc = new RTCPeerConnection(configuration);
-
+      console.log({ socket, pc });
       channel
         .join()
         .receive("ok", () => {
@@ -146,6 +116,7 @@ export default function Meditation({ navigation }) {
         });
 
       channel.on("start", () => {
+        console.log('aaaaa');
         pc.createOffer().then((desc) => {
           pc.setLocalDescription(desc).then(() => {
             channel.push("offer", { body: JSON.stringify(desc) });
@@ -203,11 +174,13 @@ export default function Meditation({ navigation }) {
           onMute={() => { }}
           onClose={onOpenAlert}>
           <View style={[Grid.flex1]}>
-            {stream
-              && <RTCView
+            {stream && (
+              <RTCView
+                mirror
                 streamURL={stream?.toURL()}
                 style={styles.rtcView}
               />
+            )
             }
             {remoteStream
               && <RTCView
@@ -243,4 +216,35 @@ export default function Meditation({ navigation }) {
       )}
     </AppContainer>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  videoContainer: {
+    flex: 1 / 2,
+  },
+  video: {
+    flex: 1,
+  },
+  actions: {
+    padding: 24,
+  },
+  rtcView: {
+    flex: 1,
+    display: "flex",
+    backgroundColor: "#000",
+  },
+  centerdWhiteText: {
+    color: "#fff",
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 20,
+    fontWeight: "700",
+  },
+});
+
+const mapStateToProps = ({ app: { user } }) => ({
+  user,
+})
+
+export default connect(mapStateToProps)(Meditation);
+

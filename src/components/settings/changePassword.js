@@ -2,7 +2,6 @@ import React, {
   useRef,
   useState,
   useEffect,
-  useContext,
 } from 'react';
 import {
   Text,
@@ -10,7 +9,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import i18n from 'i18n-js';
-import { AppContext } from '../../context';
 import { useChangePassword } from '../../hooks';
 
 import {
@@ -22,8 +20,7 @@ import { Grid } from '../../styles';
 
 
 const ChangePassword = ({ errors }) => {
-  const { app: { auth } } = useContext(AppContext);
-  const [onChangePassword] = useChangePassword(auth.accessToken);
+  const [onChangePassword] = useChangePassword();
 
   const [state, setState] = useState({});
   const [error, setError] = useState(null);
@@ -82,7 +79,7 @@ const ChangePassword = ({ errors }) => {
             autoCapitalize="none"
             value={state.newPassword}
             autoCompleteType="password"
-            inputRef={passwordTextInput}
+            inputRef={confirmPasswordTextInput}
             onSubmitEditing={onSubmitHandler}
             onFocus={() => setError(null)}
             placeholder={i18n.t("form.newPassword")}

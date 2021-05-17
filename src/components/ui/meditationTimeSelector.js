@@ -7,7 +7,7 @@ import {
 import moment from "moment";
 import { Slider } from "react-native-elements";
 
-import { AppCard } from './';
+import AppCard from './card';
 import { Grid } from '../../styles';
 
 

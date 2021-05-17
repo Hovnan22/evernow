@@ -1,16 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
 import {
   Text,
   View,
   StyleSheet,
 } from 'react-native';
+import { connect } from 'react-redux';
 import moment from 'moment';
+
+import { StorageService } from '../../services';
 
 import {
   useProfile,
   useRefreshBuddy,
 } from '../../hooks';
-import { AppContext } from '../../context';
+import {
+  setUser,
+  changeSetting,
+} from '../../actions/app';
 
 import {
   AppCard,
@@ -27,12 +33,28 @@ import {
 } from '../../styles';
 
 
-const Home = ({ navigation }) => {
-  const { app: { auth } } = useContext(AppContext);
-  const { data = {} } = useProfile(auth.accessToken);
-  const [onRefreshBuddy] = useRefreshBuddy(auth.accessToken);
-  const { user = {} } = data;
+const Home = ({
+  user,
+  setUser,
+  navigation,
+  changeSetting,
+}) => {
+  const { data } = useProfile();
+  const [onRefreshBuddy] = useRefreshBuddy();
 
+  // useEffect(() => {
+  //   setUser({ ...(data?.user || {}) })
+  // }, [data])
+
+  useEffect(() => {
+    if (data?.user) {
+      setUser(data.user);
+      changeSetting({ timezone: data.user.timezone, locale: data.user.language })
+      StorageService.setUserData(data?.user);
+      StorageService.setSettingsData({ timezone: data.user.timezone, locale: data.user.language })
+    }
+
+  }, [data])
   const getSecondsToMeditation = (time) => {
     const date = new Date();
     const currentTimestamp = moment(`${date.getHours()}:${date.getMinutes()}`, "hh:mm");
@@ -42,6 +64,7 @@ const Home = ({ navigation }) => {
     }
     return meditationTime.unix() - currentTimestamp.unix();
   };
+
   const onSearchBuddyHandler = () => {
     onRefreshBuddy().then((r) => {
       console.log(r);
@@ -99,4 +122,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapStateToProps = ({ app: { user, settings } }) => ({
+  user,
+  settings
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user)),
+  changeSetting: setting => dispatch(changeSetting(setting)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

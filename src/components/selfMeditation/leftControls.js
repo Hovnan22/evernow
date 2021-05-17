@@ -4,15 +4,19 @@ import {
   StyleSheet,
 } from "react-native";
 
-import { CameraButton } from './';
+import CameraButton from './buttons';
 import { AppGaugeChart } from '../ui';
 
+// import MeditationTypes from '../meditation/meditationTypes';
 
 const LeftControls = ({
   state,
   timePickerHandler,
 }) => (
   <View style={styles.leftControls}>
+    {/* <View style={{
+      flex: 1,
+    }}> */}
     <View style={styles.timeWrapper}>
       <View style={styles.gaugeChart}>
         <AppGaugeChart
@@ -35,6 +39,16 @@ const LeftControls = ({
         onPress={timePickerHandler}
       />
     </View>
+    {/* </View>
+    <View style={{
+      flex: 1,
+    }}>
+
+      <MeditationTypes />
+    </View>
+    <View style={{
+      flex: 1,
+    }}></View> */}
   </View>
 );
 
@@ -48,17 +62,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 36,
     paddingHorizontal: 16,
-    opacity: 0.5,
     zIndex: 4,
   },
   timeWrapper: {
+    opacity: 0.5,
+
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
   },
   timeSettings: {
     position: "absolute",
-    right: -23,
+    right: -25,
     backgroundColor: "rgba(255,255,255, .5)",
     padding: 7,
     borderTopRightRadius: 7,

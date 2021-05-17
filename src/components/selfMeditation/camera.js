@@ -6,11 +6,11 @@ import {
 import PropTypes from "prop-types";
 import { Camera as BaseCamera } from "expo-camera";
 
-import {
-  Start,
-  LeftControls,
-  RightControls,
-} from './';
+
+import Start from './start';
+import LeftControls from './leftControls';
+import RightControls from './rightControls';
+
 import { AppTimePicker } from '../ui';
 
 import { Grid } from '../../styles';
@@ -103,13 +103,15 @@ const Camera = ({
         />
       )}
       {timePicker && (
-        <AppTimePicker onChange={(hours, minutes) => {
-          setTimePicker(!timePicker);
-          setState({
-            ...state,
-            period: hours * 60 + minutes,
-          });
-        }} />
+        <AppTimePicker
+          onChange={(hours, minutes) => {
+            setTimePicker(!timePicker);
+            setState({
+              ...state,
+              period: hours * 60 * 60 + minutes * 60,
+            });
+          }}
+        />
       )}
     </View>
   );
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
+    zIndex: 1
   },
 });
 

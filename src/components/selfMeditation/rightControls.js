@@ -4,7 +4,7 @@ import {
   StyleSheet,
 } from "react-native";
 
-import { CameraButton } from './';
+import CameraButton from './buttons';
 
 
 const Camera = ({

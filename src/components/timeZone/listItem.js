@@ -11,7 +11,7 @@ const ListItem = ({ item }) => (
     <Text style={{
       fontSize: 15,
       lineHeight: 72,
-      fontWeright: '400',
+      fontWeight: '400',
     }}>
       {item.title}
     </Text>

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { AppText } from './';
+import AppText from './text';
 
 import { Colors } from "../../styles";
 

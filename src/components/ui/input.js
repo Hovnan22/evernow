@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import i18n from 'i18n-js';
 
-import { AppIcon } from './';
+import AppIcon from './icons';
 import { Colors } from '../../styles';
 // import {
 //   Fonts,

@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
   StyleSheet,
 } from 'react-native';
+import { connect } from 'react-redux';
 import i18n from 'i18n-js';
-import { AppContext } from '../../context';
-import { useProfile } from '../../hooks';
 
 import {
   AppCard,
@@ -17,12 +16,10 @@ import { Grid } from '../../styles';
 
 
 const ChangeEmailForm = ({
+  user,
   errors,
 }) => {
-  const { app: { auth } } = useContext(AppContext);
-  const { data = {} } = useProfile(auth.accessToken);
-
-  const [state, setState] = useState({ email: data?.user.emails?.active });
+  const [state, setState] = useState({ email: user.emails?.active });
   const [error, setError] = useState(null);
 
   const onSubmitHandler = () => {
@@ -83,4 +80,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangeEmailForm;
+const mapStateToProps = ({ app: { user } }) => ({
+  user,
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(mapStateToProps)(ChangeEmailForm);

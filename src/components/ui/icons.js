@@ -11,6 +11,9 @@ const components = {
   'settings': React.lazy(() => import('../../assets/icons/settings.svg')),
   'down': React.lazy(() => import('../../assets/icons/down.svg')),
   'logo': React.lazy(() => import('../../assets/icons/logo.svg')),
+  'meditationType': React.lazy(() => import('../../assets/icons/meditationType.svg')),
+  'arrowDown': React.lazy(() => import('../../assets/icons/arrowDown.svg')),
+  'yog': React.lazy(() => import('../../assets/icons/yog.svg')),
 };
 
 const RenderIcon = ({
@@ -20,7 +23,6 @@ const RenderIcon = ({
   width,
   height,
   onPress,
-  QATestingId,
 }) => {
   const props = { width, height, fill, onPress };
   const styles = { width: '100%', height: '100%' };

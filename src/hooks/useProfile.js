@@ -1,7 +1,15 @@
 import { gql, useQuery } from "@apollo/client";
+import { Store } from '../config';
 
-export default function useProfile(token) {
-	return useQuery(gql`
+export default function useProfile() {
+  const {
+    app: {
+      auth: {
+        accessToken: token,
+      },
+    },
+  } = Store.getState();
+  return useQuery(gql`
 		query {
 			user {
 				avatarUrl
@@ -18,10 +26,10 @@ export default function useProfile(token) {
 			}
 		}
 	`, {
-		context: {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		},
-	});
+    context: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  });
 }

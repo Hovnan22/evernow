@@ -1,15 +1,15 @@
 import React, {
   useState,
   useEffect,
-  useContext,
 } from "react";
 import {
   Text,
   View,
 } from "react-native";
+import { connect } from 'react-redux';
 import i18n from "i18n-js";
 
-import AppContext, { setSettings } from "../../context/AppContext";
+import { setSettings } from '../../actions/app';
 
 import {
   AppCard,
@@ -26,12 +26,11 @@ const ChangeNameForm = ({ errors }) => {
   const [state, setState] = useState({});
   const [error, setError] = useState(null);
 
-  const { dispatch } = useContext(AppContext);
 
   const onSubmitHandler = (value) => {
-    dispatch(setSettings({
-      username: value.name,
-    }));
+    // dispatch(setSettings({
+    //   username: value.name,
+    // }));
   };
 
   useEffect(() => {
@@ -83,6 +82,10 @@ const ChangeNameForm = ({ errors }) => {
       </View>
     </>
   );
-}
+};
 
-export default ChangeNameForm;
+const mapDispatchToProps = dispatch => ({
+  setSettings: settings => dispatch(setSettings(settings)),
+});
+
+export default connect(null, mapDispatchToProps)(ChangeNameForm);

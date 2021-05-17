@@ -46,8 +46,8 @@ const LoginForm = ({
         return;
       }
     }
-    onSubmit(state);
     setError(null);
+    onSubmit(state);
   };
 
   return (

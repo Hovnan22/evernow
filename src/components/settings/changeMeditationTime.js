@@ -1,15 +1,10 @@
-import React, {
-  useState,
-  useContext,
-} from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import moment from 'moment';
 
-import {
-  useProfile,
-  useChangeMeditationAt,
-} from '../../hooks';
-import { AppContext } from '../../context';
+import { useChangeMeditationAt } from '../../hooks';
+import { changeUserData } from '../../actions/app';
 
 import {
   AppButton,
@@ -18,14 +13,18 @@ import {
 
 import { Grid } from '../../styles';
 
-const ChangeMeditationTime = ({ navigation }) => {
-  const { app: { auth } } = useContext(AppContext);
+const ChangeMeditationTime = ({
+  user,
+  navigation,
+  changeUserData,
+}) => {
   const [value, setValue] = useState(null);
-  const { data: { user }, refetch } = useProfile(auth.accessToken);
-  const [onMeditationAt] = useChangeMeditationAt(auth.accessToken);
+  const [onMeditationAt] = useChangeMeditationAt();
+
   const onChangeHandler = (meditationAt) => {
     setValue(meditationAt);
   };
+
   const onSaveHandler = () => {
     if (value) {
       const options = {
@@ -34,12 +33,14 @@ const ChangeMeditationTime = ({ navigation }) => {
         },
       };
       onMeditationAt(options).then(() => {
-        refetch().then(() => {
-          navigation.goBack();
-        });
+        changeUserData({
+          meditationAt: value.format("HH:mm:ss"),
+        })
+        navigation.goBack();
       });
     }
   };
+
   return (
     <>
       <View style={[Grid.flex2, Grid.centeredY]}>
@@ -57,6 +58,14 @@ const ChangeMeditationTime = ({ navigation }) => {
       </View>
     </>
   );
-}
+};
 
-export default ChangeMeditationTime;
+const mapStateToProps = ({ app: { user } }) => ({
+  user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeUserData: data => dispatch(changeUserData(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeMeditationTime);

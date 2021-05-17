@@ -16,6 +16,7 @@ import sound from "../../../src/assets/sound.mp3";
 let intervalInstance = null;
 
 const SelfMeditation = ({ navigation }) => {
+  // console.log({ Camera });
   const isFocused = useIsFocused();
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -66,8 +67,16 @@ const SelfMeditation = ({ navigation }) => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === "granted");
+
     })();
   }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     console.log({ camera })
+  //     const ratio = await camera.getSupportedRatiosAsync();
+  //     console.log({ ratio })
+  //   })();
+  // })
 
   return (
     <AppContainer

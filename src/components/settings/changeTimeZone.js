@@ -1,13 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
 } from 'react-native';
-
-
-import { useProfile } from '../../hooks';
-import { AppContext } from '../../context';
+import { connect } from 'react-redux';
 
 import {
   AppButton,
@@ -21,9 +18,10 @@ import {
   Form,
 } from '../../styles';
 
-const ChangeTimeZone = ({ navigation }) => {
-  const { app: { auth } } = useContext(AppContext);
-  const { data: { user } } = useProfile(auth.accessToken);
+const ChangeTimeZone = ({
+  user,
+  navigation,
+}) => {
   return (
     <>
       <View style={[Grid.flex2, Grid.centeredY]}>
@@ -39,7 +37,7 @@ const ChangeTimeZone = ({ navigation }) => {
               noPadding: true,
             })}
           >
-            <Text>{user.timezone}</Text>
+            <Text>{''}</Text>
             <AppIcon
               icon="down"
               width={12}
@@ -57,6 +55,10 @@ const ChangeTimeZone = ({ navigation }) => {
       </View>
     </>
   );
-}
+};
 
-export default ChangeTimeZone;
+const mapStateToProps = ({ app: { user } }) => ({
+  user,
+})
+
+export default connect(mapStateToProps)(ChangeTimeZone);

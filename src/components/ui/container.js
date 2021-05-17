@@ -15,13 +15,14 @@ import BackButton from "../../../src/assets/icons/Back.svg";
 const { width } = Dimensions.get("window");
 
 const Container = ({
+  style,
   children,
   noPadding,
   navigation,
   withBackground,
   backgroundType,
 }) => (
-  <View style={styles.container}>
+  <View style={[styles.container, style]}>
     <View style={[styles.content, !noPadding && styles.padding]}>
       <StatusBar
         barStyle={backgroundType === 'upper' ? "light-content" : "dark-content"}

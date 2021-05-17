@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ReactNativeFile } from 'apollo-upload-client';
 import {
   View,
@@ -6,12 +6,17 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
+import { connect } from 'react-redux';
 
-import AppContext, { setAuthorization } from '../../context/AppContext';
+import { StorageService } from '../../services';
+
+import { useUploadFile } from '../../hooks';
 import {
-  useProfile,
-  useUploadFile,
-} from '../../hooks';
+  setAuth,
+  setUser,
+  setIsLoggedIn,
+
+} from '../../actions/app';
 import { userSettings } from '../../constants';
 
 import {
@@ -22,14 +27,21 @@ import {
 import { AppContainer } from '../../components/ui';
 
 
-export default function Settings({ navigation }) {
-  const { app: { auth }, dispatch } = useContext(AppContext);
-  const { data = {} } = useProfile(auth.accessToken);
-  const [onUploadFile] = useUploadFile(auth.accessToken);
-  const { user = {} } = data;
+const Settings = ({
+  user,
+  setUser,
+  setAuth,
+  navigation,
+  setIsLoggedIn,
+}) => {
+  const [onUploadFile] = useUploadFile();
 
-  const logout = () => {
-    dispatch(setAuthorization(false, false));
+  const logout = async () => {
+
+    setAuth({});
+    setUser({});
+    setIsLoggedIn(false);
+    await StorageService.setAuthTokens({});
   };
 
   const onChangeImageHandler = async (uri) => {
@@ -83,3 +95,15 @@ const styles = StyleSheet.create({
     borderColor: '#454F63',
   }
 })
+
+const mapStateToProps = ({ app: { user } }) => ({
+  user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAuth: auth => dispatch(setAuth(auth)),
+  setUser: user => dispatch(setUser(user)),
+  setIsLoggedIn: isLoggedIn => dispatch(setIsLoggedIn(isLoggedIn)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

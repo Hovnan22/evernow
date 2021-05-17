@@ -1,14 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   View,
   FlatList,
   StyleSheet,
 } from 'react-native';
+import { connect } from 'react-redux';
+
+import { Store } from '../../config';
+
+import { changeUserData } from '../../actions/app';
 import { useChangeLanguage } from '../../hooks';
 
-import { AppContext } from '../../context';
+import { AppService } from '../../services';
 
-import { ListItem } from './';
+import ListItem from './listItem';
 
 
 const languages = [
@@ -23,12 +28,19 @@ const languages = [
 ];
 
 
-const ChooseLanguage = ({ navigation }) => {
-  const { app: { auth } } = useContext(AppContext);
-  const [onSettings] = useChangeLanguage(auth.accessToken);
+const ChooseLanguage = ({
+  navigation,
+  changeUserData,
+}) => {
+  const [onSettings] = useChangeLanguage();
   const onChangeHandler = (language) => {
-    onSettings({ variables: { language } }).then(() => {
-      navigation.goBack();
+    onSettings({ variables: { language } }).then(async () => {
+      changeUserData({ language });
+      await AppService.initLanguage();
+
+      navigation.pop();
+    }).catch(e => {
+      console.log({ e });
     });
   };
 
@@ -51,7 +63,7 @@ const ChooseLanguage = ({ navigation }) => {
       ListFooterComponent={() => <View style={styles.separator} />}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   separator: {
@@ -59,8 +71,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     opacity: 0.2,
     borderColor: '#454F63',
-  }
+  },
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeUserData: data => dispatch(changeUserData(data)),
 })
 
-export default ChooseLanguage;
+export default connect(null, mapDispatchToProps)(ChooseLanguage);
 
