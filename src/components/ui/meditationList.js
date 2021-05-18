@@ -1,28 +1,41 @@
-import React, { useEffect } from 'react';
-import { 
-    Text,
-    View,
-    Dimensions ,
-} from 'react-native';
-import { connect } from 'react-redux';
+import React, { 
+    useEffect,
+    useState,
+ } from 'react';
+import { View } from 'react-native';
+import { Text } from 'react-native';
 
-const window = Dimensions.get("window");
-const screen = Dimensions.get("screen");
-const meditationList = ({meditattion}) => {
-    console.log(123456)
+import {
+    AppIcon
+  } from '../ui';
 
 
-    // console.log(window,'meditattion')
-    return(
-        <View style={{height: window.height}}>
-            <Text>test</Text>
+const meditationList = ({item,showText}) => {
+    console.log(item,'14777777')
+    const [hideText, setHideText] = useState (!showText);
+    console.log(9)
+
+    useEffect(() => {
+        console.log(9)
+        if(!hideText) {
+            setTimeout(() => {
+                setHideText(true)
+            },5000)
+        }
+
+    },[showText])
+
+    return (
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <AppIcon
+        icon="yog"
+        width={32}
+        height={32}
+      />
+        <Text style={{display: hideText?  'none' : 'flex', color: '#fff'}}>text</Text>
+
         </View>
     )
-
 }
 
-const mapStateToProps = ({ profile: { meditattion } }) => ({
-    meditattion,
-  });
-
-  export default connect(mapStateToProps)(meditationList);
+export default meditationList

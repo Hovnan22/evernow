@@ -24,6 +24,7 @@ const Camera = ({
   children,
   onPauseCamera,
 }) => {
+  console.log('cammera')
   const [state, setState] = useState({
     paused: false,
     muted: false,

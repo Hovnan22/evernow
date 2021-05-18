@@ -2,13 +2,14 @@ import React from "react";
 import {
   View,
   StyleSheet,
+  Dimensions ,
 } from "react-native";
 
 import CameraButton from './buttons';
-import { AppGaugeChart, AppMeditationList } from '../ui';
+import { AppGaugeChart, AppMeditationLists } from '../ui';
 
 // import MeditationTypes from '../meditation/meditationTypes';
-
+const screen = Dimensions.get("screen");
 const LeftControls = ({
   state,
   timePickerHandler,
@@ -32,7 +33,7 @@ const LeftControls = ({
         />
       </View>
       <View style={styles.meditationList}>
-      <AppMeditationList 
+      <AppMeditationLists 
       />
       </View>
       <CameraButton
@@ -85,14 +86,13 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   meditationList: {
-    backgroundColor: 'red',
-    height: '100%',
-    color: '#fff',
+    height: screen.height,
     position: "absolute",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    top: '50%',
+    top: 0,
+    left: 0,
 
   }
 });

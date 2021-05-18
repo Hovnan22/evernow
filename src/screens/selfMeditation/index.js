@@ -16,7 +16,7 @@ import sound from "../../../src/assets/sound.mp3";
 let intervalInstance = null;
 
 const SelfMeditation = ({ navigation }) => {
-  // console.log({ Camera });
+  console.log('selfmeditation');
   const isFocused = useIsFocused();
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);

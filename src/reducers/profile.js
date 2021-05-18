@@ -16,7 +16,7 @@ export default (state = initialState, { type, payload }) => {
     case SET_MEDITATION: {
       return {
         ...state,
-        settings: payload,
+        meditation: payload,
       }
     }
     case SET_AUTH: {

@@ -9,4 +9,5 @@ export { default as AppCamera } from './camera';
 export { default as AppGaugeChart } from './gaugeChart';
 export { default as AppTimePicker } from './timePicker';
 export { default as AppMeditationTimeSelector } from './meditationTimeSelector';
-export { default as AppMeditationList} from './meditationList'
+export { default as AppMeditationLists} from './meditationLists';
+export { default as AppMeditationList} from './meditationList';
