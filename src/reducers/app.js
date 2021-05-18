@@ -8,10 +8,11 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
+  maditations: {},
   auth: {},
   settings: {},
   user: {},
-  isLoggedIn: false,
+  isLoggedIn: true,
 };
 
 export default (state = initialState, { type, payload }) => {

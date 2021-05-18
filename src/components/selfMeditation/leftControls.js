@@ -5,7 +5,7 @@ import {
 } from "react-native";
 
 import CameraButton from './buttons';
-import { AppGaugeChart } from '../ui';
+import { AppGaugeChart, AppMeditationList } from '../ui';
 
 // import MeditationTypes from '../meditation/meditationTypes';
 
@@ -30,6 +30,14 @@ const LeftControls = ({
           textSize={8}
           started={state.started}
         />
+      </View>
+      <View style={styles.gaugeChart}>
+        <View style={styles.meditationList}>
+          <AppMeditationList 
+          
+          />
+        </View>
+
       </View>
       <CameraButton
         width={15}
@@ -80,6 +88,17 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 7,
     zIndex: 0,
   },
+  meditationList: {
+    backgroundColor: 'red',
+    width: 200, 
+    height: '100%',
+    color: '#fff',
+    position: "absolute",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+
+  }
 });
 
 export default LeftControls;

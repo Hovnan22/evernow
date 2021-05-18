@@ -2,6 +2,7 @@ import {
   SET_AUTH,
   SET_SETTINGS,
   SET_USER,
+  SET_MEDITATION,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -12,6 +13,12 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
+    case SET_MEDITATION: {
+      return {
+        ...state,
+        settings: payload,
+      }
+    }
     case SET_AUTH: {
       return {
         ...state,
