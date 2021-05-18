@@ -31,13 +31,9 @@ const LeftControls = ({
           started={state.started}
         />
       </View>
-      <View style={styles.gaugeChart}>
-        <View style={styles.meditationList}>
-          <AppMeditationList 
-          
-          />
-        </View>
-
+      <View style={styles.meditationList}>
+      <AppMeditationList 
+      />
       </View>
       <CameraButton
         width={15}
@@ -90,13 +86,13 @@ const styles = StyleSheet.create({
   },
   meditationList: {
     backgroundColor: 'red',
-    width: 200, 
     height: '100%',
     color: '#fff',
     position: "absolute",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    top: '50%',
 
   }
 });

@@ -1,13 +1,20 @@
-import React from 'react';
-import { Text } from 'react-native';
-import { View } from 'react-native';
+import React, { useEffect } from 'react';
+import { 
+    Text,
+    View,
+    Dimensions ,
+} from 'react-native';
 import { connect } from 'react-redux';
 
-
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 const meditationList = ({meditattion}) => {
-    console.log(meditattion,'meditattion')
+    console.log(123456)
+
+
+    // console.log(window,'meditattion')
     return(
-        <View>
+        <View style={{height: window.height}}>
             <Text>test</Text>
         </View>
     )
