@@ -8,6 +8,7 @@ import {
     FlatList,
     StyleSheet,
     TouchableOpacity ,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -28,8 +29,10 @@ const meditationLists = ({meditation}) => {
       const onViewRef = React.useRef((viewableItems)=> {
         setviewableIndex(viewableItems.viewableItems[1].index)
     })
-    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 4 })
-    // const
+    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 5 })
+    const onPress = () => {
+
+    }
     return(
         <View style={styles.meditationLists}>
             <TouchableWithoutFeedback onPress={onPress}>
