@@ -1,31 +1,59 @@
-import React, { useEffect } from 'react';
+import React, { 
+    useEffect,
+    useState
+ } from 'react';
 import { 
     Text,
     View,
     FlatList,
     StyleSheet,
-    Dimensions ,
+    TouchableOpacity ,
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import {  AppMeditationList } from '../ui';
+import { 
+    AppMeditationList,
+    AppIcon, 
+} from '../ui';
 
-
+const flatListTop = 55*3
 const meditationLists = ({meditation}) => {
+    const [flatListRef,setFlatListRef]  = useState();
+    const [viewableIndex,setviewableIndex]  = useState(1);
 
-    console.log(meditation,'789987')
+
+    const scrollToItem = (e) => {
+        flatListRef.scrollToIndex({animated: true, index: viewableIndex });
+      }
+      const onViewRef = React.useRef((viewableItems)=> {
+        setviewableIndex(viewableItems.viewableItems[1].index)
+    })
+    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 4 })
+    // const
     return(
         <View style={styles.meditationLists}>
-            
-             <FlatList
-                
-                data={meditation}
-                renderItem={(item) => {
-                    return <AppMeditationList item={item} showText={true} />
-                }}
-                keyExtractor={item => item.uuid}
-            />
-            <Text>test</Text>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <FlatList
+                    ref={(ref) => { setFlatListRef(ref) ; }}
+                    data={meditation}
+                    initialScrollIndex={0}
+                    initialNumToRender={4}
+                    renderItem={(item) => {
+                        return <AppMeditationList item={item}  />
+                    }}
+                    keyExtractor={(item, index) => index.toString()}
+                    onViewableItemsChanged={onViewRef.current}
+                    viewabilityConfig={viewConfigRef.current}
+
+                />
+            </TouchableWithoutFeedback> 
+            <TouchableOpacity onPress={(e) => scrollToItem(e)}>
+                <AppIcon
+                  icon="yog"
+                  width={32}
+                  height={32}
+                />
+            </TouchableOpacity>
         </View>
     )
 
@@ -33,9 +61,8 @@ const meditationLists = ({meditation}) => {
 
 const styles = StyleSheet.create({
     meditationLists: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        height: 165,
+        width: 200,
     }
 })
 

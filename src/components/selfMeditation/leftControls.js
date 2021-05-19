@@ -17,7 +17,9 @@ const LeftControls = ({
   <View style={styles.leftControls}>
     {/* <View style={{
       flex: 1,
-    }}> */}
+    }}> */}<View style={styles.meditationList}>
+      <AppMeditationLists showText={true} />
+      </View>
     <View style={styles.timeWrapper}>
       <View style={styles.gaugeChart}>
         <AppGaugeChart
@@ -32,10 +34,7 @@ const LeftControls = ({
           started={state.started}
         />
       </View>
-      <View style={styles.meditationList}>
-      <AppMeditationLists 
-      />
-      </View>
+      
       <CameraButton
         width={15}
         height={15}
@@ -88,13 +87,15 @@ const styles = StyleSheet.create({
   meditationList: {
     height: screen.height,
     position: "absolute",
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: 200,
     top: 0,
     left: 0,
-
+    zIndex: 600000000,
   }
 });
+
 
 export default LeftControls;
