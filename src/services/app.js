@@ -22,24 +22,8 @@ class AppService {
 
     const auth = await StorageService.getAuthTokens();
     const user = await StorageService.getUserData();
-    const meditation = [
-      {
-        name: '1 meditation'
-      },
-      {
-        name: '2 meditation'
-      },
-      {
-        name: '3 meditation'
-      },
-      {
-        name: '4 meditation'
-      },
-      {
-        name: '5 meditation'
-      }
-    ]
-    Store.dispatch(setMeditation(meditation));
+
+    // Store.dispatch(setMeditation(meditation));
     if (auth?.accessToken) {
       Store.dispatch(setAuth(auth));
       Store.dispatch(setUser(user));

@@ -13,6 +13,7 @@ const initialState = {
   settings: {},
   user: {},
   isLoggedIn: true,
+
 };
 
 export default (state = initialState, { type, payload }) => {
