@@ -6,7 +6,8 @@ import {
 } from "react-native";
 
 import CameraButton from './buttons';
-import { AppGaugeChart, AppMeditationLists } from '../ui';
+import { AppGaugeChart } from '../ui';
+import MeditationLists from './meditationLists'
 
 // import MeditationTypes from '../meditation/meditationTypes';
 const screen = Dimensions.get("screen");
@@ -18,7 +19,7 @@ const LeftControls = ({
     {/* <View style={{
       flex: 1,
     }}> */}<View style={styles.meditationList}>
-      <AppMeditationLists showText={true} />
+      <MeditationLists showText={true} />
       </View>
     <View style={styles.timeWrapper}>
       <View style={styles.gaugeChart}>

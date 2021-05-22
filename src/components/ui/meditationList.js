@@ -18,10 +18,17 @@ const MeditationList = ({
     pressToMeditation,
     isHidetext,
     item,
+    getLayouts
 }) => {
-    return (
-        <View style={styles.medtation}>
-            <TouchableOpacity onPress={() => pressToMeditation()}>
+
+       return (
+        <View 
+        onLayout={(event) => {
+            getLayouts(event)
+        }}
+        style={styles.medtation}
+        >
+            <TouchableOpacity onPress={() => pressToMeditation(item.index)}>
                 <AppIcon
                     icon="yog"
                     width={32}
