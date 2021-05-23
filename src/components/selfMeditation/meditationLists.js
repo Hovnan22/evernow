@@ -59,7 +59,6 @@ const MeditationLists = ({
         }
 
         if(prevListCount == 5){
-            console.log(typeof index)
             setScrollIndex(index);
             setPrevListCount(1);
             setHidetext(false);
@@ -86,8 +85,6 @@ const MeditationLists = ({
 
     const onViewRef = React.useRef((viewableItems) => {
         setScrollIndex(viewableItems.viewableItems[0].index);
-        console.log(3)
-
 
         if (viewableItems.viewableItems[viewableItems.viewableItems.length - 1].index == meditation.length - 1){
                 setHideBottomButton('hide');
@@ -127,7 +124,7 @@ const MeditationLists = ({
                             />
                         }}
                         onViewableItemsChanged={onViewRef.current}
-                        onLayout={() => {console.log(2);flatListRef.scrollToIndex({ animated: true, index: scrollIndex  })}}
+                        onLayout={() => {flatListRef.scrollToIndex({ animated: true, index: scrollIndex  })}}
 
 
                     />
