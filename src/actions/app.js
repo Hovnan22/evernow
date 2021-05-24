@@ -6,25 +6,16 @@ import {
   CHANGE_USER_DATA,
   SET_IS_LOGGEDIN,
   SET_MEDITATION,
-  SET_IS_HIDE_TEXT,
-  SET_MEDITATION_LIMIT,
-  SET_SCROOL_INDEX,
 } from './actionTypes';
 
 
 
-export const setMeditationLimit = limit => ({
-  type: SET_MEDITATION_LIMIT,
-  payload: limit,
-})
+
 export const setMeditation = meditation => ({
   type: SET_MEDITATION,
   payload: meditation,
 });
-export const setScrollIndex = scrollIndex => ({
-  type: SET_SCROOL_INDEX,
-  payload: scrollIndex,
-});
+
 export const setAuth = auth => ({
   type: SET_AUTH,
   payload: auth,
@@ -37,10 +28,6 @@ export const setSettings = settings => ({
   payload: settings,
 });
 
-export const setIsHideText = isHide => ({
-  type: SET_IS_HIDE_TEXT,
-  payload: isHide,
-})
 
 export const setUser = user => ({
   type: SET_USER,

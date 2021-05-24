@@ -27,6 +27,7 @@ const MeditationLists = ({
     const [flatlistheight, setFlatlistHeight] = useState(0);
     const [meditationHeight, setmeditationheight] = useState(0);
     const [hideBottomButton, setHideBottomButton] = useState('show');
+    const [bottonArrowheight, setBottonArrowheight] = useState(0);
 
 
     useEffect(() => {
@@ -61,8 +62,12 @@ const MeditationLists = ({
     }
 
     const getLayouts = (event) => {
-        setmeditationheight(Math.floor(event.nativeEvent.layout.height));
+        setmeditationheight(event.nativeEvent.layout.height);
         setFlatlistHeight(meditationHeight * prevListCount);
+    }
+
+    const getButtonLayouts = (event) => {
+        setBottonArrowheight(event.nativeEvent.layout.height);
     }
 
     const scrollToItem = () => {
@@ -82,7 +87,7 @@ const MeditationLists = ({
     })
 
     return (
-        <View style={{ height: '100%', justifyContent: 'center' }}>
+        <View style={styles.meditationLists}>
             {
                 prevListCount == 5 && (<LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -91,43 +96,54 @@ const MeditationLists = ({
                     style={styles.linerGradient}
                 />)
             }
-            <View
-                style={[styles.meditationLists, { height: flatlistheight }]}
-            >
-                <FlatList
-                    ref={(ref) => { setFlatListRef(ref); }}
-                    data={meditation}
-                    initialNumToRender={meditation.length}
-                    renderItem={(item) => {
-                        return <AppMeditationList
-                            item={item}
-                            keyExtractor={(item, index) => index.toString()}
-                            pressToMeditation={pressToMeditation}
-                            isHidetext={isHidetext}
-                            getLayouts={getLayouts}
-                        />
+            <View style={{ height: flatlistheight + bottonArrowheight }}>
+                <View
+                    style={{ height: flatlistheight }}
+                >
+                    <FlatList
+                        style={styles.flatList}
+                        ref={(ref) => { setFlatListRef(ref); }}
+                        data={meditation}
+                        initialNumToRender={meditation.length}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={(item) => {
+                            return <AppMeditationList
+                                item={item}
+                                keyExtractor={(item, index) => index.toString()}
+                                pressToMeditation={pressToMeditation}
+                                isHidetext={isHidetext}
+                                getLayouts={getLayouts}
+                            />
+                        }}
+                        onViewableItemsChanged={onViewRef.current}
+                        onLayout={() => { flatListRef.scrollToIndex({ animated: true, index: scrollIndex }) }}
+                    />
+                </View>
+                {hideBottomButton != 'hide' && <TouchableOpacity
+                    onLayout={(event) => {
+                        getButtonLayouts(event)
                     }}
-                    onViewableItemsChanged={onViewRef.current}
-                    onLayout={() => { flatListRef.scrollToIndex({ animated: true, index: scrollIndex }) }}
-                />
+                    style={{ paddingTop: 25 }}
+                    onPress={(e) => scrollToItem(e)
+                    }>
+                    <AppIcon
+                        icon="yog"
+                        width={32}
+                        height={32}
+                    />
+                </TouchableOpacity>}
             </View>
-            <TouchableOpacity
-                style={{ display: hideBottomButton == 'hide' ? 'none' : 'flex' }}
-                onPress={(e) => scrollToItem(e)
-                }>
-                <AppIcon
-                    icon="yog"
-                    width={32}
-                    height={32}
-                />
-            </TouchableOpacity>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     meditationLists: {
-        width: 200,
+        paddingHorizontal: 16,
+        height: '100%',
+        // transform: [{ translateY: '50%' }],
+        justifyContent: 'center'
     },
     linerGradient: {
         width: '100%',
@@ -139,9 +155,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({
     profile: {
         meditation
-    } 
+    }
 }) => ({
-        meditation
-    });
+    meditation
+});
 
 export default connect(mapStateToProps)(MeditationLists);

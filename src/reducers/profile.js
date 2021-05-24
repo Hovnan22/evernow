@@ -3,9 +3,6 @@ import {
   SET_SETTINGS,
   SET_USER,
   SET_MEDITATION,
-  SET_MEDITATION_LIMIT,
-  SET_IS_HIDE_TEXT,
-  SET_SCROOL_INDEX,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -39,28 +36,10 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case SET_SCROOL_INDEX: {
-      return{
-        ...state,
-        scrollIndex: payload
-      }
-    }
     case SET_MEDITATION: {
       return {
         ...state,
         meditation: payload,
-      }
-    }
-    case SET_IS_HIDE_TEXT: {
-      return {
-        ...state,
-        isHidetext: payload,
-      }
-    } 
-    case SET_MEDITATION_LIMIT: {
-      return {
-        ...state,
-        meditationLimit: payload,
       }
     }
     case SET_AUTH: {

@@ -28,15 +28,18 @@ const MeditationList = ({
                 height={32}
             />
         </TouchableOpacity>
-        <Text style={{ display: isHidetext ? 'none' : 'flex', color: '#fff' }}>{item.item.name}</Text>
+        {
+        !isHidetext && (
+        <Text style={{ color: '#fff', paddingLeft: 15 }}>{item.item.name}</Text>)
+        }
     </View>
 );
 
 const styles = StyleSheet.create({
     medtation: {
-        height: 45,
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingVertical: 10,
     }
 })
 

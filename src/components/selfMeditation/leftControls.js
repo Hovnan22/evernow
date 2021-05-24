@@ -15,10 +15,11 @@ const LeftControls = ({
   timePickerHandler,
 }) => (
   <View style={styles.leftControls}>
-    <View style={styles.meditationList}>
-      <MeditationLists />
-    </View>
+      <View style={styles.meditationList}>
+        <MeditationLists />
+      </View>
     <View style={styles.timeWrapper}>
+
       <View style={styles.gaugeChart}>
         <AppGaugeChart
           borderGradient={["#FFF", "#FFF"]}
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     height: height,
     position: "absolute",
     justifyContent: "center",
+
   }
 });
 
