@@ -2,25 +2,22 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Dimensions ,
+  Dimensions,
 } from "react-native";
 
 import CameraButton from './buttons';
 import { AppGaugeChart } from '../ui';
-import MeditationLists from './meditationLists'
+import MeditationLists from './meditationLists';
 
-// import MeditationTypes from '../meditation/meditationTypes';
-const screen = Dimensions.get("screen");
+const { height, width } = Dimensions.get("screen");
 const LeftControls = ({
   state,
   timePickerHandler,
 }) => (
   <View style={styles.leftControls}>
-    {/* <View style={{
-      flex: 1,
-    }}> */}<View style={styles.meditationList}>
-      <MeditationLists showText={true} />
-      </View>
+    <View style={styles.meditationList}>
+      <MeditationLists />
+    </View>
     <View style={styles.timeWrapper}>
       <View style={styles.gaugeChart}>
         <AppGaugeChart
@@ -35,7 +32,6 @@ const LeftControls = ({
           started={state.started}
         />
       </View>
-      
       <CameraButton
         width={15}
         height={15}
@@ -44,19 +40,8 @@ const LeftControls = ({
         onPress={timePickerHandler}
       />
     </View>
-    {/* </View>
-    <View style={{
-      flex: 1,
-    }}>
-
-      <MeditationTypes />
-    </View>
-    <View style={{
-      flex: 1,
-    }}></View> */}
   </View>
 );
-
 
 const styles = StyleSheet.create({
   leftControls: {
@@ -71,7 +56,6 @@ const styles = StyleSheet.create({
   },
   timeWrapper: {
     opacity: 0.5,
-
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
@@ -86,16 +70,14 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   meditationList: {
-    height: screen.height,
-    position: "absolute",
-    // flex: 1,
-    justifyContent: "center",
-    width: screen.width,
     top: 0,
     left: 0,
-    zIndex: 600000000,
+    zIndex: 10,
+    width: width,
+    height: height,
+    position: "absolute",
+    justifyContent: "center",
   }
 });
-
 
 export default LeftControls;

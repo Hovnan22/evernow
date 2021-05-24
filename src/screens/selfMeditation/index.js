@@ -5,19 +5,15 @@ import React, {
 import { Audio } from "expo-av";
 import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
-
 import { AppContainer } from '../../components/ui';
 import { MeditationCamera } from '../../components/selfMeditation';
-
 import { Grid } from '../../styles';
-
 import sound from "../../../src/assets/sound.mp3";
-// import  FaceDetector from 'expo-face-detector';
 
 let intervalInstance = null;
 
 const SelfMeditation = ({ navigation }) => {
-  const [ratios,setRatios] = useState('4:3');
+  const [ratios, setRatios] = useState('4:3');
   const isFocused = useIsFocused();
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -64,22 +60,17 @@ const SelfMeditation = ({ navigation }) => {
     }
   };
 
-  const  onCameraReady = async () => {
-    const ratiosArray =  await camera.getSupportedRatiosAsync();
-    console.log(ratiosArray,'ratiosArray')
-    setRatios( ratiosArray[ratiosArray.length - 1]);
+  const onCameraReady = async () => {
+    const ratiosArray = await camera.getSupportedRatiosAsync();
+    setRatios(ratiosArray[ratiosArray.length - 1]);
   }
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === "granted");
-
-
     })();
   }, []);
-
-
 
   return (
     <AppContainer
@@ -98,17 +89,12 @@ const SelfMeditation = ({ navigation }) => {
             ratio={ratios}
             type={type}
             ref={(ref) => setCamera(ref)}
-            onCameraReady= {onCameraReady}
-            // autoFocus={Camera.Constants.AutoFocus.off}
-            // whiteBalance={Camera.Constants.WhiteBalance.auto}
-            // pictureSize="200:300"
-
-
+            onCameraReady={onCameraReady}
           />
         }
       </MeditationCamera>
     </AppContainer>
   );
-}
+};
 
 export default SelfMeditation;

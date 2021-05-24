@@ -1,46 +1,37 @@
-import React, {
-    useEffect,
-    useState,
-} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-
 import {
     AppIcon
 } from '../ui';
 
-
 const MeditationList = ({
-    pressToMeditation,
-    isHidetext,
     item,
-    getLayouts
-}) => {
-
-       return (
-        <View 
+    getLayouts,
+    isHidetext,
+    pressToMeditation,
+}) => (
+    <View
         onLayout={(event) => {
             getLayouts(event)
         }}
         style={styles.medtation}
-        >
-            <TouchableOpacity onPress={() => pressToMeditation(item.index)}>
-                <AppIcon
-                    icon="yog"
-                    width={32}
-                    height={32}
-                />
-            </TouchableOpacity>
+    >
+        <TouchableOpacity onPress={() => pressToMeditation(item.index)}>
+            <AppIcon
+                icon="yog"
+                width={32}
+                height={32}
+            />
+        </TouchableOpacity>
+        <Text style={{ display: isHidetext ? 'none' : 'flex', color: '#fff' }}>{item.item.name}</Text>
+    </View>
+);
 
-            <Text style={{ display: isHidetext ? 'none' : 'flex', color: '#fff' }}>{item.item.name}</Text>
-
-        </View>
-    )
-}
 const styles = StyleSheet.create({
     medtation: {
         height: 45,
@@ -48,7 +39,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     }
 })
-
-
 
 export default MeditationList;
