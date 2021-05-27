@@ -16,9 +16,7 @@ const MeditationList = ({
     pressToMeditation,
 }) => (
     <View
-        onLayout={(event) => {
-            getLayouts(event)
-        }}
+        onLayout={(event) => {  getLayouts(event) }}
         style={styles.medtation}
     >
         <TouchableOpacity onPress={() => pressToMeditation(item.index)}>
@@ -29,8 +27,11 @@ const MeditationList = ({
             />
         </TouchableOpacity>
         {
-        !isHidetext && (
-        <Text style={{ color: '#fff', paddingLeft: 15 }}>{item.item.name}</Text>)
+            !isHidetext && (
+                <Text style={{ color: '#fff', paddingLeft: 15 }}>
+                    {item.item.name}
+                </Text>
+            )
         }
     </View>
 );

@@ -8,9 +8,6 @@ import {
   SET_MEDITATION,
 } from './actionTypes';
 
-
-
-
 export const setMeditation = meditation => ({
   type: SET_MEDITATION,
   payload: meditation,
@@ -21,13 +18,10 @@ export const setAuth = auth => ({
   payload: auth,
 });
 
-
-
 export const setSettings = settings => ({
   type: SET_SETTINGS,
   payload: settings,
 });
-
 
 export const setUser = user => ({
   type: SET_USER,

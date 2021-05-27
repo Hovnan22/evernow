@@ -9,7 +9,6 @@ const initialState = {
   auth: {},
   settings: {},
   user: {},
-  meditationLimit: 3,
   meditation: [
     {
       name: '1 meditation'
@@ -28,10 +27,17 @@ const initialState = {
     },
     {
       name: '6 meditation'
+    },
+    {
+      name: '7 meditation'
+    },
+    {
+      name: '8 meditation'
+    },
+    {
+      name: '9 meditation'
     }
   ],
-  isHidetext: false,
-  scrollIndex: 0,
 };
 
 export default (state = initialState, { type, payload }) => {
