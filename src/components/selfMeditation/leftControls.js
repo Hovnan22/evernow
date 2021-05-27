@@ -4,22 +4,20 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-
 import CameraButton from './buttons';
 import { AppGaugeChart } from '../ui';
 import MeditationLists from './meditationLists';
-
 const { height, width } = Dimensions.get("screen");
+
 const LeftControls = ({
   state,
   timePickerHandler,
 }) => (
   <View style={styles.leftControls}>
-      <View style={styles.meditationList}>
-        <MeditationLists />
-      </View>
+    <View style={styles.meditationList}>
+      <MeditationLists />
+    </View>
     <View style={styles.timeWrapper}>
-
       <View style={styles.gaugeChart}>
         <AppGaugeChart
           borderGradient={["#FFF", "#FFF"]}
