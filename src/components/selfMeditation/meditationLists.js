@@ -18,6 +18,9 @@ import {
 const MeditationLists = ({
     meditation,
 }) => {
+    const smallScrean = 1;
+    const mediumScrean = 3;
+    const largeScrean = 5;
     const [flatListRef, setFlatListRef] = useState();
     const [scrollIndex, setScrollIndex] = useState(0);
     const [isHidetext, setHidetext] = useState(false);
@@ -28,7 +31,8 @@ const MeditationLists = ({
     const [meditationHeight, setmeditationheight] = useState(0);
     const [hideBottomButton, setHideBottomButton] = useState(false);
     const [bottonArrowheight, setBottonArrowheight] = useState(0);
-    const [preventListCount, setPreventListCount] = useState(0)
+    const [preventListCount, setPreventListCount] = useState(0);
+    const [selectedMeditation, setSelectedMeditation] = useState(null);
 
     useEffect(() => {
         setFlatlistHeight(meditationHeight * prevListCount);
@@ -46,10 +50,10 @@ const MeditationLists = ({
 
         setPrevListTimer(
             setTimeout(() => {
-                if (preventListCount == 3) {
-                    setPrevListCount(3);
-                } else if (preventListCount == 1) {
-                    setPrevListCount(1);
+                if (selectedMeditation !== null ) {
+                    setPrevListCount(mediumScrean);
+                } else if (preventListCount == smallScrean) {
+                    setPrevListCount(smallScrean);
                 }
             }, 5000));
 
@@ -57,15 +61,15 @@ const MeditationLists = ({
 
     const pressToMeditation = (index) => {
 
-        if (prevListCount == 5) {
+        if (prevListCount == largeScrean) {
             setScrollIndex(index);
-            setPrevListCount(1);
-        } else if (prevListCount == 3) {
-            setPrevListCount(5);
-            setPreventListCount(3);
-        } else if (prevListCount == 1) {
-            setPrevListCount(5);
-            setPreventListCount(1);
+            setPrevListCount(smallScrean);
+            setSelectedMeditation(index);
+
+        } else if (prevListCount == mediumScrean) {
+            setPrevListCount(largeScrean);
+        } else if (prevListCount == smallScrean) {
+            setPrevListCount(largeScrean);
         }
 
         setFlatlistHeight(meditationHeight * prevListCount);
