@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo-linear-gradient';
+
 import {
     AppIcon,
     AppMeditationList,
@@ -17,6 +18,8 @@ import {
 
 const MeditationLists = ({
     meditation,
+    selectedMeditation,
+    setSelectedMeditation
 }) => {
     const smallScrean = 1;
     const mediumScrean = 3;
@@ -25,14 +28,12 @@ const MeditationLists = ({
     const [scrollIndex, setScrollIndex] = useState(0);
     const [isHidetext, setHidetext] = useState(false);
     const [prevListTimer, setPrevListTimer] = useState();
-    const [hidetextTimer, setHidetextTimer] = useState();
+    const [hideTextTimer, setHidetextTimer] = useState();
     const [prevListCount, setPrevListCount] = useState(3);
     const [flatlistheight, setFlatlistHeight] = useState(0);
     const [meditationHeight, setmeditationheight] = useState(0);
     const [hideBottomButton, setHideBottomButton] = useState(false);
     const [bottonArrowheight, setBottonArrowheight] = useState(0);
-    const [preventListCount, setPreventListCount] = useState(0);
-    const [selectedMeditation, setSelectedMeditation] = useState(null);
 
     useEffect(() => {
         setFlatlistHeight(meditationHeight * prevListCount);
@@ -41,7 +42,8 @@ const MeditationLists = ({
             setHidetextTimer(
                 setTimeout(() => {
                     setHidetext(true)
-                }, 3000));
+                }, 1500)
+            );
         }
 
         if (prevListCount == 1) {
@@ -50,12 +52,14 @@ const MeditationLists = ({
 
         setPrevListTimer(
             setTimeout(() => {
-                if (selectedMeditation !== null ) {
-                    setPrevListCount(mediumScrean);
-                } else if (preventListCount == smallScrean) {
+                console.log(selectedMeditation,'selectedMeditation');
+                if (selectedMeditation != null ) {
                     setPrevListCount(smallScrean);
+                } else  {
+                    setPrevListCount(mediumScrean);
                 }
-            }, 5000));
+            }, 3000)
+        );
 
     }, [prevListCount])
 
@@ -65,7 +69,6 @@ const MeditationLists = ({
             setScrollIndex(index);
             setPrevListCount(smallScrean);
             setSelectedMeditation(index);
-
         } else if (prevListCount == mediumScrean) {
             setPrevListCount(largeScrean);
         } else if (prevListCount == smallScrean) {
@@ -76,7 +79,7 @@ const MeditationLists = ({
         scrollToItem(index);
         setHidetext(false);
         clearTimeout(prevListTimer);
-        clearTimeout(hidetextTimer);
+        clearTimeout(hideTextTimer);
     }
 
     const getLayouts = (event) => {
@@ -95,10 +98,13 @@ const MeditationLists = ({
         })
     }
 
-    const onViewRef = React.useRef((viewableItems) => {
-        setScrollIndex(viewableItems.viewableItems[0].index);
+    const onViewRef = React.useRef(({viewableItems}) => {
+        setScrollIndex(viewableItems[0].index);
+        if(prevListCount === smallScrean) {
+            setSelectedMeditation(viewableItems[0].index)
+        }
 
-        if (viewableItems.viewableItems[viewableItems.viewableItems.length - 1].index == meditation.length - 1) {
+        if (viewableItems[viewableItems.length - 1].index == meditation.length - 1) {
             setHideBottomButton(true);
         } else {
             setHideBottomButton(false);
@@ -106,47 +112,47 @@ const MeditationLists = ({
     })
 
     return (
-        <View style={styles.meditationLists}>
+        <View style={ styles.meditationLists }>
             {
-                prevListCount == 5 && ( <LinearGradient
+                prevListCount == 5 && ( 
+                <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0.5, y: 0 }}
                     colors={[`rgba(115, 176, 233,0.4) `, `rgba(115, 176, 233, 0.0001) `]}
                     style={styles.linerGradient}
-                /> )
+                /> 
+                )
             }
             <View style={{ height: flatlistheight + bottonArrowheight }}>
                 <View style={{ height: flatlistheight }} >
                     <FlatList
                         style={styles.flatList}
-                        ref={(ref) => { setFlatListRef(ref); }}
+                        ref={ref => setFlatListRef(ref) }
                         data={meditation}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
-                        renderItem={(item) => {
-                            return <AppMeditationList
+                        renderItem={ item => <AppMeditationList
                                 item={item}
-                                keyExtractor={(item, index) => index.toString()}
+                                keyExtractor={item, index => index.toString()}
                                 pressToMeditation={pressToMeditation}
                                 isHidetext={isHidetext}
                                 getLayouts={getLayouts}
                             />
-                        }}
+                        }
                         onViewableItemsChanged={onViewRef.current}
                     />
                 </View>
                 {
-                !hideBottomButton && <TouchableOpacity
-                    onLayout={(event) => {  getButtonLayouts(event) }}
+                !hideBottomButton && (<TouchableOpacity
+                    onLayout={ event =>   getButtonLayouts(event) }
                     style={{ paddingTop: 25 }}
-                    onPress={(e) => scrollToItem(scrollIndex + 1)
-                    }>
+                    onPress={() => scrollToItem(scrollIndex + 1) }>
                     <AppIcon
                         icon="yog"
                         width={32}
                         height={32}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity>)
                 }
             </View>
         </View>

@@ -5,6 +5,7 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
+
 import {
     AppIcon
 } from '../ui';
@@ -21,15 +22,14 @@ const MeditationList = ({
     >
         <TouchableOpacity onPress={() => pressToMeditation(item.index)}>
             <AppIcon
-                icon="yog"
+                icon={item.item.icon}
                 width={32}
                 height={32}
             />
         </TouchableOpacity>
-        {
-            !isHidetext && (
-                <Text style={{ color: '#fff', paddingLeft: 15 }}>
-                    {item.item.name}
+        {!isHidetext && (
+                <Text  style={styles.name}>
+                    { item.item.name }
                 </Text>
             )
         }
@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         paddingVertical: 10,
+    },
+    name: {
+        color: '#fff',
+        paddingLeft: 15
     }
 })
 

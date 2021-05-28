@@ -11,31 +11,40 @@ const initialState = {
   user: {},
   meditation: [
     {
-      name: '1 meditation'
+      name: '1 meditation',
+      icon: "yog",
     },
     {
-      name: '2 meditation'
+      name: '2 meditation',
+      icon: "yog",
     },
     {
-      name: '3 meditation'
+      name: '3 meditation',
+      icon: "yog",
     },
     {
-      name: '4 meditation'
+      name: '4 meditation',
+      icon: "yog",
     },
     {
-      name: '5 meditation'
+      name: '5 meditation',
+      icon: "yog",
     },
     {
-      name: '6 meditation'
+      name: '6 meditation',
+      icon: "yog",
     },
     {
-      name: '7 meditation'
+      name: '7 meditation',
+      icon: "yog",
     },
     {
-      name: '8 meditation'
+      name: '8 meditation',
+      icon: "yog",
     },
     {
-      name: '9 meditation'
+      name: '9 meditation',
+      icon: "yog",
     }
   ],
 };

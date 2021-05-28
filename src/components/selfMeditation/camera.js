@@ -31,6 +31,7 @@ const Camera = ({
     period: 240,
   });
   const [timePicker, setTimePicker] = useState(false);
+  const [selectedMeditation, setSelectedMeditation] = useState(null);
 
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
@@ -86,6 +87,8 @@ const Camera = ({
       <LeftControls
         state={state}
         timePickerHandler={timePickerHandler}
+        selectedMeditation={selectedMeditation} 
+        setSelectedMeditation={setSelectedMeditation}
       />
       <RightControls
         state={state}
