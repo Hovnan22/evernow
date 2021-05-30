@@ -11,7 +11,10 @@ import Start from './start';
 import LeftControls from './leftControls';
 import RightControls from './rightControls';
 
-import { AppTimePicker } from '../ui';
+import { 
+  AppTimePicker,
+  AppClosePopup,
+} from '../ui';
 
 import { Grid } from '../../styles';
 
@@ -28,10 +31,12 @@ const Camera = ({
     paused: false,
     muted: false,
     started: false,
-    period: 240,
+    period: 0,
+    pressOnClose: false,
   });
   const [timePicker, setTimePicker] = useState(false);
   const [selectedMeditation, setSelectedMeditation] = useState(null);
+  const [timePickerChooser, setTimePickerChooser] = useState(false);
 
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
@@ -42,6 +47,15 @@ const Camera = ({
     if (onPauseCamera !== undefined) {
       onPauseCamera(isPaused);
     }
+  };
+
+  const pressOnClose = () => {
+    const close = !state.pressOnClose;
+    onPauseCameraHandler()
+    setState({
+      ...state,
+      pressOnClose: close,
+    });
   };
 
   const onPauseVolumeHandler = () => {
@@ -81,32 +95,41 @@ const Camera = ({
 
   return (
     <View style={styles.container}>
-      {state.paused && (
+      {state.paused  && (
         <View style={[StyleSheet.absoluteFill, styles.blur]} />
       )}
+      {state.pressOnClose && <AppClosePopup 
+      onClose={onClose}
+      />
+      }
       <LeftControls
         state={state}
         timePickerHandler={timePickerHandler}
         selectedMeditation={selectedMeditation} 
         setSelectedMeditation={setSelectedMeditation}
+        timePicker={timePicker}
       />
       <RightControls
         state={state}
-        onClose={onClose}
+        onClose={pressOnClose}
         onPauseCameraHandler={onPauseCameraHandler}
         onPauseVolumeHandler={onPauseVolumeHandler}
       />
       <View style={styles.content}>
         {children}
       </View>
-      {onStart && (
+      {onStart && !state.pressOnClose && (
         <Start
           state={state}
           onPress={onStartHandler}
         />
       )}
-      {timePicker && (
+      {timePicker && !state.pressOnClose && (
         <AppTimePicker
+        setTimePicker={setTimePicker}
+        timePickerChooser={timePickerChooser}
+        setTimePickerChooser={setTimePickerChooser}
+        onPauseCameraHandler={onPauseCameraHandler}
           onChange={(hours, minutes) => {
             setTimePicker(!timePicker);
             setState({

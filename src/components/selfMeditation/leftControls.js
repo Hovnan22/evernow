@@ -13,17 +13,18 @@ const { height, width } = Dimensions.get("screen");
 
 const LeftControls = ({
   state,
+  timePicker,
   timePickerHandler,
-  selectedMeditation, 
+  selectedMeditation,
   setSelectedMeditation,
 }) => (
   <View style={styles.leftControls}>
-    <View style={styles.meditationList}>
+    {!timePicker && !state.pressOnClose && (<View style={styles.meditationList}>
       <MeditationLists 
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
       />
-    </View>
+    </View>)}
     <View style={styles.timeWrapper}>
       <View style={styles.gaugeChart}>
         <AppGaugeChart
@@ -39,13 +40,14 @@ const LeftControls = ({
         />
       </View>
       <CameraButton
-        width={15}
-        height={15}
+        width={35}
+        height={35}
         icon="settings"
         style={styles.timeSettings}
         onPress={timePickerHandler}
       />
     </View>
+
   </View>
 );
 
@@ -65,15 +67,17 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 20,
   },
   timeSettings: {
+    top: 70,
     position: "absolute",
     right: -25,
     backgroundColor: "rgba(255,255,255, .5)",
     padding: 7,
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    zIndex: 0,
+    zIndex: 200,
   },
   meditationList: {
     top: 0,

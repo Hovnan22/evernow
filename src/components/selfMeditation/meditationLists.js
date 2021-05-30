@@ -52,7 +52,6 @@ const MeditationLists = ({
 
         setPrevListTimer(
             setTimeout(() => {
-                console.log(selectedMeditation,'selectedMeditation');
                 if (selectedMeditation != null ) {
                     setPrevListCount(smallScrean);
                 } else  {
@@ -129,11 +128,11 @@ const MeditationLists = ({
                         style={styles.flatList}
                         ref={ref => setFlatListRef(ref) }
                         data={meditation}
+                        keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                         renderItem={ item => <AppMeditationList
                                 item={item}
-                                keyExtractor={item, index => index.toString()}
                                 pressToMeditation={pressToMeditation}
                                 isHidetext={isHidetext}
                                 getLayouts={getLayouts}
