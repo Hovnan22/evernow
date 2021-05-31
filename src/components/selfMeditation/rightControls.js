@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 36,
-    zIndex: 4,
+    zIndex: 6,
   },
 });
 

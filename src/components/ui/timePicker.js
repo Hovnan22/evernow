@@ -22,14 +22,12 @@ import {
 
 const TimePicker = ({
   onChange,
+  onCancel,
   setTimePicker,
   timePickerChooser,
-  setTimePickerChooser,
-  onPauseCameraHandler,
 }) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
-  console.log(timePickerChooser, 'timePickerChooser', setTimePickerChooser, 'setTimePickerChooser')
   return <View style={styles.selectTime}>
     {!timePickerChooser && (<LinearGradient
       start={{ x: 0, y: 0 }}
@@ -52,7 +50,7 @@ const TimePicker = ({
         />
         <AppButton
           style={styles.timePickerButton}
-          onPress={() => { setTimePickerChooser(true); onPauseCameraHandler() }}
+          onPress={() =>  onCancel()}
           title={"screen.timePickerMoreDuration.submit"}
           type={"transparent"}
         />
@@ -68,7 +66,7 @@ const TimePicker = ({
 
 
     </LinearGradient>)}
-    {timePickerChooser && <View>
+    {timePickerChooser && <View style={styles.selectTimePicker}>
       <View style={[Grid.flex1, { flexDirection: "row" }]}>
         <View style={[Grid.flex1, Grid.centeredY]}>
           <Picker selectedValue={hours} onValueChange={(v) => setHours(v)}>
@@ -95,13 +93,23 @@ const TimePicker = ({
       </View>
       <View style={[Typography.p2]}>
         <AppButton
+          style={styles.timeButton}
           type="gradient"
-          title={"common.save"}
-          onPress={() => onChange(hours, minutes)}
+          title={"screen.cancelTimeButton.submit"}
+          onPress={() => onCancel()}
+          type={"transparent"}
+          color="#eb354a"
+        />
+        <AppButton
+          style={styles.timeButton}
+          type="gradient"
+          title={"screen.setTimeButton.submit"}
+          onPress={() => onChange(hours, minutes,true)}
+          type={"transparent"}
+          color="#268bd5"
         />
       </View>
     </View>
-
     }
   </View>;
 
@@ -114,7 +122,7 @@ const TimePicker = ({
 
 const styles = StyleSheet.create({
   selectTimeDuration: {},
-  TimeButtons: {
+  timeButtons: {
 
   },
   chooserLayer: {
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: "center"
   },
-  TimeButton: {
+  timeButton: {
     borderTopWidth: 1,
     borderTopColor: "rgba(0, 0, 0, .1)",
     borderRadius: 0,
@@ -141,6 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     marginHorizontal: '10%',
+    paddingHorizontal: 25,
   },
   closeButton: {
     flexDirection: 'row',
@@ -153,7 +162,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     height: '100%',
-    zIndex: 100,
+    zIndex: 5,
     justifyContent: 'center',
   },
   timePickerButton: {
