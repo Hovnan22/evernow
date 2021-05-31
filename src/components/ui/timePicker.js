@@ -65,75 +65,43 @@ const TimePicker = ({
           <Text style={{ color: 'white' }}>{i18n.t("screen.timePickerClose.submit")}</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={[Grid.flex1, { flexDirection: "row" }]}>
-      <View style={[Grid.flex1, Grid.centeredY]}>
-        <Picker selectedValue={hours} onValueChange={(v) => setHours(v)}>
-          {[0, 1, 2, 3, 4, 5].map((v, k) => (
-            <Picker.Item
-              label={`${v} ${i18n.t("common.hours")}`}
-              value={v}
-              key={k}
-            />
-          ))}
-        </Picker>
-      </View>
-      <View style={[Grid.flex1, Grid.centeredY]}>
-        <Picker selectedValue={minutes} onValueChange={(v) => setMinutes(v)}>
-          {[0, 10, 15, 30, 45].map((v, k) => (
-            <Picker.Item
-              label={`${v} ${i18n.t("common.minutes")}`}
-              value={v}
-              key={k}
-            />
-          ))}
-        </Picker>
-      </View>
-    </View>
-    <View style={[Typography.p2]}>
-      <AppButton
-        type="gradient"
-        title={"common.save"}
-        onPress={() => onChange(hours, minutes)}
-      />
-    </View> */}
+
 
     </LinearGradient>)}
-    {timePickerChooser && (<View style={styles.chooserLayer}>
-      <View style={styles.selectTimePicker}>
-        <View style={styles.selectTimeDuration}>
-          <FlatList
-            // ref={ref => setFlatListRef(ref)}
-            data={[0, 10, 15, 30, 45]}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => {
-              console.log(item,'itemsssssssss');
-              return (<Text>{item + ' ' + i18n.t("common.minutes")}</Text>)
-            }
-            }
-          // onViewableItemsChanged={onViewRef.current}
-          />
+    {timePickerChooser && <View>
+      <View style={[Grid.flex1, { flexDirection: "row" }]}>
+        <View style={[Grid.flex1, Grid.centeredY]}>
+          <Picker selectedValue={hours} onValueChange={(v) => setHours(v)}>
+            {[0, 1, 2, 3, 4, 5].map((v, k) => (
+              <Picker.Item
+                label={`${v} ${i18n.t("common.hours")}`}
+                value={v}
+                key={k}
+              />
+            ))}
+          </Picker>
         </View>
-        <View style={styles.TimeButtons}>
-          <AppButton
-            style={styles.TimeButton}
-            onPress={() => { setTimePickerChooser(false); onPauseCameraHandler(); }}
-            title={"screen.cancelTimeButton.submit"}
-            type={"transparent"}
-            color="red"
-            margin={0}
-          />
-          <AppButton
-            style={styles.TimeButton}
-            onPress={() => { setTimePickerChooser(false); onPauseCameraHandler(); }}
-            title={"screen.setTimeButton.submit"}
-            type={"transparent"}
-            color="#268bd5"
-          />
+        <View style={[Grid.flex1, Grid.centeredY]}>
+          <Picker selectedValue={minutes} onValueChange={(v) => setMinutes(v)}>
+            {[0, 10, 15, 30, 45].map((v, k) => (
+              <Picker.Item
+                label={`${v} ${i18n.t("common.minutes")}`}
+                value={v}
+                key={k}
+              />
+            ))}
+          </Picker>
         </View>
       </View>
-    </View>)
+      <View style={[Typography.p2]}>
+        <AppButton
+          type="gradient"
+          title={"common.save"}
+          onPress={() => onChange(hours, minutes)}
+        />
+      </View>
+    </View>
+
     }
   </View>;
 

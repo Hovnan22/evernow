@@ -1,7 +1,6 @@
 import React from 'react';
 import i18n from "i18n-js";
 
-import { useEffect } from 'react';
 import {
   Text,
   View,
@@ -12,21 +11,23 @@ import {
   AppButton,
 } from '.';
 
-
-const ClosePopup = (onClose) => (
+const ClosePopup = ({
+  onClose,
+  pressOnClose,
+  }) => (
   <View style={styles.conrainer}>
     <View style={styles.popupLayer}>
       <Text style={styles.popupMessage}>{i18n.t('screen.closePopupText.submit')}</Text>
       <AppButton
           style={styles.buttons}
-          // onPress={() => { onChange(0, 60) }}
+          onPress={() => onClose() }
           title={"screen.closeButtonConfirm.submit"}
           type={"transparent"}
           color="red"
         />
       <AppButton
           style={styles.buttons}
-          // onPress={() => { onChange(0, 30) }}
+          onPress={() =>  pressOnClose() }
           title={"screen.closeButtonCancel.submit"}
           type={"transparent"}
           color="#000"

@@ -51,11 +51,19 @@ const Camera = ({
 
   const pressOnClose = () => {
     const close = !state.pressOnClose;
-    onPauseCameraHandler()
+    const isPaused = !state.paused;
+
     setState({
       ...state,
       pressOnClose: close,
+      paused: isPaused,
+
     });
+
+    if (onPauseCamera !== undefined) {
+      onPauseCamera(isPaused);
+    }
+
   };
 
   const onPauseVolumeHandler = () => {
@@ -80,6 +88,19 @@ const Camera = ({
       onStop();
     }
   };
+  const bindeOnClose = () => {
+    onClose();
+    setState({
+      paused: false,
+      muted: false,
+      started: false,
+      period: 0,
+      pressOnClose: false,
+    });
+    setTimePicker(false);
+    setSelectedMeditation(null);
+    setTimePickerChooser(false);
+  }
 
   const timePickerHandler = () => setTimePicker(!timePicker);
 
@@ -99,7 +120,8 @@ const Camera = ({
         <View style={[StyleSheet.absoluteFill, styles.blur]} />
       )}
       {state.pressOnClose && <AppClosePopup 
-      onClose={onClose}
+      onClose={bindeOnClose}
+      pressOnClose={pressOnClose}
       />
       }
       <LeftControls
