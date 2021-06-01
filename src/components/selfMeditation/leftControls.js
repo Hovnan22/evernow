@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
+  Text,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
@@ -30,7 +31,7 @@ const LeftControls = ({
         setSelectedMeditation={setSelectedMeditation}
       />
     </View>)}
-    <View style={[styles.timeWrapper, state.hideCamera && {opacity: 1}]}>
+    <View style={[styles.timeWrapper, state.hideCamera && styles.timeWrapperBig]}>
       <View style={styles.gaugeChart}>
         <AppGaugeChart
           borderGradient={["#FFF", "#FFF"]}
@@ -48,28 +49,49 @@ const LeftControls = ({
         width={35}
         height={35}
         icon="settings"
-        style={styles.timeSettings}
+        style={[state.hideCamera ? styles.timeSettingsBig :styles.timeSettings ]}
         onPress={timePickerHandler}
       />
-      {state.hideCamera && (      <CameraButton
-        width={35}
-        height={35}
-        icon="yog"
-        onPress={() => showMeditation()}
-      />)}
+      {state.hideCamera && (  
+            <TouchableOpacity
+            style={styles.meditationButton}
+            onPress={showMeditation}
+          >
+            <AppIcon
+              icon="yog"
+              width={35}
+              height={35}
+            />
+          <Text style={{color: 'white'}}>Type of meditation</Text>
+          </TouchableOpacity>
+)}
     </View>
-
   </View>
 );
 
 const styles = StyleSheet.create({
+  timeSettingsBig : {
+    top: 0,
+    left: 0,
+    right: 0,
+    position: 'absolute',
+    borderRadius: 7,
+    backgroundColor: "rgba(255,255,255, .5)",
+    width: 55,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
   showMeditation: {
     zIndex: 10,
-    
+  },
+  meditationButton: {
+    justifyContent: "center",
+    alignItems: 'center',
   },
   leftControlsBig: {
     width: width,
-    position: "absolute",
+    height: '100%',
+    position: "relative",
     left: 0,
     top: 0,
     bottom: 0,
@@ -88,6 +110,11 @@ const styles = StyleSheet.create({
     paddingVertical: 36,
     paddingHorizontal: 16,
     zIndex: 4,
+  },
+  timeWrapperBig : {
+    height: '100%',
+    width: '100%',
+    opacity: 1,
   },
   timeWrapper: {
     opacity: 0.5,
@@ -109,7 +136,7 @@ const styles = StyleSheet.create({
   meditationList: {
     top: 0,
     left: 0,
-    zIndex: 10,
+    zIndex: 201,
     width: width,
     height: height,
     position: "absolute",

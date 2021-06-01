@@ -3,12 +3,10 @@ import {
   Text,
   View,
   Picker,
-  FlatList,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import i18n from "i18n-js";
-import PropTypes from "prop-types";
 import { LinearGradient } from 'expo-linear-gradient';
 
 import {
@@ -63,8 +61,6 @@ const TimePicker = ({
           <Text style={{ color: 'white' }}>{i18n.t("screen.timePickerClose.submit")}</Text>
         </TouchableOpacity>
       </View>
-
-
     </LinearGradient>)}
     {timePickerChooser && <View style={styles.selectTimePicker}>
       <View style={[Grid.flex1, { flexDirection: "row" }]}>
@@ -111,14 +107,8 @@ const TimePicker = ({
       </View>
     </View>
     }
-  </View>;
-
-
-}
-
-// TimePicker.propTypes = {
-//   onChange: PropTypes.func,
-// };
+  </View>
+};
 
 const styles = StyleSheet.create({
   selectTimeDuration: {},

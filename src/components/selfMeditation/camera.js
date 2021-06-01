@@ -6,7 +6,6 @@ import {
 import PropTypes from "prop-types";
 import { Camera as BaseCamera } from "expo-camera";
 
-
 import Start from './start';
 import LeftControls from './leftControls';
 import RightControls from './rightControls';
@@ -17,7 +16,6 @@ import {
 } from '../ui';
 
 import { Grid } from '../../styles';
-
 
 const Camera = ({
   onMute,
@@ -39,10 +37,13 @@ const Camera = ({
   const [timePicker, setTimePicker] = useState(false);
   const [selectedMeditation, setSelectedMeditation] = useState(null);
   const [timePickerChooser, setTimePickerChooser] = useState(false);
-
+  const [meditationTimer, setTimeMeditation] = useState();
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
-    const hideMeditation = !state.hideMeditation
+    const hideMeditation = !state.hideMeditation;
+    if(state.paused == false){
+      setTimePicker(false);
+    }
     setState({
       ...state,
       paused: isPaused,
@@ -59,7 +60,7 @@ const Camera = ({
       ...state,
       hideMeditation: hideMeditation
     });
-    setTimeout(() => {
+      setTimeout(() => {
       setState({
         ...state,
         hideMeditation: !hideMeditation
@@ -68,17 +69,18 @@ const Camera = ({
   }
   const setMeditationTime = (hours,minutes,manual) => {
     setTimePicker(true);
+    clearTimeout(meditationTimer);
     let isPaused = state.paused;
     if(manual){
       setTimePickerChooser(!timePickerChooser);
       isPaused = !state.paused;
     }
 
-    setState({
+    setTimeMeditation(setState({
       ...state,
       paused: isPaused,
       period: hours * 60 * 60 + minutes * 60,
-    });
+    }))
     if (onPauseCamera !== undefined && manual) {
       onPauseCamera(isPaused);
     }
@@ -206,7 +208,7 @@ const Camera = ({
       )}
     </View>
   );
-}
+};
 
 Camera.propTypes = {
   onClose: PropTypes.func,
