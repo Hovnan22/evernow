@@ -13,7 +13,7 @@ import {
 
 const ClosePopup = ({
   onClose,
-  pressOnClose,
+  closePopup,
   }) => (
   <View style={styles.conrainer}>
     <View style={styles.popupLayer}>
@@ -27,7 +27,7 @@ const ClosePopup = ({
         />
       <AppButton
           style={styles.buttons}
-          onPress={() =>  pressOnClose() }
+          onPress={() =>  closePopup() }
           title={"screen.closeButtonCancel.submit"}
           type={"transparent"}
           color="#000"

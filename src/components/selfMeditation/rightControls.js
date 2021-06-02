@@ -29,12 +29,6 @@ const Camera = ({
         width={40}
         height={40}
       />
-      <CameraButton
-        icon={`volume_${state.muted ? 'on' : 'off'}`}
-        onPress={onPauseVolumeHandler}
-        width={40}
-        height={40}
-      />
     </View>
   </View>
 );

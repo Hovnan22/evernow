@@ -11,3 +11,4 @@ export { default as AppTimePicker } from './timePicker';
 export { default as AppMeditationTimeSelector } from './meditationTimeSelector';
 export { default as AppMeditationList} from './meditationList';
 export { default as AppClosePopup} from './closePopup';
+export {default as AppTimeButtons} from './timeButtons'

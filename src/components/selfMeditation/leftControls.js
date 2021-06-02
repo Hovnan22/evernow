@@ -24,24 +24,24 @@ const LeftControls = ({
   selectedMeditation,
   setSelectedMeditation,
 }) => (
-  <View style={state.hideCamera ? styles.leftControlsBig : styles.leftControls}>
+  <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
     {!timePicker && !state.pressOnClose && !state.hideMeditation &&  (<View style={styles.meditationList}>
       <MeditationLists
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
       />
     </View>)}
-    <View style={[styles.timeWrapper, state.hideCamera && styles.timeWrapperBig]}>
+    <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
       <View style={styles.gaugeChart}>
         <AppGaugeChart
           borderGradient={["#FFF", "#FFF"]}
           borderWidth={4}
           circleColor={"#C8C6C3"}
           circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
-          size={!state.hideCamera ? 64 : 200}
+          size={!state.paused ? 64 : 200}
           startTime={state.period}
           endTime={0}
-          textSize={!state.hideCamera ? 8 : 18}
+          textSize={!state.paused ? 8 : 18}
           started={state.started}
         />
       </View>
@@ -49,10 +49,10 @@ const LeftControls = ({
         width={35}
         height={35}
         icon="settings"
-        style={[state.hideCamera ? styles.timeSettingsBig :styles.timeSettings ]}
+        style={[state.paused ? styles.timeSettingsBig :styles.timeSettings ]}
         onPress={timePickerHandler}
       />
-      {state.hideCamera && (  
+      {state.paused && (  
             <TouchableOpacity
             style={styles.meditationButton}
             onPress={showMeditation}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   meditationList: {
     top: 0,
     left: 0,
-    zIndex: 201,
+    zIndex: 20,
     width: width,
     height: height,
     position: "absolute",
