@@ -1,4 +1,5 @@
 import React, {
+    useRef,
     useState,
     useEffect,
 } from 'react';
@@ -23,8 +24,7 @@ const MeditationLists = ({
 }) => {
     const smallScrean = 1;
     const mediumScrean = 5;
-    const largeScreen = 'fullscrean';
-    const [flatListRef, setFlatListRef] = useState();
+    const flatListRef = useRef();
     const [isHidetext, setHidetext] = useState(false);
     const [hideTextTimer, setHidetextTimer] = useState();
     const [prevListCount, setPrevListCount] = useState(5);
@@ -33,27 +33,28 @@ const MeditationLists = ({
     const [showAllList, setShowAllList] = useState(false);
 
     useEffect(() => {
-
-        if (prevListCount == smallScrean) 
+        console.log(prevListCount, 'prevListCount')
+        if (selectedMeditation) {
             scrollToItem(selectedMeditation);
+        }
         if (!isHidetext) {
             setHidetextTimer(
                 setTimeout(() => {
                     setHidetext(true)
-                }, 3000)
+                }, 5000)
             );
         }
     }, [flatlistheight])
 
     const pressToMeditation = (index) => {
-        if(prevListCount == smallScrean && !showAllList) {
+        if (prevListCount == smallScrean && !showAllList) {
             setFlatlistHeight(meditationHeight * mediumScrean);
-            setPrevListCount(mediumScrean)
+            setPrevListCount(mediumScrean);
         } else {
-            console.log(index,'index')
+            setFlatlistHeight(meditationHeight);
             setPrevListCount(smallScrean);
-            setFlatlistHeight(meditationHeight * smallScrean);
             setSelectedMeditation(index);
+            scrollToItem(index);
         }
 
         clearTimeout(hideTextTimer);
@@ -61,17 +62,17 @@ const MeditationLists = ({
         setHidetext(false);
     }
     const pressOnAllList = () => {
-        if(!showAllList) {
+        if (!showAllList) {
             setShowAllList(true);
             setPrevListCount(10);
             setFlatlistHeight(meditationHeight * meditation.length);
-            
-        }else {
+
+        } else {
             setShowAllList(false);
-            if(selectedMeditation) {
+            if (selectedMeditation) {
                 setPrevListCount(smallScrean);
                 setFlatlistHeight(meditationHeight * smallScrean);
-            }else {
+            } else {
                 setPrevListCount(mediumScrean);
                 setFlatlistHeight(meditationHeight * mediumScrean);
             }
@@ -88,11 +89,12 @@ const MeditationLists = ({
 
 
     const scrollToItem = (index) => {
-        flatListRef.scrollToIndex({ animated: true, index: index });
+        console.log(flatListRef)
+        flatListRef.current.scrollToIndex({ animated: true, index: index });
     }
 
     return (
-        <View style={ styles.meditationLists }>
+        <View style={styles.meditationLists}>
             {/* {
                 prevListCount == 5 && ( 
                 <LinearGradient
@@ -107,18 +109,18 @@ const MeditationLists = ({
                 <View>
                     <FlatList
                         style={styles.flatList}
-                        ref={ref => setFlatListRef(ref) }
+                        ref={flatListRef}
                         data={meditation}
                         keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                         scrollEnabled={false}
-                        renderItem={ item => <AppMeditationList
-                                item={item}
-                                pressToMeditation={pressToMeditation}
-                                isHidetext={isHidetext}
-                                getLayouts={getLayouts}
-                            />
+                        renderItem={item => <AppMeditationList
+                            item={item}
+                            pressToMeditation={pressToMeditation}
+                            isHidetext={isHidetext}
+                            getLayouts={getLayouts}
+                        />
                         }
                     />
                 </View>
