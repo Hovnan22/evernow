@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import CameraButton from './buttons';
-import { 
+import {
   AppGaugeChart,
   AppIcon,
 } from '../ui';
@@ -25,61 +25,61 @@ const LeftControls = ({
   setSelectedMeditation,
 }) => (
   <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
-    {!timePicker && !state.pressOnClose && !state.hideMeditation &&  (<View style={styles.meditationList}>
+    {!timePicker && !state.hideMeditation && (<View style={styles.meditationList}>
       <MeditationLists
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
       />
     </View>)}
     <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
-      <View style={styles.gaugeChart}>
-        <AppGaugeChart
-          borderGradient={["#FFF", "#FFF"]}
-          borderWidth={4}
-          circleColor={"#C8C6C3"}
-          circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
-          size={!state.paused ? 64 : 200}
-          startTime={state.period}
-          endTime={0}
-          textSize={!state.paused ? 8 : 18}
-          started={state.started}
-        />
-      </View>
-      <CameraButton
-        width={35}
-        height={35}
-        icon="settings"
-        style={[state.paused ? styles.timeSettingsBig :styles.timeSettings ]}
-        onPress={timePickerHandler}
+      <AppGaugeChart
+        borderGradient={["#FFF", "#FFF"]}
+        borderWidth={4}
+        circleColor={"#C8C6C3"}
+        circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
+        size={!state.paused ? 64 : 200}
+        startTime={state.period}
+        endTime={0}
+        textSize={!state.paused ? 8 : 18}
+        started={state.started}
       />
-      {state.paused && (  
-            <TouchableOpacity
-            style={styles.meditationButton}
-            onPress={showMeditation}
-          >
-            <AppIcon
-              icon="yog"
-              width={35}
-              height={35}
-            />
-          <Text style={{color: 'white'}}>Type of meditation</Text>
-          </TouchableOpacity>
-)}
+      {state.paused && state.hideMeditation && !timePicker && (
+        <TouchableOpacity
+          style={styles.meditationButton}
+          onPress={showMeditation}
+        >
+          <AppIcon
+            icon="yog"
+            width={35}
+            height={35}
+          />
+          <Text style={{ color: 'white' }}>Type of meditation</Text>
+        </TouchableOpacity>
+      )}
     </View>
+    <CameraButton
+      width={15}
+      height={15}
+      icon="settings"
+      style={[state.paused ? styles.timeSettingsBig : styles.timeSettings]}
+      onPress={timePickerHandler}
+    />
+
   </View>
 );
 
 const styles = StyleSheet.create({
-  timeSettingsBig : {
-    top: 0,
-    left: 0,
-    right: 0,
+  timeSettingsBig: {
+    top: 35,
+    left: 15,
+    right: 25,
     position: 'absolute',
     borderRadius: 7,
     backgroundColor: "rgba(255,255,255, .5)",
-    width: 55,
+    width: 35,
     paddingHorizontal: 10,
     paddingVertical: 10,
+    zIndex: 200
   },
   showMeditation: {
     zIndex: 10,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     zIndex: 4,
   },
-  timeWrapperBig : {
+  timeWrapperBig: {
     height: '100%',
     width: '100%',
     opacity: 1,
@@ -121,22 +121,23 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 20,
+    zIndex: 4,
   },
   timeSettings: {
-    top: 70,
+    top: 85,
     position: "absolute",
-    right: -25,
+    right: -7,
     backgroundColor: "rgba(255,255,255, .5)",
     padding: 7,
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
     zIndex: 200,
+    opacity: .5,
   },
   meditationList: {
     top: 0,
     left: 0,
-    zIndex: 20,
+    zIndex: 10,
     width: width,
     height: height,
     position: "absolute",

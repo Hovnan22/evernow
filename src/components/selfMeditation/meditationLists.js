@@ -22,97 +22,78 @@ const MeditationLists = ({
     setSelectedMeditation
 }) => {
     const smallScrean = 1;
-    const mediumScrean = 3;
-    const largeScrean = 5;
+    const mediumScrean = 5;
+    const largeScreen = 'fullscrean';
     const [flatListRef, setFlatListRef] = useState();
-    const [scrollIndex, setScrollIndex] = useState(0);
     const [isHidetext, setHidetext] = useState(false);
-    const [prevListTimer, setPrevListTimer] = useState();
     const [hideTextTimer, setHidetextTimer] = useState();
-    const [prevListCount, setPrevListCount] = useState(3);
+    const [prevListCount, setPrevListCount] = useState(5);
     const [flatlistheight, setFlatlistHeight] = useState(0);
     const [meditationHeight, setmeditationheight] = useState(0);
-    const [hideBottomButton, setHideBottomButton] = useState(false);
-    const [bottonArrowheight, setBottonArrowheight] = useState(0);
+    const [showAllList, setShowAllList] = useState(false);
 
     useEffect(() => {
-        setFlatlistHeight(meditationHeight * prevListCount);
 
+        if (prevListCount == smallScrean) 
+            scrollToItem(selectedMeditation);
         if (!isHidetext) {
             setHidetextTimer(
                 setTimeout(() => {
                     setHidetext(true)
-                }, 1500)
+                }, 3000)
             );
         }
-
-        if (prevListCount == 1) {
-            return;
-        }
-
-        setPrevListTimer(
-            setTimeout(() => {
-                if (selectedMeditation != null ) {
-                    setPrevListCount(smallScrean);
-                } else  {
-                    setPrevListCount(mediumScrean);
-                }
-            }, 3000)
-        );
-
-    }, [prevListCount])
+    }, [flatlistheight])
 
     const pressToMeditation = (index) => {
-
-        if (prevListCount == largeScrean) {
-            setScrollIndex(index);
+        if(prevListCount == smallScrean && !showAllList) {
+            setFlatlistHeight(meditationHeight * mediumScrean);
+            setPrevListCount(mediumScrean)
+        } else {
+            console.log(index,'index')
             setPrevListCount(smallScrean);
+            setFlatlistHeight(meditationHeight * smallScrean);
             setSelectedMeditation(index);
-        } else if (prevListCount == mediumScrean) {
-            setPrevListCount(largeScrean);
-        } else if (prevListCount == smallScrean) {
-            setPrevListCount(largeScrean);
         }
 
-        setFlatlistHeight(meditationHeight * prevListCount);
-        scrollToItem(index);
-        setHidetext(false);
-        clearTimeout(prevListTimer);
         clearTimeout(hideTextTimer);
+        setShowAllList(false);
+        setHidetext(false);
+    }
+    const pressOnAllList = () => {
+        if(!showAllList) {
+            setShowAllList(true);
+            setPrevListCount(10);
+            setFlatlistHeight(meditationHeight * meditation.length);
+            
+        }else {
+            setShowAllList(false);
+            if(selectedMeditation) {
+                setPrevListCount(smallScrean);
+                setFlatlistHeight(meditationHeight * smallScrean);
+            }else {
+                setPrevListCount(mediumScrean);
+                setFlatlistHeight(meditationHeight * mediumScrean);
+            }
+        }
+        clearTimeout(hideTextTimer);
+        setHidetext(false);
     }
 
     const getLayouts = (event) => {
-        setmeditationheight(event.nativeEvent.layout.height);
+        setmeditationheight(Math.ceil(event.nativeEvent.layout.height));
         setFlatlistHeight(meditationHeight * prevListCount);
     }
 
-    const getButtonLayouts = (event) => {
-        setBottonArrowheight(event.nativeEvent.layout.height);
-    }
+
 
     const scrollToItem = (index) => {
-        setScrollIndex(index);
-        setTimeout(() => {
-            flatListRef.scrollToIndex({ animated: true, index: index });
-        })
+        flatListRef.scrollToIndex({ animated: true, index: index });
     }
-
-    const onViewRef = React.useRef(({viewableItems}) => {
-        setScrollIndex(viewableItems[0].index);
-        if(prevListCount === smallScrean) {
-            setSelectedMeditation(viewableItems[0].index)
-        }
-
-        if (viewableItems[viewableItems.length - 1].index == meditation.length - 1) {
-            setHideBottomButton(true);
-        } else {
-            setHideBottomButton(false);
-        }
-    })
 
     return (
         <View style={ styles.meditationLists }>
-            {
+            {/* {
                 prevListCount == 5 && ( 
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -121,9 +102,9 @@ const MeditationLists = ({
                     style={styles.linerGradient}
                 /> 
                 )
-            }
-            <View style={{ height: flatlistheight + bottonArrowheight }}>
-                <View style={{ height: flatlistheight }} >
+            } */}
+            <View style={{ height: flatlistheight }}>
+                <View>
                     <FlatList
                         style={styles.flatList}
                         ref={ref => setFlatListRef(ref) }
@@ -131,6 +112,7 @@ const MeditationLists = ({
                         keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
+                        scrollEnabled={false}
                         renderItem={ item => <AppMeditationList
                                 item={item}
                                 pressToMeditation={pressToMeditation}
@@ -138,21 +120,17 @@ const MeditationLists = ({
                                 getLayouts={getLayouts}
                             />
                         }
-                        onViewableItemsChanged={onViewRef.current}
                     />
                 </View>
-                {
-                !hideBottomButton && (<TouchableOpacity
-                    onLayout={ event =>   getButtonLayouts(event) }
+                <TouchableOpacity
                     style={{ paddingTop: 25 }}
-                    onPress={() => scrollToItem(scrollIndex + 1) }>
+                    onPress={pressOnAllList}>
                     <AppIcon
                         icon="yog"
                         width={32}
                         height={32}
                     />
-                </TouchableOpacity>)
-                }
+                </TouchableOpacity>
             </View>
         </View>
     );

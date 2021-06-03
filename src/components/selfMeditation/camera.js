@@ -15,7 +15,6 @@ import {
   AppClosePopup,
   AppTimeButtons,
 } from '../ui';
-
 import { Grid } from '../../styles';
 
 const Camera = ({
@@ -47,7 +46,7 @@ const Camera = ({
     setState({
       ...state,
       paused: isPaused,
-      hideMeditation: hideMeditation
+      hideMeditation: isPaused ? true : false,
     });
     if (onPauseCamera !== undefined) {
       onPauseCamera(isPaused);
@@ -59,47 +58,27 @@ const Camera = ({
       ...state,
       hideMeditation: hideMeditation
     });
-    setTimeout(() => {
-      setState({
-        ...state,
-        hideMeditation: !hideMeditation
-      });
-    }, 5000)
   }
   const setMeditationTime = (hours, minutes, manual) => {
     setTimePicker(true);
     clearTimeout(meditationTimer);
-    let isPaused = state.paused;
     if (manual) {
       setTimePickerChooser(!timePickerChooser);
-      isPaused = !state.paused;
     }
 
     setTimeMeditation(setState({
       ...state,
-      paused: isPaused,
       period: hours * 60 * 60 + minutes * 60,
     }))
-    if (onPauseCamera !== undefined && manual) {
-      onPauseCamera(isPaused);
-    }
   }
 
   const closePopup = () => {
     const close = !state.closePopup;
-    // const isPaused = !state.paused;
-
     setState({
       ...state,
       closePopup: close,
-      // paused: isPaused,
 
     });
-
-    // if (onPauseCamera !== undefined) {
-    //   onPauseCamera(isPaused);
-    // }
-
   };
 
   const onPauseVolumeHandler = () => {
@@ -139,7 +118,17 @@ const Camera = ({
     setTimePickerChooser(false);
   }
 
-  const timePickerHandler = () => setTimePicker(!timePicker);
+  const timePickerHandler = () => {
+    if (state.paused) {
+      setState(
+        {
+          ...state,
+          hideMeditation: true,
+        }
+      )
+    }
+    setTimePicker(!timePicker);
+  }
 
   useEffect(() => {
     (async () => {
@@ -193,17 +182,7 @@ const Camera = ({
           timePickerChooser={timePickerChooser}
           setTimePickerChooser={setTimePickerChooser}
           onChange={setMeditationTime}
-          onCancel={() => {
-            setTimePickerChooser(!timePickerChooser);
-            // const isPaused = !state.paused;
-            // setState({
-            //   ...state,
-            //   paused: isPaused,
-            // });
-            // if (onPauseCamera !== undefined) {
-            //   onPauseCamera(isPaused);
-            // }
-          }
+          onCancel={() => setTimePickerChooser(!timePickerChooser)
           }
         />
       )}
