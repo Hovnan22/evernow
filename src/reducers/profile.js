@@ -30,22 +30,6 @@ const initialState = {
       name: '5 meditation',
       icon: "yog",
     },
-    {
-      name: '6 meditation',
-      icon: "yog",
-    },
-    {
-      name: '7 meditation',
-      icon: "yog",
-    },
-    {
-      name: '8 meditation',
-      icon: "yog",
-    },
-    {
-      name: '9 meditation',
-      icon: "yog",
-    }
   ],
 };
 

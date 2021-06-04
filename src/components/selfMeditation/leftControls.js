@@ -18,24 +18,36 @@ const { height, width } = Dimensions.get("screen");
 
 const LeftControls = ({
   state,
-  timePicker,
+  timePickerButtons,
+  flatlistheight,
   showMeditation,
+  meditationHeight,
+  onHideMeditation,
   timePickerHandler,
+  setFlatlistHeight,
   selectedMeditation,
+  setmeditationheight,
   setSelectedMeditation,
 }) => (
   <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
-    {!timePicker && !state.hideMeditation && (<View style={styles.meditationList}>
+    {!timePickerButtons && !state.hideMeditation && (<View style={styles.meditationList}>
       <MeditationLists
+        state={state}
+        onHideMeditation={onHideMeditation}
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
+        flatlistheight={flatlistheight}
+        meditationHeight={meditationHeight}
+        setFlatlistHeight={setFlatlistHeight}
+        setmeditationheight={setmeditationheight}
       />
     </View>)}
     <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
       <AppGaugeChart
         borderGradient={["#FFF", "#FFF"]}
         borderWidth={4}
-        circleColor={"#C8C6C3"}
+        isPaused={state.paused}
+        circleColor={"transparent"}
         circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
         size={!state.paused ? 64 : 200}
         startTime={state.period}

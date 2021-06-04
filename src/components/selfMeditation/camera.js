@@ -5,11 +5,11 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { Camera as BaseCamera } from "expo-camera";
+import { BlurView } from "@react-native-community/blur";
 
 import Start from './start';
 import LeftControls from './leftControls';
 import RightControls from './rightControls';
-
 import {
   AppTimePicker,
   AppClosePopup,
@@ -37,9 +37,11 @@ const Camera = ({
   const [selectedMeditation, setSelectedMeditation] = useState(null);
   const [timePickerChooser, setTimePickerChooser] = useState(false);
   const [meditationTimer, setTimeMeditation] = useState();
+  const [flatlistheight, setFlatlistHeight] = useState(0);
+  const [meditationHeight, setmeditationheight] = useState(0);
+  const [timePickerButtons, setTimePickerButtons] = useState(false);
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
-    const hideMeditation = !state.hideMeditation;
     if (!state.pausede) {
       setTimePicker(false);
     }
@@ -53,15 +55,21 @@ const Camera = ({
     }
   };
   const showMeditation = () => {
+    selectedMeditation && setFlatlistHeight(meditationHeight);
     const hideMeditation = !state.hideMeditation;
     setState({
       ...state,
       hideMeditation: hideMeditation
     });
   }
+
+  const onHideMeditation = () => {
+    setState({
+      ...state,
+      hideMeditation: true,
+    })
+  }
   const setMeditationTime = (hours, minutes, manual) => {
-    setTimePicker(true);
-    clearTimeout(meditationTimer);
     if (manual) {
       setTimePickerChooser(!timePickerChooser);
     }
@@ -70,15 +78,22 @@ const Camera = ({
       ...state,
       period: hours * 60 * 60 + minutes * 60,
     }))
+    setTimePicker(false);
+    setTimePickerButtons(false);
+
   }
 
   const closePopup = () => {
-    const close = !state.closePopup;
-    setState({
-      ...state,
-      closePopup: close,
+    if (!state.started) {
+      bindeOnClose()
+    } else {
+      const close = !state.closePopup;
+      setState({
+        ...state,
+        closePopup: close,
 
-    });
+      });
+    }
   };
 
   const onPauseVolumeHandler = () => {
@@ -127,7 +142,7 @@ const Camera = ({
         }
       )
     }
-    setTimePicker(!timePicker);
+    setTimePickerButtons(!timePickerButtons);
   }
 
   useEffect(() => {
@@ -143,7 +158,7 @@ const Camera = ({
   return (
     <View style={styles.container}>
       {state.paused && (
-        <View style={[StyleSheet.absoluteFill, styles.blur]} />
+        <BlurView style={[StyleSheet.absoluteFill, styles.blur]} />
       )}
       {state.closePopup && (
         <AppClosePopup
@@ -154,11 +169,17 @@ const Camera = ({
       }
       <LeftControls
         state={state}
+        onHideMeditation={onHideMeditation}
+        timePickerButtons={timePickerButtons}
         timePickerHandler={timePickerHandler}
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
         timePicker={timePicker}
         showMeditation={showMeditation}
+        flatlistheight={flatlistheight}
+        setFlatlistHeight={setFlatlistHeight}
+        meditationHeight={meditationHeight}
+        setmeditationheight={setmeditationheight}
       />
       <RightControls
         state={state}
@@ -175,14 +196,19 @@ const Camera = ({
           onPress={onStartHandler}
         />
       )}
-      {timePicker && <AppTimeButtons />}
+      {timePickerButtons && (
+        <AppTimeButtons
+          setTimePickerButtons={setTimePickerButtons}
+          onChange={setMeditationTime}
+          more={() => setTimePicker(!timePicker)}
+        />)}
       {timePicker && !state.closePopup && (
         <AppTimePicker
           setTimePicker={setTimePicker}
           timePickerChooser={timePickerChooser}
           setTimePickerChooser={setTimePickerChooser}
           onChange={setMeditationTime}
-          onCancel={() => setTimePickerChooser(!timePickerChooser)
+          onCancel={() => setTimePicker(false)
           }
         />
       )}
@@ -209,7 +235,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 4,
-    backgroundColor: "rgba(0, 129, 218, 0.5)",
+    backgroundColor: "rgba(0, 129, 218, 0.7)",
+    resizeMode: 'cover',
   },
   content: {
     position: "absolute",

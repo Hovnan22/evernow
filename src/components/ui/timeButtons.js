@@ -13,42 +13,50 @@ import {
 } from ".";
 import { StyleSheet } from 'react-native';
 
-const TimeButtons = () => (
-    <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0.8, y: 0 }}
-        colors={[`rgba(115, 176, 233,0.6) `, `rgba(115, 176, 233, 0.0001) `]}
-        style={styles.selectTime}
-    >
-        <View style={styles.container}>
-            <AppButton
-                style={styles.timePickerButton}
-                onPress={() => { onChange(0, 30) }}
-                title={"screen.timePickerShortDuration.submit"}
-                type={"transparent"}
-            />
-            <AppButton
-                style={styles.timePickerButton}
-                onPress={() => { onChange(0, 60) }}
-                title={"screen.timePickerLongDuration.submit"}
-                type={"transparent"}
-            />
-            <AppButton
-                style={styles.timePickerButton}
-                onPress={() => onCancel()}
-                title={"screen.timePickerMoreDuration.submit"}
-                type={"transparent"}
-            />
-            <TouchableOpacity style={styles.closeButton} onPress={() => setTimePicker(false)}>
-                <AppIcon
-                    icon={'yog'}
-                    width={32}
-                    height={32}
+const TimeButtons = ({
+    onChange,
+    more,
+    setTimePickerButtons,
+}) => (
+    <View style={styles.selectTime}>
+
+
+        <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0.8, y: 0 }}
+            colors={[`rgba(115, 176, 233,0.6) `, `rgba(115, 176, 233, 0.0001) `]}
+            style={styles.selectTime}
+        >
+            <View style={styles.container}>
+                <AppButton
+                    style={styles.timePickerButton}
+                    onPress={() => { onChange(0, 30) }}
+                    title={"screen.timePickerShortDuration.submit"}
+                    type={"transparent"}
                 />
-                <Text style={{ color: 'white' }}>{i18n.t("screen.timePickerClose.submit")}</Text>
-            </TouchableOpacity>
-        </View>
-    </LinearGradient>
+                <AppButton
+                    style={styles.timePickerButton}
+                    onPress={() => { onChange(0, 60) }}
+                    title={"screen.timePickerLongDuration.submit"}
+                    type={"transparent"}
+                />
+                <AppButton
+                    style={styles.timePickerButton}
+                    onPress={() => more()}
+                    title={"screen.timePickerMoreDuration.submit"}
+                    type={"transparent"}
+                />
+                <TouchableOpacity style={styles.closeButton} onPress={() => setTimePickerButtons(false)}>
+                    <AppIcon
+                        icon={'close'}
+                        width={32}
+                        height={32}
+                    />
+                    <Text style={{ color: 'white' }}>{i18n.t("screen.timePickerClose.submit")}</Text>
+                </TouchableOpacity>
+            </View>
+        </LinearGradient>
+    </View>
 )
 
 const styles = StyleSheet.create({
@@ -63,7 +71,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: "100%",
         height: '100%',
-        zIndex: 5,
+        zIndex: 6,
         justifyContent: 'center',
     },
     timePickerButton: {

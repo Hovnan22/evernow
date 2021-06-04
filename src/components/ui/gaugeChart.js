@@ -64,7 +64,7 @@ function Diagram(props) {
 export default function GaugeChart(props) {
   const {
     size, borderWidth, textSize, startTime, endTime, children,
-    borderGradient, circleColor, circleGradient, started,
+    borderGradient, circleColor, circleGradient, started, isPaused,
   } = props;
   const radius = size / 2;
   const [state, setState] = useState({
@@ -112,11 +112,11 @@ export default function GaugeChart(props) {
       </Defs>
       <Circle cx={radius} cy={radius} r={radius} fill={circleColor} />
       <Diagram size={size} borderWidth={borderWidth} percent={state.percent} />
-      <Circle cx={radius} cy={radius} r={radius - borderWidth} fill="url(#paint0_linear)" />
+      <Circle cx={radius} cy={radius} r={radius - borderWidth} fill={isPaused ? circleColor : "url(#paint0_linear)"} />
     </Svg>
     <View style={styles.timer}>
       {children}
-      <Text style={[styles.timerText, { fontSize: textSize }]}>{sec2time(state.time)}</Text>
+      <Text style={[styles.timerText, { fontSize: textSize }, isPaused && { color: "white" }]}>{sec2time(state.time)}</Text>
     </View>
   </View>;
 }
@@ -136,5 +136,5 @@ GaugeChart.propTypes = {
 GaugeChart.defaultProps = {
   borderGradient: ["#9AD1FF", "#3379C6"],
   circleGradient: ["#FFF", "#F2F5FC"],
-  circleColor: "#F2F5FC",
+  circleColor: "transparent",
 };

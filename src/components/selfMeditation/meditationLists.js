@@ -18,23 +18,28 @@ import {
 } from '../ui';
 
 const MeditationLists = ({
+    state,
     meditation,
+    flatlistheight,
+    meditationHeight,
+    onHideMeditation,
+    setFlatlistHeight,
     selectedMeditation,
-    setSelectedMeditation
+    setSelectedMeditation,
+    setmeditationheight,
 }) => {
     const smallScrean = 1;
-    const mediumScrean = 5;
+    const mediumScrean = 3;
+    const largeScrean = 5;
     const flatListRef = useRef();
     const [isHidetext, setHidetext] = useState(false);
     const [hideTextTimer, setHidetextTimer] = useState();
-    const [prevListCount, setPrevListCount] = useState(5);
-    const [flatlistheight, setFlatlistHeight] = useState(0);
-    const [meditationHeight, setmeditationheight] = useState(0);
+    const [prevListCount, setPrevListCount] = useState(mediumScrean);
+
     const [showAllList, setShowAllList] = useState(false);
 
     useEffect(() => {
-        console.log(prevListCount, 'prevListCount')
-        if (selectedMeditation) {
+        if (selectedMeditation && prevListCount == smallScrean) {
             scrollToItem(selectedMeditation);
         }
         if (!isHidetext) {
@@ -55,6 +60,7 @@ const MeditationLists = ({
             setPrevListCount(smallScrean);
             setSelectedMeditation(index);
             scrollToItem(index);
+            state.paused && onHideMeditation();
         }
 
         clearTimeout(hideTextTimer);
@@ -65,7 +71,7 @@ const MeditationLists = ({
         if (!showAllList) {
             setShowAllList(true);
             setPrevListCount(10);
-            setFlatlistHeight(meditationHeight * meditation.length);
+            setFlatlistHeight(meditationHeight * largeScrean);
 
         } else {
             setShowAllList(false);
@@ -89,22 +95,21 @@ const MeditationLists = ({
 
 
     const scrollToItem = (index) => {
-        console.log(flatListRef)
-        flatListRef.current.scrollToIndex({ animated: true, index: index });
+        flatListRef && flatListRef.current.scrollToIndex({ animated: true, index: index });
     }
 
     return (
         <View style={styles.meditationLists}>
-            {/* {
-                prevListCount == 5 && ( 
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0.5, y: 0 }}
-                    colors={[`rgba(115, 176, 233,0.4) `, `rgba(115, 176, 233, 0.0001) `]}
-                    style={styles.linerGradient}
-                /> 
+            {
+                showAllList && (
+                    <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0.5, y: 0 }}
+                        colors={[`rgba(115, 176, 233,0.4) `, `rgba(115, 176, 233, 0.0001) `]}
+                        style={styles.linerGradient}
+                    />
                 )
-            } */}
+            }
             <View style={{ height: flatlistheight }}>
                 <View>
                     <FlatList
@@ -128,7 +133,7 @@ const MeditationLists = ({
                     style={{ paddingTop: 25 }}
                     onPress={pressOnAllList}>
                     <AppIcon
-                        icon="yog"
+                        icon={showAllList ? "close" : "arrowDown"}
                         width={32}
                         height={32}
                     />
