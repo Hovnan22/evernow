@@ -70,7 +70,7 @@ const MeditationLists = ({
     const pressOnAllList = () => {
         if (!showAllList) {
             setShowAllList(true);
-            setPrevListCount(10);
+            setPrevListCount(largeScrean);
             setFlatlistHeight(meditationHeight * largeScrean);
 
         } else {
@@ -88,7 +88,10 @@ const MeditationLists = ({
     }
 
     const getLayouts = (event) => {
-        setmeditationheight(Math.ceil(event.nativeEvent.layout.height));
+        if(meditationHeight >= event.nativeEvent.layout.height && flatlistheight === meditationHeight * prevListCount){
+            return false;
+        }
+        setmeditationheight(event.nativeEvent.layout.height);
         setFlatlistHeight(meditationHeight * prevListCount);
     }
 
