@@ -18,9 +18,12 @@ const { height, width } = Dimensions.get("screen");
 
 const LeftControls = ({
   state,
+  timePicker,
   timePickerButtons,
   flatlistheight,
+  prevListCount,
   showMeditation,
+  setPrevListCount,
   meditationHeight,
   onHideMeditation,
   timePickerHandler,
@@ -33,7 +36,10 @@ const LeftControls = ({
     {!timePickerButtons && !state.hideMeditation && (<View style={styles.meditationList}>
       <MeditationLists
         state={state}
+        timePicker={timePicker}
+        prevListCount={prevListCount}
         onHideMeditation={onHideMeditation}
+        setPrevListCount={setPrevListCount}
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
         flatlistheight={flatlistheight}

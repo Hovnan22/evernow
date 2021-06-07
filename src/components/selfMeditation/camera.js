@@ -40,10 +40,20 @@ const Camera = ({
   const [flatlistheight, setFlatlistHeight] = useState(0);
   const [meditationHeight, setmeditationheight] = useState(0);
   const [timePickerButtons, setTimePickerButtons] = useState(false);
+  const [prevListCount, setPrevListCount] = useState(3);
+
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
     if (!state.pausede) {
       setTimePicker(false);
+    }
+    if(isPaused) {
+      setPrevListCount(5);
+      setFlatlistHeight(5 * meditationHeight);
+
+    }else {
+      setPrevListCount(3);
+      setFlatlistHeight(3 * meditationHeight);
     }
     setState({
       ...state,
@@ -180,6 +190,8 @@ const Camera = ({
         setFlatlistHeight={setFlatlistHeight}
         meditationHeight={meditationHeight}
         setmeditationheight={setmeditationheight}
+        prevListCount={prevListCount}
+        setPrevListCount={setPrevListCount}
       />
       <RightControls
         state={state}
@@ -236,7 +248,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 4,
     backgroundColor: "rgba(0, 129, 218, 0.7)",
-    resizeMode: 'cover',
   },
   content: {
     position: "absolute",

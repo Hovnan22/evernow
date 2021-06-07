@@ -20,8 +20,11 @@ import {
 const MeditationLists = ({
     state,
     meditation,
+    timePicker,
+    prevListCount,
     flatlistheight,
     meditationHeight,
+    setPrevListCount,
     onHideMeditation,
     setFlatlistHeight,
     selectedMeditation,
@@ -29,16 +32,15 @@ const MeditationLists = ({
     setmeditationheight,
 }) => {
     const smallScrean = 1;
-    const mediumScrean = 3;
     const largeScrean = 5;
+    const mediumScrean = 3;
     const flatListRef = useRef();
     const [isHidetext, setHidetext] = useState(false);
     const [hideTextTimer, setHidetextTimer] = useState();
-    const [prevListCount, setPrevListCount] = useState(mediumScrean);
 
     const [showAllList, setShowAllList] = useState(false);
-
     useEffect(() => {
+
         if (selectedMeditation && prevListCount == smallScrean) {
             scrollToItem(selectedMeditation);
         }
@@ -52,7 +54,7 @@ const MeditationLists = ({
     }, [flatlistheight])
 
     const pressToMeditation = (index) => {
-        if (prevListCount == smallScrean && !showAllList) {
+        if (prevListCount == smallScrean && !showAllList ) {
             setFlatlistHeight(meditationHeight * mediumScrean);
             setPrevListCount(mediumScrean);
         } else {
@@ -88,14 +90,12 @@ const MeditationLists = ({
     }
 
     const getLayouts = (event) => {
-        if(meditationHeight >= event.nativeEvent.layout.height && flatlistheight === meditationHeight * prevListCount){
+        if (meditationHeight >= event.nativeEvent.layout.height && flatlistheight === meditationHeight * prevListCount) {
             return false;
         }
         setmeditationheight(event.nativeEvent.layout.height);
-        setFlatlistHeight(meditationHeight * prevListCount);
+        setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
     }
-
-
 
     const scrollToItem = (index) => {
         flatListRef && flatListRef.current.scrollToIndex({ animated: true, index: index });
@@ -104,7 +104,7 @@ const MeditationLists = ({
     return (
         <View style={styles.meditationLists}>
             {
-                showAllList && (
+                prevListCount == largeScrean && (
                     <LinearGradient
                         start={{ x: 0, y: 0 }}
                         end={{ x: 0.5, y: 0 }}
@@ -132,15 +132,17 @@ const MeditationLists = ({
                         }
                     />
                 </View>
-                <TouchableOpacity
-                    style={{ paddingTop: 25 }}
-                    onPress={pressOnAllList}>
-                    <AppIcon
-                        icon={showAllList ? "close" : "arrowDown"}
-                        width={32}
-                        height={32}
-                    />
-                </TouchableOpacity>
+                {!state.paused && (
+                    <TouchableOpacity
+                        style={{ paddingTop: 25 }}
+                        onPress={pressOnAllList}>
+                        <AppIcon
+                            icon={showAllList ? "close" : "arrowDown"}
+                            width={32}
+                            height={32}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
