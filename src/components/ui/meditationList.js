@@ -17,22 +17,23 @@ const MeditationList = ({
     pressToMeditation,
 }) => (
     <View
-        onLayout={(event) => {  getLayouts(event) }}
+        onLayout={(event) => { getLayouts(event) }}
         style={styles.medtation}
     >
-        <TouchableOpacity onPress={() => pressToMeditation(item.index)}>
+        <TouchableOpacity onPress={() => pressToMeditation(item.index)} style={styles.button}>
             <AppIcon
                 icon={item.item.icon}
                 width={32}
                 height={32}
             />
-        </TouchableOpacity>
-        {!isHidetext && (
-                <Text  style={styles.name}>
-                    { item.item.name }
+            {!isHidetext && (
+                <Text style={styles.name}>
+                    { item.item.name}
                 </Text>
             )
-        }
+            }
+        </TouchableOpacity>
+
     </View>
 );
 
@@ -44,7 +45,12 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#fff',
-        paddingLeft: 15
+        paddingLeft: 15,
+    },
+    button: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 })
 

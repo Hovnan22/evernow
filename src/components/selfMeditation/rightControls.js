@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
   rightControls: {
     position: "absolute",
     right: 15,
-    // width: 64,
-    top: 0,
+    top: 30,
     bottom: 0,
     alignItems: "center",
     justifyContent: "space-between",

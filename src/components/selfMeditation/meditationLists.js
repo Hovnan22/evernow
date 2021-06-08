@@ -5,7 +5,9 @@ import React, {
 } from 'react';
 import {
     View,
+    Easing,
     FlatList,
+    Animated,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
@@ -21,15 +23,9 @@ const MeditationLists = ({
     state,
     meditation,
     timePicker,
-    prevListCount,
-    flatlistheight,
-    meditationHeight,
-    setPrevListCount,
     onHideMeditation,
-    setFlatlistHeight,
     selectedMeditation,
     setSelectedMeditation,
-    setmeditationheight,
 }) => {
     const smallScrean = 1;
     const largeScrean = 5;
@@ -37,13 +33,23 @@ const MeditationLists = ({
     const flatListRef = useRef();
     const [isHidetext, setHidetext] = useState(false);
     const [hideTextTimer, setHidetextTimer] = useState();
-
     const [showAllList, setShowAllList] = useState(false);
+    const [prevListCount, setPrevListCount] = useState(mediumScrean);
+    const [meditationHeight, setmeditationheight] = useState(0);
+    const [flatlistheight, setFlatlistHeight] = useState(0);
+    const heightAnim = useRef()
+
+    useEffect(() => {
+        state.paused ? setFlatlistHeight(meditationHeight * largeScrean) : setFlatlistHeight(meditationHeight * prevListCount);
+    }, [state.paused])
+
+
     useEffect(() => {
 
         if (selectedMeditation && prevListCount == smallScrean) {
-            scrollToItem(selectedMeditation);
+            !state.paused && scrollToItem(selectedMeditation);
         }
+
         if (!isHidetext) {
             setHidetextTimer(
                 setTimeout(() => {
@@ -51,17 +57,23 @@ const MeditationLists = ({
                 }, 5000)
             );
         }
+
     }, [flatlistheight])
 
+
+
     const pressToMeditation = (index) => {
-        if (prevListCount == smallScrean && !showAllList ) {
+        if (prevListCount == smallScrean && !showAllList) {
             setFlatlistHeight(meditationHeight * mediumScrean);
             setPrevListCount(mediumScrean);
         } else {
-            setFlatlistHeight(meditationHeight);
-            setPrevListCount(smallScrean);
+            console.log(index, 'index')
+            if (!state.paused) {
+                setFlatlistHeight(meditationHeight);
+                setPrevListCount(smallScrean);
+                scrollToItem(index);
+            }
             setSelectedMeditation(index);
-            scrollToItem(index);
             state.paused && onHideMeditation();
         }
 
@@ -70,31 +82,61 @@ const MeditationLists = ({
         setHidetext(false);
     }
     const pressOnAllList = () => {
+        const newHeight = meditationHeight * largeScrean;
         if (!showAllList) {
-            setShowAllList(true);
-            setPrevListCount(largeScrean);
-            setFlatlistHeight(meditationHeight * largeScrean);
 
+            Animated.timing(
+                heightAnim,
+                {
+                    toValue: newHeight,
+                    duration: 500,
+                    easing: Easing.linear,
+                    useNativeDriver: false,
+                }
+            ).start(() => {
+                setShowAllList(true);
+                setPrevListCount(largeScrean);
+                setFlatlistHeight(meditationHeight * largeScrean);
+            });
         } else {
             setShowAllList(false);
-            if (selectedMeditation) {
-                setPrevListCount(smallScrean);
-                setFlatlistHeight(meditationHeight * smallScrean);
-            } else {
-                setPrevListCount(mediumScrean);
-                setFlatlistHeight(meditationHeight * mediumScrean);
-            }
+            Animated.timing(
+                heightAnim,
+                {
+                    toValue: meditationHeight * smallScrean,
+                    duration: 200,
+                    easing: Easing.linear,
+                    useNativeDriver: false,
+                }
+            ).start(() => {
+                if (selectedMeditation) {
+                    setPrevListCount(smallScrean);
+                    setFlatlistHeight(meditationHeight * smallScrean);
+                } else {
+                    setPrevListCount(mediumScrean);
+                    setFlatlistHeight(meditationHeight * mediumScrean);
+                }
+            });
+
         }
         clearTimeout(hideTextTimer);
         setHidetext(false);
     }
 
     const getLayouts = (event) => {
+
         if (meditationHeight >= event.nativeEvent.layout.height && flatlistheight === meditationHeight * prevListCount) {
             return false;
         }
+        if(!heightAnim.height) {
+            heightAnim.current.setNativeProps({
+                height: event.nativeEvent.layout.height * prevListCount
+            }) 
+        }
+
         setmeditationheight(event.nativeEvent.layout.height);
-        setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
+        state.paused ? setFlatlistHeight(event.nativeEvent.layout.height * largeScrean) : setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
+
     }
 
     const scrollToItem = (index) => {
@@ -113,7 +155,9 @@ const MeditationLists = ({
                     />
                 )
             }
-            <View style={{ height: flatlistheight }}>
+            <Animated.View style={(
+                { height: heightAnim.height }
+                )}>
                 <View>
                     <FlatList
                         style={styles.flatList}
@@ -143,7 +187,7 @@ const MeditationLists = ({
                         />
                     </TouchableOpacity>
                 )}
-            </View>
+            </Animated.View>
         </View>
     );
 };

@@ -5,6 +5,7 @@ import React, {
 import { Audio } from "expo-av";
 import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
+
 import { AppContainer } from '../../components/ui';
 import { MeditationCamera } from '../../components/selfMeditation';
 import { Grid } from '../../styles';
@@ -19,6 +20,7 @@ const SelfMeditation = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [type] = useState(Camera.Constants.Type.front);
   const soundObject = new Audio.Sound();
+  const [lastShot, setLastShot] = useState();
 
   soundObject.loadAsync(sound);
 
@@ -53,10 +55,16 @@ const SelfMeditation = ({ navigation }) => {
   };
 
   const onPauseCameraHandler = (isPaused) => {
+    console.log(isPaused, camera)
     if (isPaused) {
-      camera.pausePreview();
+      if (camera) {
+        camera.takePictureAsync().then((photo) => {
+          setLastShot(photo);
+        });
+      }
     } else {
       camera.resumePreview();
+      setLastShot(null);
     }
   };
 
@@ -77,9 +85,11 @@ const SelfMeditation = ({ navigation }) => {
       type2
       noPadding
     >
+
       <MeditationCamera
         onPauseCamera={onPauseCameraHandler}
         onStart={onStartHandler}
+        lastShot={lastShot}
         onStop={onStopHandler}
         onMute={onMuteHandler}
         onClose={() => navigation.goBack()}>
@@ -96,5 +106,6 @@ const SelfMeditation = ({ navigation }) => {
     </AppContainer>
   );
 };
+
 
 export default SelfMeditation;

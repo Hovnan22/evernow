@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { Camera as BaseCamera } from "expo-camera";
-import { BlurView } from "@react-native-community/blur";
+
 
 import Start from './start';
 import LeftControls from './leftControls';
@@ -16,12 +16,14 @@ import {
   AppTimeButtons,
 } from '../ui';
 import { Grid } from '../../styles';
+import { Image } from "react-native";
 
 const Camera = ({
   onMute,
   onStop,
   onStart,
   onClose,
+  lastShot,
   children,
   onPauseCamera,
 }) => {
@@ -36,25 +38,16 @@ const Camera = ({
   const [timePicker, setTimePicker] = useState(false);
   const [selectedMeditation, setSelectedMeditation] = useState(null);
   const [timePickerChooser, setTimePickerChooser] = useState(false);
-  const [meditationTimer, setTimeMeditation] = useState();
-  const [flatlistheight, setFlatlistHeight] = useState(0);
-  const [meditationHeight, setmeditationheight] = useState(0);
   const [timePickerButtons, setTimePickerButtons] = useState(false);
-  const [prevListCount, setPrevListCount] = useState(3);
+
 
   const onPauseCameraHandler = () => {
+    console.log(lastShot, 'lastShotlastShot')
     const isPaused = !state.paused;
     if (!state.pausede) {
       setTimePicker(false);
     }
-    if(isPaused) {
-      setPrevListCount(5);
-      setFlatlistHeight(5 * meditationHeight);
 
-    }else {
-      setPrevListCount(3);
-      setFlatlistHeight(3 * meditationHeight);
-    }
     setState({
       ...state,
       paused: isPaused,
@@ -65,7 +58,6 @@ const Camera = ({
     }
   };
   const showMeditation = () => {
-    selectedMeditation && setFlatlistHeight(meditationHeight);
     const hideMeditation = !state.hideMeditation;
     setState({
       ...state,
@@ -84,10 +76,10 @@ const Camera = ({
       setTimePickerChooser(!timePickerChooser);
     }
 
-    setTimeMeditation(setState({
+    setState({
       ...state,
       period: hours * 60 * 60 + minutes * 60,
-    }))
+    })
     setTimePicker(false);
     setTimePickerButtons(false);
 
@@ -168,7 +160,16 @@ const Camera = ({
   return (
     <View style={styles.container}>
       {state.paused && (
-        <BlurView style={[StyleSheet.absoluteFill, styles.blur]} />
+
+        <View style={[StyleSheet.absoluteFill, styles.blur]} >
+          <View style={styles.blur}></View>
+          <Image
+            source={{ uri: lastShot && lastShot.uri }}
+            style={{ width: '100%', height: '100%', zIndex: 3 }}
+            resizeMode='cover'
+            blurRadius={5}
+          />
+        </View>
       )}
       {state.closePopup && (
         <AppClosePopup
@@ -186,12 +187,6 @@ const Camera = ({
         setSelectedMeditation={setSelectedMeditation}
         timePicker={timePicker}
         showMeditation={showMeditation}
-        flatlistheight={flatlistheight}
-        setFlatlistHeight={setFlatlistHeight}
-        meditationHeight={meditationHeight}
-        setmeditationheight={setmeditationheight}
-        prevListCount={prevListCount}
-        setPrevListCount={setPrevListCount}
       />
       <RightControls
         state={state}

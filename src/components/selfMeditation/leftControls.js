@@ -20,16 +20,10 @@ const LeftControls = ({
   state,
   timePicker,
   timePickerButtons,
-  flatlistheight,
-  prevListCount,
   showMeditation,
-  setPrevListCount,
-  meditationHeight,
   onHideMeditation,
   timePickerHandler,
-  setFlatlistHeight,
   selectedMeditation,
-  setmeditationheight,
   setSelectedMeditation,
 }) => (
   <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
@@ -37,15 +31,9 @@ const LeftControls = ({
       <MeditationLists
         state={state}
         timePicker={timePicker}
-        prevListCount={prevListCount}
         onHideMeditation={onHideMeditation}
-        setPrevListCount={setPrevListCount}
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
-        flatlistheight={flatlistheight}
-        meditationHeight={meditationHeight}
-        setFlatlistHeight={setFlatlistHeight}
-        setmeditationheight={setmeditationheight}
       />
     </View>)}
     <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
@@ -88,7 +76,7 @@ const LeftControls = ({
 
 const styles = StyleSheet.create({
   timeSettingsBig: {
-    top: 35,
+    top: 60,
     left: 15,
     right: 25,
     position: 'absolute',
