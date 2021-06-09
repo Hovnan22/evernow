@@ -36,13 +36,11 @@ const MeditationLists = ({
     const [showAllList, setShowAllList] = useState(false);
     const [prevListCount, setPrevListCount] = useState(mediumScrean);
     const [meditationHeight, setmeditationheight] = useState(0);
-    const [flatlistheight, setFlatlistHeight] = useState(0);
-    const heightAnim = useRef()
+    const [flatlistheight, setFlatlistHeight] = useState(new Animated.Value(0));
 
     useEffect(() => {
-        state.paused ? setFlatlistHeight(meditationHeight * largeScrean) : setFlatlistHeight(meditationHeight * prevListCount);
+        state.paused ? setFlatlistHeight(new Animated.Value(meditationHeight * largeScrean)) : setFlatlistHeight(new Animated.Value(meditationHeight * prevListCount));
     }, [state.paused])
-
 
     useEffect(() => {
 
@@ -60,16 +58,15 @@ const MeditationLists = ({
 
     }, [flatlistheight])
 
-
-
     const pressToMeditation = (index) => {
+
         if (prevListCount == smallScrean && !showAllList) {
-            setFlatlistHeight(meditationHeight * mediumScrean);
+            setFlatlistHeight(new Animated.Value(meditationHeight * mediumScrean));
             setPrevListCount(mediumScrean);
         } else {
-            console.log(index, 'index')
+
             if (!state.paused) {
-                setFlatlistHeight(meditationHeight);
+                setFlatlistHeight(new Animated.Value(meditationHeight));
                 setPrevListCount(smallScrean);
                 scrollToItem(index);
             }
@@ -81,41 +78,44 @@ const MeditationLists = ({
         setShowAllList(false);
         setHidetext(false);
     }
+
     const pressOnAllList = () => {
         const newHeight = meditationHeight * largeScrean;
         if (!showAllList) {
-
             Animated.timing(
-                heightAnim,
+                flatlistheight,
                 {
-                    toValue: newHeight,
-                    duration: 500,
-                    easing: Easing.linear,
+                    toValue:   newHeight,
+                    duration: 1000,
                     useNativeDriver: false,
                 }
             ).start(() => {
                 setShowAllList(true);
                 setPrevListCount(largeScrean);
-                setFlatlistHeight(meditationHeight * largeScrean);
+                setFlatlistHeight(new Animated.Value(newHeight));
             });
         } else {
-            setShowAllList(false);
+            const smallHeight =  meditationHeight * smallScrean;
+            const mediumHeight =  meditationHeight * mediumScrean;
+
+
             Animated.timing(
-                heightAnim,
+                flatlistheight,
                 {
-                    toValue: meditationHeight * smallScrean,
-                    duration: 200,
+                    toValue: selectedMeditation ? smallHeight : mediumHeight,
+                    duration: 1000,
                     easing: Easing.linear,
                     useNativeDriver: false,
                 }
             ).start(() => {
+                setShowAllList(false);
+
                 if (selectedMeditation) {
                     setPrevListCount(smallScrean);
-                    setFlatlistHeight(meditationHeight * smallScrean);
                 } else {
                     setPrevListCount(mediumScrean);
-                    setFlatlistHeight(meditationHeight * mediumScrean);
                 }
+                setFlatlistHeight(new Animated.Value(selectedMeditation ? smallHeight : mediumHeight));
             });
 
         }
@@ -128,14 +128,9 @@ const MeditationLists = ({
         if (meditationHeight >= event.nativeEvent.layout.height && flatlistheight === meditationHeight * prevListCount) {
             return false;
         }
-        if(!heightAnim.height) {
-            heightAnim.current.setNativeProps({
-                height: event.nativeEvent.layout.height * prevListCount
-            }) 
-        }
 
         setmeditationheight(event.nativeEvent.layout.height);
-        state.paused ? setFlatlistHeight(event.nativeEvent.layout.height * largeScrean) : setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
+        state.paused ?   setFlatlistHeight(new Animated.Value(event.nativeEvent.layout.height * largeScrean)) : setFlatlistHeight(new Animated.Value(event.nativeEvent.layout.height * prevListCount));
 
     }
 
@@ -156,7 +151,10 @@ const MeditationLists = ({
                 )
             }
             <Animated.View style={(
-                { height: heightAnim.height }
+                { height: flatlistheight.interpolate({
+                    inputRange: [0, 150],
+                    outputRange: [150, 150]
+                }) }
                 )}>
                 <View>
                     <FlatList
