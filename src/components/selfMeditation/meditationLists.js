@@ -37,7 +37,7 @@ const MeditationLists = ({
     const [prevListCount, setPrevListCount] = useState(mediumScrean);
     const [meditationHeight, setmeditationheight] = useState(0);
     const [flatlistheight, setFlatlistHeight] = useState(new Animated.Value(0));
-    const [animatedHeigh, setAnimatedHeigh] = useState(new Animated.Value(0))
+    // const [animatedHeigh, setAnimatedHeigh] = useState(new Animated.Value(0))
 
     useEffect(() => {
         state.paused ? setFlatlistHeight(meditationHeight * largeScrean) : setFlatlistHeight(meditationHeight * prevListCount);
@@ -81,52 +81,55 @@ const MeditationLists = ({
     }
 
     const pressOnAllList = () => {
-        const newHeight = meditationHeight * largeScrean;
+        let newHeight = 0;
+        const animatedHeigh = new Animated.Value(0);
+        newHeight = meditationHeight * largeScrean;
         if (!showAllList) {
             Animated.timing(
                 animatedHeigh,
                 {
-                    toValue:   1,
+                    toValue: 1,
                     duration: 500,
+                    easing: Easing.ease,
                 }
             ).start(() => {
-                // setShowAllList(true);
-                // setPrevListCount(largeScrean);
-                // setFlatlistHeight(newHeight);
+                setShowAllList(true);
+                setPrevListCount(largeScrean);
+                setFlatlistHeight(newHeight);
             });
-
-            setFlatlistHeight( animatedHeigh.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [flatlistheight, newHeight],
-                    extrapolate: "clamp",
-                    // easing:   Easing.bounce ,
-                })
-            )
         } else {
-            const smallHeight =  meditationHeight * smallScrean;
-            const mediumHeight =  meditationHeight * mediumScrean;
-
+            const smallHeight = meditationHeight * smallScrean;
+            const mediumHeight = meditationHeight * mediumScrean;
+            if (selectedMeditation) {
+                setPrevListCount(smallScrean);
+                newHeight = smallHeight;
+            } else {
+                setPrevListCount(mediumScrean);
+                newHeight = mediumHeight;
+            }
 
             Animated.timing(
-                flatlistheight,
+                animatedHeigh,
                 {
-                    toValue: selectedMeditation ? smallHeight : mediumHeight,
-                    duration: 1000,
-                    easing:  Easing.ease,
+                    toValue: 1,
+                    duration: 500,
+                    easing: Easing.ease,
                     useNativeDriver: false,
                 }
             ).start(() => {
                 setShowAllList(false);
-
-                if (selectedMeditation) {
-                    setPrevListCount(smallScrean);
-                } else {
-                    setPrevListCount(mediumScrean);
-                }
-                // setFlatlistHeight(new Animated.Value(selectedMeditation ? smallHeight : mediumHeight));
+                setFlatlistHeight(newHeight);
             });
 
         }
+
+        setFlatlistHeight(animatedHeigh.interpolate({
+            inputRange: [0, 1],
+            outputRange: [flatlistheight, newHeight],
+            easing: Easing.ease,
+            extrapolate: "clamp",
+        })
+        )
         clearTimeout(hideTextTimer);
         setHidetext(false);
     }
@@ -138,7 +141,7 @@ const MeditationLists = ({
         }
 
         setmeditationheight(event.nativeEvent.layout.height);
-        state.paused ?   setFlatlistHeight(event.nativeEvent.layout.height * largeScrean) : setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
+        state.paused ? setFlatlistHeight(event.nativeEvent.layout.height * largeScrean) : setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
     }
 
     const scrollToItem = (index) => {
@@ -159,7 +162,7 @@ const MeditationLists = ({
             }
             <Animated.View style={(
                 { height: flatlistheight }
-                )}>
+            )}>
                 <View>
                     <FlatList
                         style={styles.flatList}
@@ -183,7 +186,8 @@ const MeditationLists = ({
                         style={{ paddingTop: 25 }}
                         onPress={pressOnAllList}>
                         <AppIcon
-                            icon={showAllList ? "close" : "arrowDown"}
+                            style={showAllList && styles.rotate}
+                            icon={"arrowDown"}
                             width={32}
                             height={32}
                         />
@@ -205,6 +209,9 @@ const styles = StyleSheet.create({
         height: '100%',
         position: 'absolute',
     },
+    rotate: {
+        transform: [{ rotate: "180deg" }]
+    }
 });
 
 const mapStateToProps = ({

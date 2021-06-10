@@ -8,10 +8,8 @@ import CameraButton from './buttons';
 
 
 const Camera = ({
-  state,
   onClose,
   onPauseCameraHandler,
-  onPauseVolumeHandler,
 }) => (
   <View style={styles.rightControls}>
     <View>
@@ -25,6 +23,7 @@ const Camera = ({
     <View>
       <CameraButton
         icon="camera"
+        pressDuration={5000}
         onPress={onPauseCameraHandler}
         width={40}
         height={40}

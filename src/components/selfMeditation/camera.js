@@ -31,7 +31,7 @@ const Camera = ({
     paused: false,
     muted: false,
     started: false,
-    period: 0,
+    period: 1800,
     closePopup: false,
     hideMeditation: false,
   });
@@ -42,11 +42,14 @@ const Camera = ({
 
 
   const onPauseCameraHandler = () => {
-    console.log(lastShot, 'lastShotlastShot')
     const isPaused = !state.paused;
     if (!state.pausede) {
       setTimePicker(false);
     }
+    console.log('onPauseCamera')
+    state.paused && state.started && onStart();
+    !state.paused && state.started && onStop();
+
 
     setState({
       ...state,
@@ -87,37 +90,35 @@ const Camera = ({
 
   const closePopup = () => {
     if (!state.started) {
-      bindeOnClose()
+      bindeOnClose();
     } else {
       const close = !state.closePopup;
       setState({
         ...state,
         closePopup: close,
-
       });
-    }
-  };
 
-  const onPauseVolumeHandler = () => {
-    const isMuted = !state.muted;
-    setState({
-      ...state,
-      muted: isMuted,
-    });
-    if (onMute !== undefined) {
-      onMute(isMuted);
+      if (!close) {
+        onStart()
+      }
+
     }
   };
 
   const onStartHandler = () => {
-    setState({
-      ...state,
-      started: !state.started,
-    });
-    if (!state.started === true) {
+
+    if (!state.started) {
+      if (state.paused) {
+        return false;
+      }
+      setState({
+        ...state,
+        started: !state.started,
+      });
       onStart();
     } else {
       onStop();
+      closePopup();
     }
   };
   const bindeOnClose = () => {
@@ -126,7 +127,7 @@ const Camera = ({
       paused: false,
       muted: false,
       started: false,
-      period: 0,
+      period: 1800,
       closePopup: false,
       hideMeditation: false,
     });
@@ -192,7 +193,6 @@ const Camera = ({
         state={state}
         onClose={closePopup}
         onPauseCameraHandler={onPauseCameraHandler}
-        onPauseVolumeHandler={onPauseVolumeHandler}
       />
       <View style={styles.content}>
         {children}

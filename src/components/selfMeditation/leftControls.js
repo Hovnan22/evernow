@@ -27,15 +27,17 @@ const LeftControls = ({
   setSelectedMeditation,
 }) => (
   <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
-    {!timePickerButtons && !state.hideMeditation && (<View style={styles.meditationList}>
-      <MeditationLists
-        state={state}
-        timePicker={timePicker}
-        onHideMeditation={onHideMeditation}
-        selectedMeditation={selectedMeditation}
-        setSelectedMeditation={setSelectedMeditation}
-      />
-    </View>)}
+    {!timePickerButtons && !state.hideMeditation && !state.started && (
+      <View style={styles.meditationList}>
+        <MeditationLists
+          state={state}
+          timePicker={timePicker}
+          onHideMeditation={onHideMeditation}
+          selectedMeditation={selectedMeditation}
+          setSelectedMeditation={setSelectedMeditation}
+        />
+      </View>)
+    }
     <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
       <AppGaugeChart
         borderGradient={["#FFF", "#FFF"]}
@@ -60,16 +62,17 @@ const LeftControls = ({
             height={35}
           />
           <Text style={{ color: 'white' }}>Type of meditation</Text>
-        </TouchableOpacity>
-      )}
+        </TouchableOpacity>)
+      }
     </View>
-    <CameraButton
+    { !state.started && (<CameraButton
       width={15}
       height={15}
       icon="settings"
       style={[state.paused ? styles.timeSettingsBig : styles.timeSettings]}
       onPress={timePickerHandler}
-    />
+    />)
+    }
 
   </View>
 );

@@ -48,7 +48,8 @@ const TimeButtons = ({
                 />
                 <TouchableOpacity style={styles.closeButton} onPress={() => setTimePickerButtons(false)}>
                     <AppIcon
-                        icon={'close'}
+                        style={styles.rotate}
+                        icon={'arrowDown'}
                         width={32}
                         height={32}
                     />
@@ -83,6 +84,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         paddingTop: 20,
         alignItems: 'center'
+    },
+    rotate: {
+        transform: [{ rotate: "180deg" }]
     },
 })
 
