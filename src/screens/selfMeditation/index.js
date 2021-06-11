@@ -92,7 +92,7 @@ const SelfMeditation = ({ navigation }) => {
         lastShot={lastShot}
         onStop={onStopHandler}
         onMute={onMuteHandler}
-        onClose={() => navigation.goBack() }>
+        onClose={() => {navigation.canGoBack() && navigation.goBack()} }>
         {hasPermission && isFocused
           && <Camera
             style={Grid.flex1}
