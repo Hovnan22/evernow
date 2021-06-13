@@ -28,12 +28,10 @@ const MeditationList = ({
             />
             {!isHidetext && (
                 <Text style={styles.name}>
-                    { item.item.name}
+                    {item.item.name}
                 </Text>
-            )
-            }
+            )}
         </TouchableOpacity>
-
     </View>
 );
 

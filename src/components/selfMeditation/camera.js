@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useState,
+  useEffect,
+} from "react";
 import {
   View,
   StyleSheet,
 } from "react-native";
 import PropTypes from "prop-types";
 import { Camera as BaseCamera } from "expo-camera";
-
 
 import Start from './start';
 import LeftControls from './leftControls';
@@ -19,7 +21,6 @@ import { Grid } from '../../styles';
 import { Image } from "react-native";
 
 const Camera = ({
-  onMute,
   onStop,
   onStart,
   onClose,
@@ -40,7 +41,6 @@ const Camera = ({
   const [timePickerChooser, setTimePickerChooser] = useState(false);
   const [timePickerButtons, setTimePickerButtons] = useState(false);
 
-
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
     if (!state.pausede) {
@@ -49,8 +49,6 @@ const Camera = ({
     console.log('onPauseCamera')
     state.paused && state.started && onStart();
     !state.paused && state.started && onStop();
-
-
     setState({
       ...state,
       paused: isPaused,
@@ -60,33 +58,33 @@ const Camera = ({
       onPauseCamera(isPaused);
     }
   };
+
   const showMeditation = () => {
     const hideMeditation = !state.hideMeditation;
     setState({
       ...state,
       hideMeditation: hideMeditation
     });
-  }
+  };
 
   const onHideMeditation = () => {
     setState({
       ...state,
       hideMeditation: true,
     })
-  }
+  };
+
   const setMeditationTime = (hours, minutes, manual) => {
     if (manual) {
       setTimePickerChooser(!timePickerChooser);
     }
-
     setState({
       ...state,
       period: hours * 60 * 60 + minutes * 60,
     })
     setTimePicker(false);
     setTimePickerButtons(false);
-
-  }
+  };
 
   const closePopup = () => {
     if (!state.started) {
@@ -106,7 +104,6 @@ const Camera = ({
   };
 
   const onStartHandler = () => {
-
     if (!state.started) {
       if (state.paused) {
         return false;
@@ -121,6 +118,7 @@ const Camera = ({
       closePopup();
     }
   };
+
   const bindeOnClose = () => {
     onClose();
     setState({
@@ -134,7 +132,7 @@ const Camera = ({
     setTimePicker(false);
     setSelectedMeditation(null);
     setTimePickerChooser(false);
-  }
+  };
 
   const timePickerHandler = () => {
     if (state.paused) {
@@ -146,7 +144,7 @@ const Camera = ({
       )
     }
     setTimePickerButtons(!timePickerButtons);
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -161,7 +159,6 @@ const Camera = ({
   return (
     <View style={styles.container}>
       {state.paused && (
-
         <View style={[StyleSheet.absoluteFill, styles.blur]} >
           <View style={styles.blur}></View>
           <Image
@@ -177,8 +174,7 @@ const Camera = ({
           onClose={bindeOnClose}
           closePopup={closePopup}
         />
-      )
-      }
+      )}
       <LeftControls
         state={state}
         onHideMeditation={onHideMeditation}

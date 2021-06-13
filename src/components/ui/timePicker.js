@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import {
-  Text,
   View,
   Picker,
   StyleSheet,
-  TouchableOpacity,
 } from "react-native";
 import i18n from "i18n-js";
-import { LinearGradient } from 'expo-linear-gradient';
 
 import {
   Grid,
@@ -15,64 +12,62 @@ import {
 } from '../../styles';
 import {
   AppButton,
-  AppIcon
 } from ".";
 
 const TimePicker = ({
   onChange,
   onCancel,
-  setTimePicker,
-  timePickerChooser,
 }) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
-  return <View style={styles.selectTime}>
-
-    <View style={styles.selectTimePicker}>
-      <View style={[Grid.flex1, { flexDirection: "row" }]}>
-        <View style={[Grid.flex1, Grid.centeredY]}>
-          <Picker selectedValue={hours} onValueChange={(v) => setHours(v)}>
-            {[0, 1, 2, 3, 4, 5].map((v, k) => (
-              <Picker.Item
-                label={`${v} ${i18n.t("common.hours")}`}
-                value={v}
-                key={k}
-              />
-            ))}
-          </Picker>
+  return (
+    <View style={styles.selectTime}>
+      <View style={styles.selectTimePicker}>
+        <View style={[Grid.flex1, { flexDirection: "row" }]}>
+          <View style={[Grid.flex1, Grid.centeredY]}>
+            <Picker selectedValue={hours} onValueChange={(v) => setHours(v)}>
+              {[0, 1, 2].map((v, k) => (
+                <Picker.Item
+                  label={`${v} ${i18n.t("common.hours")}`}
+                  value={v}
+                  key={k}
+                />
+              ))}
+            </Picker>
+          </View>
+          <View style={[Grid.flex1, Grid.centeredY]}>
+            <Picker selectedValue={minutes} onValueChange={(v) => setMinutes(v)}>
+              {[0,5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map((v, k) => (
+                <Picker.Item
+                  label={`${v} ${i18n.t("common.minutes")}`}
+                  value={v}
+                  key={k}
+                />
+              ))}
+            </Picker>
+          </View>
         </View>
-        <View style={[Grid.flex1, Grid.centeredY]}>
-          <Picker selectedValue={minutes} onValueChange={(v) => setMinutes(v)}>
-            {[0, 10, 15, 30, 45].map((v, k) => (
-              <Picker.Item
-                label={`${v} ${i18n.t("common.minutes")}`}
-                value={v}
-                key={k}
-              />
-            ))}
-          </Picker>
+        <View style={[Typography.p2]}>
+          <AppButton
+            style={styles.timeButton}
+            type="gradient"
+            title={"screen.cancelTimeButton.submit"}
+            onPress={() => onCancel()}
+            type={"transparent"}
+            color="#eb354a"
+          />
+          <AppButton
+            style={styles.timeButton}
+            type="gradient"
+            title={"screen.setTimeButton.submit"}
+            onPress={() => onChange(hours, minutes, true)}
+            type={"transparent"}
+            color="#268bd5"
+          />
         </View>
-      </View>
-      <View style={[Typography.p2]}>
-        <AppButton
-          style={styles.timeButton}
-          type="gradient"
-          title={"screen.cancelTimeButton.submit"}
-          onPress={() => onCancel()}
-          type={"transparent"}
-          color="#eb354a"
-        />
-        <AppButton
-          style={styles.timeButton}
-          type="gradient"
-          title={"screen.setTimeButton.submit"}
-          onPress={() => onChange(hours, minutes, true)}
-          type={"transparent"}
-          color="#268bd5"
-        />
       </View>
     </View>
-  </View>
+  )
 };
 
 const styles = StyleSheet.create({

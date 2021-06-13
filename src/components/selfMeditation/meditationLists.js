@@ -22,7 +22,6 @@ import {
 const MeditationLists = ({
     state,
     meditation,
-    timePicker,
     onHideMeditation,
     selectedMeditation,
     setSelectedMeditation,
@@ -37,18 +36,15 @@ const MeditationLists = ({
     const [prevListCount, setPrevListCount] = useState(mediumScrean);
     const [meditationHeight, setmeditationheight] = useState(0);
     const [flatlistheight, setFlatlistHeight] = useState(new Animated.Value(0));
-    // const [animatedHeigh, setAnimatedHeigh] = useState(new Animated.Value(0))
 
     useEffect(() => {
         state.paused ? setFlatlistHeight(meditationHeight * largeScrean) : setFlatlistHeight(meditationHeight * prevListCount);
     }, [state.paused])
 
     useEffect(() => {
-
         if (selectedMeditation && prevListCount == smallScrean) {
             !state.paused && scrollToItem(selectedMeditation);
         }
-
         if (!isHidetext) {
             setHidetextTimer(
                 setTimeout(() => {
@@ -60,12 +56,10 @@ const MeditationLists = ({
     }, [flatlistheight])
 
     const pressToMeditation = (index) => {
-
         if (prevListCount == smallScrean && !showAllList) {
             setFlatlistHeight(new Animated.Value(meditationHeight * mediumScrean));
             setPrevListCount(mediumScrean);
         } else {
-
             if (!state.paused) {
                 setFlatlistHeight(new Animated.Value(meditationHeight));
                 setPrevListCount(smallScrean);
@@ -74,11 +68,10 @@ const MeditationLists = ({
             setSelectedMeditation(index);
             state.paused && onHideMeditation();
         }
-
         clearTimeout(hideTextTimer);
         setShowAllList(false);
         setHidetext(false);
-    }
+    };
 
     const pressOnAllList = () => {
         let newHeight = 0;
@@ -107,7 +100,6 @@ const MeditationLists = ({
                 setPrevListCount(mediumScrean);
                 newHeight = mediumHeight;
             }
-
             Animated.timing(
                 animatedHeigh,
                 {
@@ -122,31 +114,27 @@ const MeditationLists = ({
             });
 
         }
-
         setFlatlistHeight(animatedHeigh.interpolate({
             inputRange: [0, 1],
             outputRange: [flatlistheight, newHeight],
             easing: Easing.ease,
             extrapolate: "clamp",
-        })
-        )
+        }))
         clearTimeout(hideTextTimer);
         setHidetext(false);
-    }
+    };
 
     const getLayouts = (event) => {
-
         if (meditationHeight >= event.nativeEvent.layout.height && flatlistheight === meditationHeight * prevListCount) {
             return false;
         }
-
         setmeditationheight(event.nativeEvent.layout.height);
         state.paused ? setFlatlistHeight(event.nativeEvent.layout.height * largeScrean) : setFlatlistHeight(event.nativeEvent.layout.height * prevListCount);
-    }
+    };
 
     const scrollToItem = (index) => {
         flatListRef && flatListRef.current.scrollToIndex({ animated: true, index: index });
-    }
+    };
 
     return (
         <View style={styles.meditationLists}>
