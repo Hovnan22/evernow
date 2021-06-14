@@ -55,7 +55,6 @@ const SelfMeditation = ({ navigation }) => {
   };
 
   const onPauseCameraHandler = (isPaused) => {
-    console.log(isPaused, camera)
     if (isPaused) {
       if (camera) {
         camera.takePictureAsync().then((photo) => {

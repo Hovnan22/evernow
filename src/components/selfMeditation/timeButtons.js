@@ -10,7 +10,7 @@ import i18n from "i18n-js";
 import {
     AppButton,
     AppIcon
-} from ".";
+} from "../ui";
 import { StyleSheet } from 'react-native';
 
 const TimeButtons = ({

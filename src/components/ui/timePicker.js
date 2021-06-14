@@ -17,6 +17,8 @@ import {
 const TimePicker = ({
   onChange,
   onCancel,
+  hoursArr,
+  minutesArr,
 }) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -26,7 +28,7 @@ const TimePicker = ({
         <View style={[Grid.flex1, { flexDirection: "row" }]}>
           <View style={[Grid.flex1, Grid.centeredY]}>
             <Picker selectedValue={hours} onValueChange={(v) => setHours(v)}>
-              {[0, 1, 2].map((v, k) => (
+              {hoursArr.map((v, k) => (
                 <Picker.Item
                   label={`${v} ${i18n.t("common.hours")}`}
                   value={v}
@@ -37,7 +39,7 @@ const TimePicker = ({
           </View>
           <View style={[Grid.flex1, Grid.centeredY]}>
             <Picker selectedValue={minutes} onValueChange={(v) => setMinutes(v)}>
-              {[0,5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map((v, k) => (
+              {minutesArr.map((v, k) => (
                 <Picker.Item
                   label={`${v} ${i18n.t("common.minutes")}`}
                   value={v}
@@ -67,7 +69,7 @@ const TimePicker = ({
         </View>
       </View>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

@@ -4,6 +4,7 @@ import React, {
 } from "react";
 import {
   View,
+  Image,
   StyleSheet,
 } from "react-native";
 import PropTypes from "prop-types";
@@ -15,10 +16,10 @@ import RightControls from './rightControls';
 import {
   AppTimePicker,
   AppClosePopup,
-  AppTimeButtons,
 } from '../ui';
+
 import { Grid } from '../../styles';
-import { Image } from "react-native";
+import TimeButtons from "./timeButtons";
 
 const Camera = ({
   onStop,
@@ -40,13 +41,17 @@ const Camera = ({
   const [selectedMeditation, setSelectedMeditation] = useState(null);
   const [timePickerChooser, setTimePickerChooser] = useState(false);
   const [timePickerButtons, setTimePickerButtons] = useState(false);
+  const hoursArr = [0, 1, 2];
+  const minutesArr = [];
+  for (let i = 0; i < 12; i++) {
+    minutesArr.push(i * 5);
+  }
 
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
     if (!state.pausede) {
       setTimePicker(false);
     }
-    console.log('onPauseCamera')
     state.paused && state.started && onStart();
     !state.paused && state.started && onStop();
     setState({
@@ -105,9 +110,6 @@ const Camera = ({
 
   const onStartHandler = () => {
     if (!state.started) {
-      if (state.paused) {
-        return false;
-      }
       setState({
         ...state,
         started: !state.started,
@@ -160,7 +162,7 @@ const Camera = ({
     <View style={styles.container}>
       {state.paused && (
         <View style={[StyleSheet.absoluteFill, styles.blur]} >
-          <View style={styles.blur}></View>
+          <View style={styles.blur} />
           <Image
             source={{ uri: lastShot && lastShot.uri }}
             style={{ width: '100%', height: '100%', zIndex: 3 }}
@@ -200,19 +202,20 @@ const Camera = ({
         />
       )}
       {timePickerButtons && (
-        <AppTimeButtons
+        <TimeButtons
           setTimePickerButtons={setTimePickerButtons}
           onChange={setMeditationTime}
           more={() => setTimePicker(!timePicker)}
         />)}
       {timePicker && !state.closePopup && (
         <AppTimePicker
+          hoursArr={hoursArr}
+          minutesArr={minutesArr}
+          onChange={setMeditationTime}
           setTimePicker={setTimePicker}
           timePickerChooser={timePickerChooser}
+          onCancel={() => setTimePicker(false)}
           setTimePickerChooser={setTimePickerChooser}
-          onChange={setMeditationTime}
-          onCancel={() => setTimePicker(false)
-          }
         />
       )}
     </View>

@@ -68,7 +68,6 @@ const meditationTypes = () => {
         onEndReachedThreshold={0.5}
         onEndReached={() => {
           setShowDownButton(false)
-          console.log('blablabal');
         }}
         onScrollBeginDrag={(e) => {
           setShowDownButton(true)

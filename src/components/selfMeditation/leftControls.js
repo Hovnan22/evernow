@@ -19,9 +19,9 @@ const { height, width } = Dimensions.get("screen");
 const LeftControls = ({
   state,
   timePicker,
-  timePickerButtons,
   showMeditation,
   onHideMeditation,
+  timePickerButtons,
   timePickerHandler,
   selectedMeditation,
   setSelectedMeditation,
@@ -51,7 +51,7 @@ const LeftControls = ({
         textSize={!state.paused ? 8 : 18}
         started={state.started}
       />
-      {state.paused && state.hideMeditation && !timePicker && (
+      {state.paused && state.hideMeditation && !timePicker && !state.started && (
         <TouchableOpacity
           style={styles.meditationButton}
           onPress={showMeditation}

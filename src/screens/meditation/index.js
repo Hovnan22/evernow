@@ -116,7 +116,6 @@ const Meditation = ({
         });
 
       channel.on("start", () => {
-        console.log('aaaaa');
         pc.createOffer().then((desc) => {
           pc.setLocalDescription(desc).then(() => {
             channel.push("offer", { body: JSON.stringify(desc) });
