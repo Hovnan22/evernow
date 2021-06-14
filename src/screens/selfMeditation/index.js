@@ -31,27 +31,15 @@ const SelfMeditation = ({ navigation }) => {
   };
 
   const onStartHandler = () => {
+    console.log(123)
     intervalInstance = setInterval(() => {
       if (camera) {
         camera.takePictureAsync().then((photo) => {
           console.log(photo);
+          setLastShot(photo);
         });
       }
-    }, 1000);
-  };
-
-  const onMuteHandler = (status) => {
-    (async () => {
-      try {
-        if (status === true) {
-          await soundObject.playAsync();
-        } else {
-          await soundObject.stopAsync();
-        }
-      } catch (error) {
-        // An error occurred!
-      }
-    })();
+    }, 5000);
   };
 
   const onPauseCameraHandler = (isPaused) => {
@@ -90,7 +78,6 @@ const SelfMeditation = ({ navigation }) => {
         onStart={onStartHandler}
         lastShot={lastShot}
         onStop={onStopHandler}
-        onMute={onMuteHandler}
         onClose={() => {navigation.canGoBack() && navigation.goBack()} }>
         {hasPermission && isFocused
           && <Camera

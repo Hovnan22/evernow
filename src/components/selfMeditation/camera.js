@@ -33,7 +33,7 @@ const Camera = ({
     paused: false,
     muted: false,
     started: false,
-    period: 1800,
+    period: 10,
     closePopup: false,
     hideMeditation: false,
   });
@@ -43,9 +43,14 @@ const Camera = ({
   const [timePickerButtons, setTimePickerButtons] = useState(false);
   const hoursArr = [0, 1, 2];
   const minutesArr = [];
+
   for (let i = 0; i < 12; i++) {
     minutesArr.push(i * 5);
   }
+
+  useEffect(() => {
+    console.log(state.period,'state.period')
+  },[state.period])
 
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
@@ -148,16 +153,6 @@ const Camera = ({
     setTimePickerButtons(!timePickerButtons);
   };
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BaseCamera.requestPermissionsAsync();
-      setState({
-        ...state,
-        access: status === "granted",
-      });
-    })();
-  }, []);
-
   return (
     <View style={styles.container}>
       {state.paused && (
@@ -186,6 +181,7 @@ const Camera = ({
         setSelectedMeditation={setSelectedMeditation}
         timePicker={timePicker}
         showMeditation={showMeditation}
+        onStop={onStop}
       />
       <RightControls
         state={state}

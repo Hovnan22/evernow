@@ -45,7 +45,9 @@ const MeditationLists = ({
         if (selectedMeditation && prevListCount == smallScrean) {
             !state.paused && scrollToItem(selectedMeditation);
         }
-        if (!isHidetext) {
+        console.log(prevListCount)
+        clearTimeout(hideTextTimer)
+        if (!isHidetext && prevListCount < largeScrean) {           
             setHidetextTimer(
                 setTimeout(() => {
                     setHidetext(true)
@@ -57,11 +59,11 @@ const MeditationLists = ({
 
     const pressToMeditation = (index) => {
         if (prevListCount == smallScrean && !showAllList) {
-            setFlatlistHeight(new Animated.Value(meditationHeight * mediumScrean));
+            setFlatlistHeight(meditationHeight * mediumScrean);
             setPrevListCount(mediumScrean);
         } else {
             if (!state.paused) {
-                setFlatlistHeight(new Animated.Value(meditationHeight));
+                setFlatlistHeight(meditationHeight);
                 setPrevListCount(smallScrean);
                 scrollToItem(index);
             }

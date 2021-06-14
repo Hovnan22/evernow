@@ -64,7 +64,7 @@ function Diagram(props) {
 export default function GaugeChart(props) {
   const {
     size, borderWidth, textSize, startTime, endTime, children,
-    borderGradient, circleColor, circleGradient, started, isPaused,
+    borderGradient, circleColor, circleGradient, started, isPaused,onStop
   } = props;
   const radius = size / 2;
   const [state, setState] = useState({
@@ -77,6 +77,7 @@ export default function GaugeChart(props) {
       time: startTime,
     });
   }, [startTime]);
+
   useEffect(() => {
     setState({
       ...state,
@@ -85,7 +86,9 @@ export default function GaugeChart(props) {
     });
     clearTimeout(timeoutInstance);
   }, [started]);
+
   if (state.time !== endTime && started === true) {
+    console.log(props.startTime, 789887, state.time)
     clearTimeout(timeoutInstance);
     timeoutInstance = setTimeout(() => {
       if (started === true) {
@@ -97,6 +100,8 @@ export default function GaugeChart(props) {
         });
       }
     }, 1000);
+  } else if (state.time === endTime && started === true) {
+      onStop && onStop();
   }
   return <View style={styles.container}>
     <Svg width={size} height={size}>

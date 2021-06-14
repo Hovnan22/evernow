@@ -18,6 +18,7 @@ const { height, width } = Dimensions.get("screen");
 
 const LeftControls = ({
   state,
+  onStop,
   timePicker,
   showMeditation,
   onHideMeditation,
@@ -27,6 +28,9 @@ const LeftControls = ({
   setSelectedMeditation,
 }) => (
   <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
+    {
+      console.log(state.period,'state.period')
+    }
     {!timePickerButtons && !state.hideMeditation && !state.started && (
       <View style={styles.meditationList}>
         <MeditationLists
@@ -40,6 +44,7 @@ const LeftControls = ({
     )}
     <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
       <AppGaugeChart
+        onStop={onStop}
         borderGradient={["#FFF", "#FFF"]}
         borderWidth={4}
         isPaused={state.paused}
