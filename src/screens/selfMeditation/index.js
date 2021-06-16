@@ -21,6 +21,7 @@ const SelfMeditation = ({ navigation }) => {
   const [type] = useState(Camera.Constants.Type.front);
   const soundObject = new Audio.Sound();
   const [lastShot, setLastShot] = useState();
+  const [streamImagesArray, setStreamImagesArray] = useState();
 
   soundObject.loadAsync(sound);
 
@@ -31,11 +32,11 @@ const SelfMeditation = ({ navigation }) => {
   };
 
   const onStartHandler = () => {
-    console.log(123)
     intervalInstance = setInterval(() => {
       if (camera) {
+        let ph = [];
         camera.takePictureAsync().then((photo) => {
-          console.log(photo);
+          setStreamImagesArray(photo)
           setLastShot(photo);
         });
       }
@@ -47,11 +48,11 @@ const SelfMeditation = ({ navigation }) => {
       if (camera) {
         camera.takePictureAsync().then((photo) => {
           setLastShot(photo);
+          console.log(lastShot,'lastShot')
         });
       }
     } else {
       camera.resumePreview();
-      setLastShot(null);
     }
   };
 

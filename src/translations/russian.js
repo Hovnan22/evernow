@@ -25,6 +25,14 @@ export default {
       title: 'завершить',
       submit: 'завершить',
     },
+    shareButton: {
+      title: 'Поделиться',
+      submit: 'Поделиться',
+    },
+    instagramShareButton: {
+      title: 'Поделиться в инстаграме',
+      submit: 'Поделиться в инстаграме',
+    },
     closeButtonCancel: {
       title: 'отменить',
       submit: 'отменить',

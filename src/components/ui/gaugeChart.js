@@ -64,13 +64,15 @@ function Diagram(props) {
 export default function GaugeChart(props) {
   const {
     size, borderWidth, textSize, startTime, endTime, children,
-    borderGradient, circleColor, circleGradient, started, isPaused,onStop
+    borderGradient, circleColor, circleGradient, started, isPaused,onStop,
+    finishRecording,
   } = props;
   const radius = size / 2;
   const [state, setState] = useState({
     time: startTime,
     percent: startTime < endTime ? 0 : 100,
   });
+  const [recordingPeriod,setRecordingPeriod] = useState(0);
   useEffect(() => {
     setState({
       ...state,
@@ -87,11 +89,13 @@ export default function GaugeChart(props) {
     clearTimeout(timeoutInstance);
   }, [started]);
 
-  if (state.time !== endTime && started === true) {
-    console.log(props.startTime, 789887, state.time)
+  if (state.time !== endTime && started === true ) {
     clearTimeout(timeoutInstance);
     timeoutInstance = setTimeout(() => {
       if (started === true) {
+        if (!isPaused) {
+          setRecordingPeriod(recordingPeriod + 1);
+        }
         const time = startTime < endTime ? state.time + 1 : state.time - 1;
         setState({
           ...state,
@@ -101,6 +105,9 @@ export default function GaugeChart(props) {
       }
     }, 1000);
   } else if (state.time === endTime && started === true) {
+    console.log(recordingPeriod,'recordingPeriod',isPaused);
+    clearTimeout(timeoutInstance)
+      finishRecording && finishRecording(recordingPeriod);
       onStop && onStop();
   }
   return <View style={styles.container}>

@@ -25,6 +25,14 @@ export default {
       title: 'finish',
       submit: 'finish',
     },
+    shareButton: {
+      title: 'Share',
+      submit: 'Share',
+    },
+    instagramShareButton: {
+      title: 'Share on Instagram',
+      submit: 'Share on Instagram',
+    },
     closeButtonCancel: {
       title: 'cancel',
       submit: 'cancel',

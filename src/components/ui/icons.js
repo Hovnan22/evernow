@@ -14,6 +14,14 @@ const components = {
   'meditationType': React.lazy(() => import('../../assets/icons/meditationType.svg')),
   'arrowDown': React.lazy(() => import('../../assets/icons/arrowDown.svg')),
   'yog': React.lazy(() => import('../../assets/icons/yog.svg')),
+  'popup': React.lazy(() => import('../../assets/icons/popup.svg')),
+  'download': React.lazy(() => import('../../assets/icons/download.svg')),
+  'instagram': React.lazy(() => import('../../assets/icons/instagram.svg')),
+  'share': React.lazy(() => import('../../assets/icons/share.svg')),
+  'transparentLogo': React.lazy(() => import('../../assets/icons/transparentLogo.svg')),
+
+
+
 };
 
 const RenderIcon = ({

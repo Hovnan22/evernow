@@ -14,30 +14,30 @@ import {
 const ClosePopup = ({
   onClose,
   closePopup,
-  }) => (
+}) => (
   <View style={styles.conrainer}>
     <View style={styles.popupLayer}>
       <Text style={styles.popupMessage}>{i18n.t('screen.closePopupText.submit')}</Text>
       <AppButton
-          style={styles.buttons}
-          onPress={() => onClose() }
-          title={"screen.closeButtonConfirm.submit"}
-          type={"transparent"}
-          color="red"
-        />
+        style={styles.buttons}
+        onPress={() => onClose()}
+        title={"screen.closeButtonConfirm.submit"}
+        type={"transparent"}
+        color="red"
+      />
       <AppButton
-          style={styles.buttons}
-          onPress={() =>  closePopup() }
-          title={"screen.closeButtonCancel.submit"}
-          type={"transparent"}
-          color="#000"
-        />
+        style={styles.buttons}
+        onPress={() => closePopup()}
+        title={"screen.closeButtonCancel.submit"}
+        type={"transparent"}
+        color="#000"
+      />
     </View>
   </View>
 )
 
 const styles = StyleSheet.create({
-  buttons:{
+  buttons: {
     borderTopWidth: 1,
     borderTopColor: "rgba(0, 0, 0, .1)",
     borderRadius: 0,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 25,
-    zIndex: 5,
+    zIndex: 10,
   },
   popupLayer: {
     backgroundColor: '#fff',

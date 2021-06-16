@@ -21,66 +21,77 @@ const LeftControls = ({
   onStop,
   timePicker,
   showMeditation,
+  finishRecording,
   onHideMeditation,
+  isFinishRecording,
   timePickerButtons,
   timePickerHandler,
   selectedMeditation,
   setSelectedMeditation,
 }) => (
-  <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
-    {
-      console.log(state.period,'state.period')
-    }
-    {!timePickerButtons && !state.hideMeditation && !state.started && (
-      <View style={styles.meditationList}>
-        <MeditationLists
-          state={state}
-          timePicker={timePicker}
-          onHideMeditation={onHideMeditation}
-          selectedMeditation={selectedMeditation}
-          setSelectedMeditation={setSelectedMeditation}
-        />
-      </View>
-    )}
-    <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
-      <AppGaugeChart
-        onStop={onStop}
-        borderGradient={["#FFF", "#FFF"]}
-        borderWidth={4}
-        isPaused={state.paused}
-        circleColor={"transparent"}
-        circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
-        size={!state.paused ? 64 : 200}
-        startTime={state.period}
-        endTime={0}
-        textSize={!state.paused ? 8 : 18}
-        started={state.started}
-      />
-      {state.paused && state.hideMeditation && !timePicker && !state.started && (
-        <TouchableOpacity
-          style={styles.meditationButton}
-          onPress={showMeditation}
-        >
-          <AppIcon
-            icon="yog"
-            width={35}
-            height={35}
+  isFinishRecording ? (
+    <CameraButton
+      icon="download"
+      style={styles.download}
+      pressDuration={1000}
+      onPress={() => { console.log(9) }}
+      width={28}
+      height={28}
+    />
+  ) : (
+    <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
+      {!timePickerButtons && !state.hideMeditation && !state.started && (
+        <View style={styles.meditationList}>
+          <MeditationLists
+            state={state}
+            timePicker={timePicker}
+            onHideMeditation={onHideMeditation}
+            selectedMeditation={selectedMeditation}
+            setSelectedMeditation={setSelectedMeditation}
           />
-          <Text style={{ color: 'white' }}>Type of meditation</Text>
-        </TouchableOpacity>
+        </View>
       )}
-    </View>
-    {!state.started && (
-      <CameraButton
-        width={15}
-        height={15}
-        icon="settings"
-        style={[state.paused ? styles.timeSettingsBig : styles.timeSettings]}
-        onPress={timePickerHandler}
-      />
-    )}
+      <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
+        <AppGaugeChart
+          onStop={onStop}
+          borderGradient={["#FFF", "#FFF"]}
+          borderWidth={4}
+          isPaused={state.paused}
+          circleColor={"transparent"}
+          circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
+          size={!state.paused ? 64 : 200}
+          startTime={state.period}
+          endTime={0}
+          textSize={!state.paused ? 8 : 18}
+          started={state.started}
+          finishRecording={finishRecording}
+        />
+        {state.paused && state.hideMeditation && !timePicker && !state.started && (
+          <TouchableOpacity
+            style={styles.meditationButton}
+            onPress={showMeditation}
+          >
+            <AppIcon
+              icon="yog"
+              width={35}
+              height={35}
+            />
+            <Text style={{ color: 'white' }}>Type of meditation</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      {!state.started && (
+        <CameraButton
+          width={15}
+          height={15}
+          icon="settings"
+          style={[state.paused ? styles.timeSettingsBig : styles.timeSettings]}
+          onPress={timePickerHandler}
+        />
+      )}
 
-  </View>
+    </View>
+  )
 );
 
 const styles = StyleSheet.create({
@@ -158,7 +169,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "center",
 
-  }
+  },
+  download: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    zIndex: 20
+  },
 });
 
 export default LeftControls;
