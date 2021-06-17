@@ -22,8 +22,6 @@ import { Grid } from '../../styles';
 import TimeButtons from "./timeButtons";
 import FinishMeditation from "./finishMeditation";
 import DiscussionPopup from './discussionAlert';
-import { translate } from "i18n-js";
-
 
 const Camera = ({
   onStop,

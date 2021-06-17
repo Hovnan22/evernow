@@ -5,11 +5,14 @@ import React, {
 import { Audio } from "expo-av";
 import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
+import { ReactNativeFile } from 'apollo-upload-client';
 
 import { AppContainer } from '../../components/ui';
 import { MeditationCamera } from '../../components/selfMeditation';
 import { Grid } from '../../styles';
 import sound from "../../../src/assets/sound.mp3";
+import {useUploadImages} from "../../hooks";
+import {useBuildTimelapse} from "../../hooks";
 
 let intervalInstance = null;
 
@@ -22,21 +25,24 @@ const SelfMeditation = ({ navigation }) => {
   const soundObject = new Audio.Sound();
   const [lastShot, setLastShot] = useState();
   const [streamImagesArray, setStreamImagesArray] = useState();
+  const [onUploadImages] = useUploadImages();
 
   soundObject.loadAsync(sound);
 
-  const onStopHandler = () => {
+  const onStopHandler = async() => {
     if (intervalInstance) {
       clearInterval(intervalInstance);
     }
   };
 
-  const onStartHandler = () => {
+  const onStartHandler = async () => {
     intervalInstance = setInterval(() => {
       if (camera) {
         let ph = [];
-        camera.takePictureAsync().then((photo) => {
-          setStreamImagesArray(photo)
+        camera.takePictureAsync().then(async (photo) => {
+          console.log(photo,'photo')
+          onUploadImageHandler(photo.uri);
+          setStreamImagesArray(photo);
           setLastShot(photo);
         });
       }
@@ -53,6 +59,41 @@ const SelfMeditation = ({ navigation }) => {
       }
     } else {
       camera.resumePreview();
+    }
+  };
+  const onUploadImageHandler = async (uri) => {
+    const urlParams = uri;
+    const name = urlParams.split('/')[urlParams.split('/').length - 1];
+    const roomId = 7;
+    const frameID = 7;
+
+    try {
+      const file = new ReactNativeFile({
+        uri,
+        name,
+        type: "image/jpeg",
+      });
+      alert(1)
+      console.log(file,'fileeeeee')
+      const lol = await onUploadImages({ variables: { file, frameID, roomId,} });
+      console.log(lol,'lollol')
+
+    } catch (e) {
+      console.log(e)
+      alert("Error upload112233");
+    }
+  };
+
+  const onBuildTimelaps = async (uri) => {
+    const roomId = 5;
+    console.log('onBuildTimelaps');
+
+    try {
+      const lol = await useBuildTimelapse({ variables: { roomId} });
+      console.log(lol,'awaitonBuildTimelaps');
+    } catch (e) {
+      console.log(e.message)
+      alert("Error upload", e.message);
     }
   };
 
