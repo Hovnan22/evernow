@@ -16,11 +16,5 @@ export default function useBuildTimelapse() {
                 roomId: $roomId,
             )
 		}
-	`, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  });
+	`);
 }

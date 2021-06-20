@@ -1,7 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { Store } from '../config';
 
-
 export default function useUploadImages() {
   const {
     app: {
@@ -10,18 +9,16 @@ export default function useUploadImages() {
       },
     },
   } = Store.getState();
+
   return useMutation(gql`
-		mutation ($frame:Upload!, $frameNumber: Int!, $roomId: ID!) {
-			addFrame(
-                frame: $frame,
-                frameNumber: $frameNumber,
-                roomId: $roomId,
-                )
+		mutation ($frame:Upload, $frameNumber: Int, $roomId: ID) {
+			addFrame(frame: $frame,frameNumber: $frameNumber,roomId: $roomId) 
 		}
 	`, {
     context: {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
     },
   });

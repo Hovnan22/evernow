@@ -13,9 +13,11 @@ import { Grid } from '../../styles';
 import sound from "../../../src/assets/sound.mp3";
 import {useUploadImages} from "../../hooks";
 import {useBuildTimelapse} from "../../hooks";
+import { useProfile } from '../../hooks';
+
 
 let intervalInstance = null;
-
+let frameID = 20;
 const SelfMeditation = ({ navigation }) => {
   const [ratios, setRatios] = useState('4:3');
   const isFocused = useIsFocused();
@@ -25,11 +27,12 @@ const SelfMeditation = ({ navigation }) => {
   const soundObject = new Audio.Sound();
   const [lastShot, setLastShot] = useState();
   const [streamImagesArray, setStreamImagesArray] = useState();
-  const [onUploadImages] = useUploadImages();
-
+  const [onUploadImages,{data,loading}] = useUploadImages();
+  const profileData = useProfile();
   soundObject.loadAsync(sound);
 
   const onStopHandler = async() => {
+    onBuildTimelaps()
     if (intervalInstance) {
       clearInterval(intervalInstance);
     }
@@ -61,38 +64,35 @@ const SelfMeditation = ({ navigation }) => {
       camera.resumePreview();
     }
   };
+
   const onUploadImageHandler = async (uri) => {
     const urlParams = uri;
     const name = urlParams.split('/')[urlParams.split('/').length - 1];
-    const roomId = 7;
-    const frameID = 7;
+    const roomId = profileData.data.user.room.id;
+      const file = new ReactNativeFile({
+      encoding: uri,
+        type: "image/jpeg",
+      name,
+      });
+    const variables = { frame: [file], frameNumber: frameID, roomId: roomId};
 
     try {
-      const file = new ReactNativeFile({
-        uri,
-        name,
-        type: "image/jpeg",
-      });
-      alert(1)
-      console.log(file,'fileeeeee')
-      const lol = await onUploadImages({ variables: { file, frameID, roomId,} });
-      console.log(lol,'lollol')
-
+     const lol =  await onUploadImages({ variables: variables });
     } catch (e) {
-      console.log(e)
+      console.log(e.message,'error')
       alert("Error upload112233");
     }
+    frameID = frameID ++ ;
+
   };
 
   const onBuildTimelaps = async (uri) => {
-    const roomId = 5;
-    console.log('onBuildTimelaps');
+    const roomId = parseInt(profileData.data.user.room.id);
 
     try {
-      const lol = await useBuildTimelapse({ variables: { roomId} });
-      console.log(lol,'awaitonBuildTimelaps');
+      await useBuildTimelapse({ variables: { roomId} });
     } catch (e) {
-      console.log(e.message)
+      console.log(e)
       alert("Error upload", e.message);
     }
   };
