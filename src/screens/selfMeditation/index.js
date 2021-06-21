@@ -11,13 +11,13 @@ import { AppContainer } from '../../components/ui';
 import { MeditationCamera } from '../../components/selfMeditation';
 import { Grid } from '../../styles';
 import sound from "../../../src/assets/sound.mp3";
-import {useUploadImages} from "../../hooks";
-import {useBuildTimelapse} from "../../hooks";
+import { useUploadImages } from "../../hooks";
+import { useBuildTimelapse } from "../../hooks";
 import { useProfile } from '../../hooks';
 
 
 let intervalInstance = null;
-let frameID = 20;
+let frameID = 0;
 const SelfMeditation = ({ navigation }) => {
   const [ratios, setRatios] = useState('4:3');
   const isFocused = useIsFocused();
@@ -26,12 +26,12 @@ const SelfMeditation = ({ navigation }) => {
   const [type] = useState(Camera.Constants.Type.front);
   const soundObject = new Audio.Sound();
   const [lastShot, setLastShot] = useState();
-  const [streamImagesArray, setStreamImagesArray] = useState();
-  const [onUploadImages,{data,loading}] = useUploadImages();
+  const [onUploadImages, { data, loading }] = useUploadImages();
   const profileData = useProfile();
+  const [pouseCamera, setPouseCamera] = useState(false);
   soundObject.loadAsync(sound);
 
-  const onStopHandler = async() => {
+  const onStopHandler = async () => {
     onBuildTimelaps()
     if (intervalInstance) {
       clearInterval(intervalInstance);
@@ -39,25 +39,23 @@ const SelfMeditation = ({ navigation }) => {
   };
 
   const onStartHandler = async () => {
-    intervalInstance = setInterval(() => {
+    !pouseCamera ? intervalInstance = setInterval(() => {
       if (camera) {
         let ph = [];
         camera.takePictureAsync().then(async (photo) => {
-          console.log(photo,'photo')
           onUploadImageHandler(photo.uri);
-          setStreamImagesArray(photo);
           setLastShot(photo);
         });
       }
-    }, 5000);
+    }, 5000) : false;
   };
 
   const onPauseCameraHandler = (isPaused) => {
+    setPouseCamera(isPaused);
     if (isPaused) {
       if (camera) {
         camera.takePictureAsync().then((photo) => {
           setLastShot(photo);
-          console.log(lastShot,'lastShot')
         });
       }
     } else {
@@ -69,20 +67,18 @@ const SelfMeditation = ({ navigation }) => {
     const urlParams = uri;
     const name = urlParams.split('/')[urlParams.split('/').length - 1];
     const roomId = profileData.data.user.room.id;
-      const file = new ReactNativeFile({
-      encoding: uri,
-        type: "image/jpeg",
-      name,
-      });
-    const variables = { frame: [file], frameNumber: frameID, roomId: roomId};
+    const file = new FormData();
+    file.append('uri', uri, "image/jpeg");
+    file.append('name', name);
+
+    const variables = { frame: file, frameNumber: frameID, roomId: roomId };
 
     try {
-     const lol =  await onUploadImages({ variables: variables });
+      const lol = await onUploadImages({ variables: variables });
     } catch (e) {
-      console.log(e.message,'error')
-      alert("Error upload112233");
+      // alert("Error upload");
     }
-    frameID = frameID ++ ;
+    frameID = frameID++;
 
   };
 
@@ -90,10 +86,10 @@ const SelfMeditation = ({ navigation }) => {
     const roomId = parseInt(profileData.data.user.room.id);
 
     try {
-      await useBuildTimelapse({ variables: { roomId} });
+      await useBuildTimelapse({ variables: { roomId } });
     } catch (e) {
       console.log(e)
-      alert("Error upload", e.message);
+      // alert("Error upload", e.message);
     }
   };
 
@@ -120,7 +116,7 @@ const SelfMeditation = ({ navigation }) => {
         onStart={onStartHandler}
         lastShot={lastShot}
         onStop={onStopHandler}
-        onClose={() => {navigation.canGoBack() && navigation.goBack()} }>
+        onClose={() => { navigation.canGoBack() && navigation.goBack() }}>
         {hasPermission && isFocused
           && <Camera
             style={Grid.flex1}

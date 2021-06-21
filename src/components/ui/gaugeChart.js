@@ -105,7 +105,6 @@ export default function GaugeChart(props) {
       }
     }, 1000);
   } else if (state.time === endTime && started === true) {
-    console.log(recordingPeriod,'recordingPeriod',isPaused);
     clearTimeout(timeoutInstance)
       finishRecording && finishRecording(recordingPeriod);
       onStop && onStop();

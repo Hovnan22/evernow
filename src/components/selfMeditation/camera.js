@@ -6,6 +6,7 @@ import {
   View,
   Image,
   StyleSheet,
+  BackHandler,
 } from "react-native";
 import Share from 'react-native-share';
 import PropTypes from "prop-types";
@@ -22,7 +23,7 @@ import { Grid } from '../../styles';
 import TimeButtons from "./timeButtons";
 import FinishMeditation from "./finishMeditation";
 import DiscussionPopup from './discussionAlert';
-
+import bg from "../../../src/assets/images/introductionBg.png";
 const Camera = ({
   onStop,
   onStart,
@@ -49,14 +50,17 @@ const Camera = ({
   const [recordingPeriod, setRecordingPeriod] = useState(0);
   const hoursArr = [0, 1, 2];
   const minutesArr = [];
-
+  console.log(bg, 'bgbgbgbg')
   for (let i = 0; i < 12; i++) {
     minutesArr.push(i * 5);
   }
 
   useEffect(() => {
-    console.log(state.period, 'state.period')
-  }, [state.period])
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      closePopup,
+    );
+  });
 
   const onPauseCameraHandler = () => {
     const isPaused = !state.paused;
@@ -83,7 +87,6 @@ const Camera = ({
       url: 'https://mediacdn.cincopa.com/v2/230743/26530!kU4AAAAAAAwSDB/2/cdv_photo_001.jpg'
     }
     const shareResponse = await Share.open(options);
-
   };
 
   const onShareInstagram = async () => {
@@ -135,8 +138,8 @@ const Camera = ({
       if (!close && !isFinishRecording) {
         onStart()
       }
-
     }
+    return true;
   };
 
   const finishRecording = (recordingPeriod) => {
@@ -145,7 +148,6 @@ const Camera = ({
       started: false,
     })
     setIsFinishRecording(true);
-    console.log(state.paused, 'state.paused')
     !state.paused && onPauseCameraHandler();
     setRecordingPeriod(recordingPeriod);
     if (recordingPeriod > 5) {
@@ -202,8 +204,10 @@ const Camera = ({
         <View style={[StyleSheet.absoluteFill, recordingWithCamera ? styles.slowBlur : styles.blur]} >
           <View style={recordingWithCamera ? styles.slowBlur : styles.blur} />
           <Image
-            source={{ uri: lastShot && lastShot.uri }}
-            style={{ width: '100%', height: '100%', zIndex: 3 }}
+            source={(isFinishRecording && recordingPeriod < 5) ? bg : {
+              uri: lastShot && lastShot.uri
+            }}
+            style={styles.bg}
             resizeMode='cover'
             blurRadius={state.blurValue}
           />
@@ -328,6 +332,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 1
+  },
+  bg: {
+    width: '100%',
+    height: '100%',
+    zIndex: 3
   },
 });
 

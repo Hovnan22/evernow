@@ -34,7 +34,7 @@ const LeftControls = ({
       icon="download"
       style={styles.download}
       pressDuration={1000}
-      onPress={() => { console.log(9) }}
+      onPress={() => { console.log('') }}
       width={28}
       height={28}
     />

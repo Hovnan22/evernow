@@ -9,7 +9,7 @@ import {
 import { AppIcon } from '../ui';
 
 import bg from "../../../src/assets/images/introductionBg.png";
-
+console.log(bg, 'bg22')
 
 const StreamIntroCover = ({
   bottom,
