@@ -45,7 +45,6 @@ const MeditationLists = ({
         if (selectedMeditation && prevListCount == smallScrean) {
             !state.paused && scrollToItem(selectedMeditation);
         }
-        console.log(prevListCount)
         clearTimeout(hideTextTimer)
         if (!isHidetext && prevListCount < largeScrean) {           
             setHidetextTimer(
