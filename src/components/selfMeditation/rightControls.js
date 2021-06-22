@@ -6,7 +6,6 @@ import {
 
 import CameraButton from './buttons';
 
-
 const Camera = ({
   onClose,
   isFinishRecording,

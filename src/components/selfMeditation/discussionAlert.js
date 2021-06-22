@@ -1,5 +1,4 @@
 import React from 'react';
-import i18n from "i18n-js";
 
 import {
     Text,
@@ -7,8 +6,6 @@ import {
     StyleSheet,
 } from 'react-native';
 import { AppButton } from '../ui';
-
-
 
 const DiscussionPopup = ({
     press1,

@@ -45,15 +45,14 @@ const MeditationLists = ({
         if (selectedMeditation && prevListCount == smallScrean) {
             !state.paused && scrollToItem(selectedMeditation);
         }
-        clearTimeout(hideTextTimer)
+        clearTimeout(hideTextTimer);
         if (!isHidetext && prevListCount < largeScrean) {           
             setHidetextTimer(
                 setTimeout(() => {
-                    setHidetext(true)
+                    setHidetext(true);
                 }, 5000)
             );
         }
-
     }, [flatlistheight])
 
     const pressToMeditation = (index) => {
@@ -113,7 +112,6 @@ const MeditationLists = ({
                 setShowAllList(false);
                 setFlatlistHeight(newHeight);
             });
-
         }
         setFlatlistHeight(animatedHeigh.interpolate({
             inputRange: [0, 1],

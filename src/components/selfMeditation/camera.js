@@ -18,7 +18,6 @@ import {
   AppTimePicker,
   AppClosePopup,
 } from '../ui';
-
 import { Grid } from '../../styles';
 import TimeButtons from "./timeButtons";
 import FinishMeditation from "./finishMeditation";
@@ -50,7 +49,6 @@ const Camera = ({
   const [recordingPeriod, setRecordingPeriod] = useState(0);
   const hoursArr = [0, 1, 2];
   const minutesArr = [];
-  console.log(bg, 'bgbgbgbg')
   for (let i = 0; i < 12; i++) {
     minutesArr.push(i * 5);
   }
@@ -136,7 +134,7 @@ const Camera = ({
       });
 
       if (!close && !isFinishRecording) {
-        onStart()
+        onStart();
       }
     }
     return true;
@@ -254,7 +252,6 @@ const Camera = ({
       )}
       <RightControls
         state={state}
-        onClose={closePopup}
         isFinishRecording={isFinishRecording}
         onPauseCameraHandler={onPauseCameraHandler}
       />

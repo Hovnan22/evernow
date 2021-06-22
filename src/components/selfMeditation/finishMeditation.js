@@ -12,7 +12,6 @@ import CameraButton from './buttons';
 
 const FinishMeditation = ({
     onShare,
-    closePopup,
     onShareInstagram,
     recordingWithCamera,
 }) => (
@@ -71,7 +70,6 @@ const FinishMeditation = ({
                 />
             </View>
         )}
-
     </View>
 )
 
@@ -90,12 +88,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         fontSize: 25,
-        // zIndex: 6,
     },
     popupMessage: {
         position: 'absolute',
         textAlign: 'center',
-        // width: 300
     },
     popupMessageHeader: {
         fontSize: 24,
