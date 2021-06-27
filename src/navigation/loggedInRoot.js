@@ -3,10 +3,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import i18n from "i18n-js";
 
 import {
+  Home,
+  Instruct,
+  Settings,
   Account,
   Meditation,
   SettingPage,
 } from '../screens';
+
 
 const Stack = createStackNavigator();
 class Root extends Component {
@@ -22,8 +26,8 @@ class Root extends Component {
           }}
         />
         <Stack.Screen
-          name="SettingPage"
-          component={SettingPage}
+          name="Settings"
+          component={Settings}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -32,6 +36,18 @@ class Root extends Component {
           options={{
             headerShown: false,
           }}
+        />
+        <Stack.Screen
+          name="Instruct"
+          component={Instruct}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SettingPage"
+          component={SettingPage}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     )

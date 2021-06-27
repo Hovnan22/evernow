@@ -3,6 +3,7 @@ import {
   Text,
   View,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -20,6 +21,7 @@ import {
 
 import {
   AppCard,
+  AppIcon,
   AppText,
   AppButton,
   AppContainer,
@@ -41,10 +43,6 @@ const Home = ({
 }) => {
   const { data } = useProfile();
   const [onRefreshBuddy] = useRefreshBuddy();
-
-  // useEffect(() => {
-  //   setUser({ ...(data?.user || {}) })
-  // }, [data])
 
   useEffect(() => {
     if (data?.user) {
@@ -78,6 +76,17 @@ const Home = ({
       backgroundType="upper"
     >
       <View style={[Grid.flex2, Grid.centeredY]}>
+        <TouchableOpacity
+          style={styles.settings}
+          onPress={() => navigation.navigate("Settings")}
+        >
+          <AppIcon
+            style={{ opacity: 0.5 }}
+            icon="settings"
+            width={22}
+            height={22}
+          />
+        </TouchableOpacity>
         <AppCard
           type3
           showLoader={!user?.room}
@@ -85,7 +94,7 @@ const Home = ({
           <View style={[Grid.centeredX, Grid.centeredY, styles.container]}>
             <Text style={[Typography.textNormal, Typography.textBold]}>
               <AppText>{"screen.home.meditateStarts"}</AppText>
-                       &nbsp;{user?.meditationAt}
+              &nbsp;{user?.meditationAt}
             </Text>
             <AppGaugeChart
               size={248}
@@ -105,6 +114,11 @@ const Home = ({
         </AppCard>
         <View style={[Grid.centeredY]}>
           <AppButton
+            onPress={!user?.room ? onSearchBuddyHandler : () => navigation.navigate("Instruct")}
+            title={"screen.home.learnBuddy"}
+            type={"gradient"}
+          />
+          <AppButton
             onPress={!user?.room ? onSearchBuddyHandler : () => navigation.navigate("Meditation")}
             title={!user?.room ? "screen.home.searchBuddy" : "screen.home.connect"}
             type={"gradient"}
@@ -120,6 +134,13 @@ const styles = StyleSheet.create({
     paddingTop: 48,
     paddingBottom: 100,
   },
+  settings: {
+    position: 'absolute',
+    zIndex: 10,
+    opacity: 0.5,
+    top: 35,
+    right: 0,
+  }
 });
 
 const mapStateToProps = ({ app: { user, settings } }) => ({

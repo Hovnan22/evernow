@@ -64,7 +64,7 @@ function Diagram(props) {
 export default function GaugeChart(props) {
   const {
     size, borderWidth, textSize, startTime, endTime, children,
-    borderGradient, circleColor, circleGradient, started, isPaused,onStop,
+    borderGradient, circleColor, circleGradient, started, isPaused,onStop,setRecPeriod,
     finishRecording,
   } = props;
   const radius = size / 2;
@@ -95,6 +95,7 @@ export default function GaugeChart(props) {
       if (started === true) {
         if (!isPaused) {
           setRecordingPeriod(recordingPeriod + 1);
+          setRecPeriod && setRecPeriod(recordingPeriod + 1);
         }
         const time = startTime < endTime ? state.time + 1 : state.time - 1;
         setState({

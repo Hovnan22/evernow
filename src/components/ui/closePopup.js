@@ -12,16 +12,17 @@ import {
 } from '.';
 
 const ClosePopup = ({
+  title,
   onClose,
   closePopup,
 }) => (
   <View style={styles.conrainer}>
     <View style={styles.popupLayer}>
-      <Text style={styles.popupMessage}>{i18n.t('screen.closePopupText.submit')}</Text>
+      <Text style={styles.popupMessage}>{i18n.t(title ? title:'screen.closePopupText.submit')}</Text>
       <AppButton
         style={styles.buttons}
         onPress={() => onClose()}
-        title={"screen.closeButtonConfirm.submit"}
+        title={ "screen.closeButtonConfirm.submit"}
         type={"transparent"}
         color="red"
       />

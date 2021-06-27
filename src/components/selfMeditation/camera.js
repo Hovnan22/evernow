@@ -211,9 +211,9 @@ const Camera = ({
           />
         </View>
       )}
-      {!isFinishRecording ? state.closePopup && (
+      {!isFinishRecording ? state.closePopup &&   (
         <AppClosePopup
-          onClose={bindeOnClose}
+          onClose={() => (state.started ? finishRecording(): bindeOnClose())}
           closePopup={closePopup}
         />
       ) : state.closePopup && (
@@ -241,6 +241,7 @@ const Camera = ({
         timePickerHandler={timePickerHandler}
         selectedMeditation={selectedMeditation}
         setSelectedMeditation={setSelectedMeditation}
+        setRecordingPeriod={setRecordingPeriod}
       />
       {isFinishRecording && !state.closePopup && (
         <FinishMeditation
@@ -252,6 +253,7 @@ const Camera = ({
       )}
       <RightControls
         state={state}
+        onClose={closePopup}
         isFinishRecording={isFinishRecording}
         onPauseCameraHandler={onPauseCameraHandler}
       />

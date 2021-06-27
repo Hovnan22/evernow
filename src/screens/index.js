@@ -9,3 +9,4 @@ export { default as SettingPage } from './settingPage';
 export { default as PrepareAccount } from './prepareAccount';
 export { default as Account } from './account';
 export { default as Meditation } from './meditation';
+export { default as Instruct } from './instruct';

@@ -127,10 +127,11 @@ export default {
       meditateStarts: "Meditation will begin at",
       searching: "We pick You Buddy (pair)",
       found: "Buddy is found!\nCome to the meditation at the appointed time",
-      notFound: "Buddy hasn't been found yet, but we're doing everything we can to make it happen soon. Until then, meditate on Your own.",
-      connect: "Connect",
+      notFound: "Buddy has not been found yet, but this is not a reason not to meditate.",
+      connect: "Meditate now",
       selfMeditation: "Self meditation",
       searchBuddy: "Search Buddy",
+      learnBuddy: "Instructional video"
     },
     meditation: {
       title: "",
@@ -141,6 +142,7 @@ export default {
       streamIsNotReady: "Buddy hasn't come yet, but You can start meditating",
       complete: "Finish",
       alert: "Are You sure You don't want to meditate with buddy?",
+      closeConnect: "Are you sure you want to complete your buddy meditation?",
     },
     settings: {
       title: "Settings",

@@ -27,6 +27,7 @@ const LeftControls = ({
   timePickerButtons,
   timePickerHandler,
   selectedMeditation,
+  setRecordingPeriod,
   setSelectedMeditation,
 }) => (
   isFinishRecording ? (
@@ -65,6 +66,7 @@ const LeftControls = ({
           textSize={!state.paused ? 8 : 18}
           started={state.started}
           finishRecording={finishRecording}
+          setRecPeriod={setRecordingPeriod}
         />
         {state.paused && state.hideMeditation && !timePicker && !state.started && (
           <TouchableOpacity

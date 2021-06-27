@@ -1,4 +1,6 @@
-import React from "react";
+import React, {
+  useEffect
+} from "react";
 import {
   View,
   Image,
@@ -14,29 +16,41 @@ const StreamIntroCover = ({
   bottom,
   onClose,
   children,
-}) => (
-  <View style={styles.container}>
-    <Image source={bg} style={styles.bg} />
-    <View style={styles.cover} />
-    <View style={styles.wrapper}>
-      <View style={styles.head}>
-        <TouchableOpacity onPress={onClose}>
-          <AppIcon
-            icon="close"
-            width={24}
-            height={24}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.content}>
-        {children}
-      </View>
-      <View style={styles.bottom}>
-        {bottom}
+}) => {
+  useEffect(() => {
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        onClose();
+        return true;
+      },
+    );
+  },[]);
+  
+  return (
+    <View style={styles.container}>
+      <Image source={bg} style={styles.bg} />
+      <View style={styles.cover} />
+      <View style={styles.wrapper}>
+        <View style={styles.head}>
+          <TouchableOpacity onPress={onClose}>
+            <AppIcon
+              icon="close"
+              width={24}
+              height={24}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.content}>
+          {children}
+        </View>
+        <View style={styles.bottom}>
+          {bottom}
+        </View>
       </View>
     </View>
-  </View>
-);
+  )
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +85,7 @@ const styles = StyleSheet.create({
   },
   bg: {
     width: "100%",
+    height: '100%',
   },
 });
 
