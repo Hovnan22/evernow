@@ -31,6 +31,7 @@ const LeftControls = ({
           started={state.started}
         />
       </View>
+      <View></View>
       <CameraButton
         width={15}
         height={15}
