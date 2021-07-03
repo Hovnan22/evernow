@@ -31,6 +31,7 @@ import {
 import {
   AppButton,
   AppContainer,
+  AppClosePopup,
 } from '../../components/ui';
 import { Grid } from '../../styles';
 
@@ -80,23 +81,7 @@ const Meditation = ({
   const [access, setAccess] = useState(false);
   const [stream, setStream] = useState(false);
   const [remoteStream, setRemoteStream] = useState(false);
-
-  const onOpenAlert = () => Alert.alert(
-    null,
-    i18n.t("screen.meditation.alert"),
-    [
-      {
-        text: i18n.t("screen.meditation.complete"),
-        onPress: () => navigation.goBack(),
-      },
-      {
-        text: i18n.t("screen.meditation.connect"),
-        onPress: () => setReady(true),
-        style: "cancel",
-      },
-    ],
-    { cancelable: false },
-  );
+  const [showPopup, setSowPopup] = useState(false);
 
   useEffect(() => {
     const socket = SocketService.createSocketConnection();
@@ -116,7 +101,6 @@ const Meditation = ({
         });
 
       channel.on("start", () => {
-        console.log('aaaaa');
         pc.createOffer().then((desc) => {
           pc.setLocalDescription(desc).then(() => {
             channel.push("offer", { body: JSON.stringify(desc) });
@@ -169,11 +153,19 @@ const Meditation = ({
 
   return (
     <AppContainer noPadding>
+      {showPopup && (
+        <AppClosePopup
+          title={ready ? 'screen.meditation.closeConnect' : 'screen.meditation.alert'}
+          onClose={() => { navigation.goBack() }}
+          closePopup={() => setSowPopup(false)}
+        />
+      )}
       {access && ready ? (
         <StreamWrapper
           onMute={() => { }}
-          onClose={onOpenAlert}>
-          <View style={[Grid.flex1]}>
+          onClose={() => setSowPopup(true)}
+        >
+          <View style={[Grid.flex1], { height: '100%' }}>
             {stream && (
               <RTCView
                 mirror
@@ -192,7 +184,7 @@ const Meditation = ({
         </StreamWrapper>
       ) : (
         <StreamIntroCover
-          onClose={onOpenAlert}
+          onClose={() => setSowPopup(true)}
           bottom={(
             <AppButton
               onPress={() => setReady(true)}
@@ -200,7 +192,8 @@ const Meditation = ({
               title={"screen.meditation.connect"}
               raised={true}
             />
-          )}>
+          )
+          }>
           {user.room && (
             <Text style={styles.centerdWhiteText}>
               {i18n.t("screen.meditation.streamIsReady")}
@@ -232,6 +225,8 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     backgroundColor: "#000",
+    width: '100%',
+    height: '100%',
   },
   centerdWhiteText: {
     color: "#fff",
@@ -247,4 +242,3 @@ const mapStateToProps = ({ app: { user } }) => ({
 })
 
 export default connect(mapStateToProps)(Meditation);
-

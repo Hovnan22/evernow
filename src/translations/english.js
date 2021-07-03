@@ -21,6 +21,50 @@ export default {
     passwordsDidNotMatch: "Password mismatch",
   },
   screen: {
+    closeButtonConfirm: {
+      title: 'finish',
+      submit: 'finish',
+    },
+    shareButton: {
+      title: 'Share',
+      submit: 'Share',
+    },
+    instagramShareButton: {
+      title: 'Share on Instagram',
+      submit: 'Share on Instagram',
+    },
+    closeButtonCancel: {
+      title: 'cancel',
+      submit: 'cancel',
+    },
+    closePopupText: {
+      title: 'Are you sure if you want to finish meditation?',
+      submit: 'Are you sure if you want to finish meditation?',
+    },
+    setTimeButton: {
+      title: 'Set',
+      submit: 'Set',
+    },
+    cancelTimeButton: {
+      title: 'Close',
+      submit: 'Close',
+    },
+    timePickerClose: {
+      title: 'Close',
+      submit: 'Close',
+    },
+    timePickerMoreDuration: {
+      title: '...',
+      submit: '...',
+    },
+    timePickerShortDuration: {
+      title: '30 minutes',
+      submit: '30 minutes',
+    },
+    timePickerLongDuration: {
+      title: '60 minutes',
+      submit: '60 minutes',
+    },
     recoveryPassword: {
       title: "Restore password",
       submit: "Send",
@@ -83,10 +127,11 @@ export default {
       meditateStarts: "Meditation will begin at",
       searching: "We pick You Buddy (pair)",
       found: "Buddy is found!\nCome to the meditation at the appointed time",
-      notFound: "Buddy hasn't been found yet, but we're doing everything we can to make it happen soon. Until then, meditate on Your own.",
-      connect: "Connect",
+      notFound: "Buddy has not been found yet, but this is not a reason not to meditate.",
+      connect: "Meditate now",
       selfMeditation: "Self meditation",
       searchBuddy: "Search Buddy",
+      learnBuddy: "Instructional video"
     },
     meditation: {
       title: "",
@@ -97,6 +142,7 @@ export default {
       streamIsNotReady: "Buddy hasn't come yet, but You can start meditating",
       complete: "Finish",
       alert: "Are You sure You don't want to meditate with buddy?",
+      closeConnect: "Are you sure you want to complete your buddy meditation?",
     },
     settings: {
       title: "Settings",
@@ -120,4 +166,5 @@ export default {
     russian: "Russian",
     english: "English",
   },
+
 };

@@ -1,60 +1,134 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
+  Text,
   StyleSheet,
+  Dimensions,
+  TouchableOpacity,
 } from "react-native";
 
 import CameraButton from './buttons';
-import { AppGaugeChart } from '../ui';
+import {
+  AppGaugeChart,
+  AppIcon,
+} from '../ui';
+import MeditationLists from './meditationLists';
 
-// import MeditationTypes from '../meditation/meditationTypes';
+const { height, width } = Dimensions.get("screen");
 
 const LeftControls = ({
   state,
+  onStop,
+  timePicker,
+  showMeditation,
+  finishRecording,
+  onHideMeditation,
+  isFinishRecording,
+  timePickerButtons,
   timePickerHandler,
+  selectedMeditation,
+  setRecordingPeriod,
+  setSelectedMeditation,
 }) => (
-  <View style={styles.leftControls}>
-    {/* <View style={{
-      flex: 1,
-    }}> */}
-    <View style={styles.timeWrapper}>
-      <View style={styles.gaugeChart}>
+  isFinishRecording ? (
+    <CameraButton
+      icon="download"
+      style={styles.download}
+      pressDuration={1000}
+      onPress={() => { console.log('') }}
+      width={28}
+      height={28}
+    />
+  ) : (
+    <View style={state.paused ? styles.leftControlsBig : styles.leftControls}>
+      {!timePickerButtons && !state.hideMeditation && !state.started && (
+        <View style={styles.meditationList}>
+          <MeditationLists
+            state={state}
+            timePicker={timePicker}
+            onHideMeditation={onHideMeditation}
+            selectedMeditation={selectedMeditation}
+            setSelectedMeditation={setSelectedMeditation}
+          />
+        </View>
+      )}
+      <View style={[styles.timeWrapper, state.paused && styles.timeWrapperBig]}>
         <AppGaugeChart
+          onStop={onStop}
           borderGradient={["#FFF", "#FFF"]}
           borderWidth={4}
-          circleColor={"#C8C6C3"}
+          isPaused={state.paused}
+          circleColor={"transparent"}
           circleGradient={["rgb(230, 230, 230)", "#C8C6C3"]}
-          size={64}
+          size={!state.paused ? 64 : 200}
           startTime={state.period}
           endTime={0}
-          textSize={8}
+          textSize={!state.paused ? 8 : 18}
           started={state.started}
+          finishRecording={finishRecording}
+          setRecPeriod={setRecordingPeriod}
         />
+        {state.paused && state.hideMeditation && !timePicker && !state.started && (
+          <TouchableOpacity
+            style={styles.meditationButton}
+            onPress={showMeditation}
+          >
+            <AppIcon
+              icon="yog"
+              width={35}
+              height={35}
+            />
+            <Text style={{ color: 'white' }}>Type of meditation</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <View></View>
-      <CameraButton
-        width={15}
-        height={15}
-        icon="settings"
-        style={styles.timeSettings}
-        onPress={timePickerHandler}
-      />
-    </View>
-    {/* </View>
-    <View style={{
-      flex: 1,
-    }}>
+      {!state.started && (
+        <CameraButton
+          width={15}
+          height={15}
+          icon="settings"
+          style={[state.paused ? styles.timeSettingsBig : styles.timeSettings]}
+          onPress={timePickerHandler}
+        />
+      )}
 
-      <MeditationTypes />
     </View>
-    <View style={{
-      flex: 1,
-    }}></View> */}
-  </View>
+  )
 );
 
-
 const styles = StyleSheet.create({
+  timeSettingsBig: {
+    top: 60,
+    left: 15,
+    right: 25,
+    position: 'absolute',
+    borderRadius: 7,
+    backgroundColor: "rgba(255,255,255, .5)",
+    width: 35,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    zIndex: 200
+  },
+  showMeditation: {
+    zIndex: 10,
+  },
+  meditationButton: {
+    justifyContent: "center",
+    alignItems: 'center',
+  },
+  leftControlsBig: {
+    width: width,
+    height: '100%',
+    position: "relative",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 36,
+    paddingHorizontal: 16,
+    zIndex: 4,
+  },
   leftControls: {
     position: "absolute",
     left: 0,
@@ -65,21 +139,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     zIndex: 4,
   },
+  timeWrapperBig: {
+    height: '100%',
+    width: '100%',
+    opacity: 1,
+  },
   timeWrapper: {
     opacity: 0.5,
-
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 4,
   },
   timeSettings: {
+    top: 85,
     position: "absolute",
-    right: -25,
+    right: -7,
     backgroundColor: "rgba(255,255,255, .5)",
     padding: 7,
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
-    zIndex: 0,
+    zIndex: 200,
+    opacity: .5,
+  },
+  meditationList: {
+    top: 0,
+    left: 0,
+    zIndex: 10,
+    width: width,
+    height: height,
+    position: "absolute",
+    justifyContent: "center",
+
+  },
+  download: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    zIndex: 20
   },
 });
 

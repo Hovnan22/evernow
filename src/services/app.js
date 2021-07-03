@@ -9,6 +9,7 @@ import {
   setUser,
   setSettings,
   setIsLoggedIn,
+  setMeditation,
 } from '../actions/app';
 
 import { languages } from '../constants';
@@ -21,6 +22,8 @@ class AppService {
 
     const auth = await StorageService.getAuthTokens();
     const user = await StorageService.getUserData();
+
+    // Store.dispatch(setMeditation(meditation));
     if (auth?.accessToken) {
       Store.dispatch(setAuth(auth));
       Store.dispatch(setUser(user));

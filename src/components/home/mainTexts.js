@@ -12,12 +12,12 @@ const MainTexts = ({ user, startTime }) => (
         {"screen.home.searching"}
       </AppText>
     )}
-    {user?.room && (
+    {!user?.room && (
       <AppText style={styles.text}>
         {"screen.home.found"}
       </AppText>
     )}
-    {!user?.room && startTime < 1 && (
+    {user?.room  && (
       <AppText style={styles.text}>
         {"screen.home.notFound"}
       </AppText>

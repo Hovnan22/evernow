@@ -9,11 +9,13 @@ const Buttons = ({
   onPress,
   width,
   height,
+  pressDuration,
 }) => {
   return (
     <TouchableOpacity
       style={style}
       onPress={onPress}
+      pressDuration={pressDuration ? pressDuration : 0.3}
     >
       <AppIcon
         icon={icon}

@@ -6,12 +6,10 @@ import {
 
 import CameraButton from './buttons';
 
-
 const Camera = ({
-  state,
   onClose,
+  isFinishRecording,
   onPauseCameraHandler,
-  onPauseVolumeHandler,
 }) => (
   <View style={styles.rightControls}>
     <View>
@@ -22,20 +20,17 @@ const Camera = ({
         height={26}
       />
     </View>
-    <View>
-      <CameraButton
-        icon="camera"
-        onPress={onPauseCameraHandler}
-        width={40}
-        height={40}
-      />
-      <CameraButton
-        icon={`volume_${state.muted ? 'on' : 'off'}`}
-        onPress={onPauseVolumeHandler}
-        width={40}
-        height={40}
-      />
-    </View>
+    {!isFinishRecording && (
+      <View>
+        <CameraButton
+          icon="camera"
+          pressDuration={5000}
+          onPress={onPauseCameraHandler}
+          width={40}
+          height={40}
+        />
+      </View>
+    )}
   </View>
 );
 
@@ -43,13 +38,12 @@ const styles = StyleSheet.create({
   rightControls: {
     position: "absolute",
     right: 15,
-    // width: 64,
-    top: 0,
+    top: 30,
     bottom: 0,
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 36,
-    zIndex: 4,
+    zIndex: 6,
   },
 });
 

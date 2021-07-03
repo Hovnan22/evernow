@@ -21,6 +21,50 @@ export default {
     passwordsDidNotMatch: "Пароли не совпадают",
   },
   screen: {
+    closeButtonConfirm: {
+      title: 'завершить',
+      submit: 'завершить',
+    },
+    shareButton: {
+      title: 'Поделиться',
+      submit: 'Поделиться',
+    },
+    instagramShareButton: {
+      title: 'Поделиться в инстаграме',
+      submit: 'Поделиться в инстаграме',
+    },
+    closeButtonCancel: {
+      title: 'отменить',
+      submit: 'отменить',
+    },
+    closePopupText: {
+      title: 'точно хотите завершить медитацию?',
+      submit: 'точно хотите завершить медитацию?',
+    },
+    setTimeButton: {
+      title: 'установить',
+      submit: 'установить',
+    },
+    cancelTimeButton: {
+      title: 'отменить',
+      submit: 'отменить',
+    },
+    timePickerClose: {
+      title: 'Закрыть',
+      submit: 'Закрыть',
+    },
+    timePickerMoreDuration: {
+      title: '...',
+      submit: '...',
+    },
+    timePickerShortDuration: {
+      title: '30 минут',
+      submit: '30 минут',
+    },
+    timePickerLongDuration: {
+      title: '60 минут',
+      submit: '60 минут',
+    },
     recoveryPassword: {
       title: "Восстановить пароль",
       submit: "Отправить",
@@ -83,10 +127,11 @@ export default {
       meditateStarts: "Медитация начнется в",
       searching: "Мы подбираем тебе Бадди (пару)",
       found: "Бадди нашелся!\nПриходи на медитацию в назначенное время",
-      notFound: "Бадди пока не нашёлся, но мы делаем всё возможное, чтобы это произошло в ближайшее время. А пока помедитируй самостоятельно.",
-      connect: "Подключиться",
+      notFound: "Бадди пока не нашёлся, но это не повод не медитировать.",
+      connect: "Медитировать сейчас",
       selfMeditation: "Самостоятельная медитация",
       searchBuddy: "Найти бадди",
+      learnBuddy: "Обучающее видео"
     },
     meditation: {
       title: "",
@@ -97,6 +142,7 @@ export default {
       streamIsNotReady: "Бадди еще не пришел, но ты можешь начать медитацию",
       complete: "Завершить",
       alert: "Вы уверенны что не хотите медитировать с бадди?",
+      closeConnect: "Вы уверенны что хотите звершить медитацию с бадди? ",
     },
     settings: {
       title: "Настройки",
