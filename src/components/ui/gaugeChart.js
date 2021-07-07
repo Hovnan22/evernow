@@ -64,19 +64,22 @@ function Diagram(props) {
 export default function GaugeChart(props) {
   const {
     size, borderWidth, textSize, startTime, endTime, children,
-    borderGradient, circleColor, circleGradient, started,
+    borderGradient, circleColor, circleGradient, started, isPaused,onStop,
+    finishRecording,
   } = props;
   const radius = size / 2;
   const [state, setState] = useState({
     time: startTime,
     percent: startTime < endTime ? 0 : 100,
   });
+  const [recordingPeriod,setRecordingPeriod] = useState(0);
   useEffect(() => {
     setState({
       ...state,
       time: startTime,
     });
   }, [startTime]);
+
   useEffect(() => {
     setState({
       ...state,
@@ -85,10 +88,14 @@ export default function GaugeChart(props) {
     });
     clearTimeout(timeoutInstance);
   }, [started]);
-  if (state.time !== endTime && started === true) {
+
+  if (state.time !== endTime && started === true ) {
     clearTimeout(timeoutInstance);
     timeoutInstance = setTimeout(() => {
       if (started === true) {
+        if (!isPaused) {
+          setRecordingPeriod(recordingPeriod + 1);
+        }
         const time = startTime < endTime ? state.time + 1 : state.time - 1;
         setState({
           ...state,
@@ -97,6 +104,10 @@ export default function GaugeChart(props) {
         });
       }
     }, 1000);
+  } else if (state.time === endTime && started === true) {
+    clearTimeout(timeoutInstance)
+      finishRecording && finishRecording(recordingPeriod);
+      onStop && onStop();
   }
   return <View style={styles.container}>
     <Svg width={size} height={size}>
@@ -112,11 +123,11 @@ export default function GaugeChart(props) {
       </Defs>
       <Circle cx={radius} cy={radius} r={radius} fill={circleColor} />
       <Diagram size={size} borderWidth={borderWidth} percent={state.percent} />
-      <Circle cx={radius} cy={radius} r={radius - borderWidth} fill="url(#paint0_linear)" />
+      <Circle cx={radius} cy={radius} r={radius - borderWidth} fill={isPaused ? circleColor : "url(#paint0_linear)"} />
     </Svg>
     <View style={styles.timer}>
       {children}
-      <Text style={[styles.timerText, { fontSize: textSize }]}>{sec2time(state.time)}</Text>
+      <Text style={[styles.timerText, { fontSize: textSize }, isPaused && { color: "white" }]}>{sec2time(state.time)}</Text>
     </View>
   </View>;
 }
@@ -136,5 +147,5 @@ GaugeChart.propTypes = {
 GaugeChart.defaultProps = {
   borderGradient: ["#9AD1FF", "#3379C6"],
   circleGradient: ["#FFF", "#F2F5FC"],
-  circleColor: "#F2F5FC",
+  circleColor: "transparent",
 };

@@ -10,7 +10,6 @@ import { AppIcon } from '../ui';
 
 import bg from "../../../src/assets/images/introductionBg.png";
 
-
 const StreamIntroCover = ({
   bottom,
   onClose,

@@ -21,6 +21,50 @@ export default {
     passwordsDidNotMatch: "Пароли не совпадают",
   },
   screen: {
+    closeButtonConfirm: {
+      title: 'завершить',
+      submit: 'завершить',
+    },
+    shareButton: {
+      title: 'Поделиться',
+      submit: 'Поделиться',
+    },
+    instagramShareButton: {
+      title: 'Поделиться в инстаграме',
+      submit: 'Поделиться в инстаграме',
+    },
+    closeButtonCancel: {
+      title: 'отменить',
+      submit: 'отменить',
+    },
+    closePopupText: {
+      title: 'точно хотите завершить медитацию?',
+      submit: 'точно хотите завершить медитацию?',
+    },
+    setTimeButton: {
+      title: 'установить',
+      submit: 'установить',
+    },
+    cancelTimeButton: {
+      title: 'отменить',
+      submit: 'отменить',
+    },
+    timePickerClose: {
+      title: 'Закрыть',
+      submit: 'Закрыть',
+    },
+    timePickerMoreDuration: {
+      title: '...',
+      submit: '...',
+    },
+    timePickerShortDuration: {
+      title: '30 минут',
+      submit: '30 минут',
+    },
+    timePickerLongDuration: {
+      title: '60 минут',
+      submit: '60 минут',
+    },
     recoveryPassword: {
       title: "Восстановить пароль",
       submit: "Отправить",

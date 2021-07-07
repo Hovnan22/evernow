@@ -21,6 +21,50 @@ export default {
     passwordsDidNotMatch: "Password mismatch",
   },
   screen: {
+    closeButtonConfirm: {
+      title: 'finish',
+      submit: 'finish',
+    },
+    shareButton: {
+      title: 'Share',
+      submit: 'Share',
+    },
+    instagramShareButton: {
+      title: 'Share on Instagram',
+      submit: 'Share on Instagram',
+    },
+    closeButtonCancel: {
+      title: 'cancel',
+      submit: 'cancel',
+    },
+    closePopupText: {
+      title: 'Are you sure if you want to finish meditation?',
+      submit: 'Are you sure if you want to finish meditation?',
+    },
+    setTimeButton: {
+      title: 'Set',
+      submit: 'Set',
+    },
+    cancelTimeButton: {
+      title: 'Close',
+      submit: 'Close',
+    },
+    timePickerClose: {
+      title: 'Close',
+      submit: 'Close',
+    },
+    timePickerMoreDuration: {
+      title: '...',
+      submit: '...',
+    },
+    timePickerShortDuration: {
+      title: '30 minutes',
+      submit: '30 minutes',
+    },
+    timePickerLongDuration: {
+      title: '60 minutes',
+      submit: '60 minutes',
+    },
     recoveryPassword: {
       title: "Restore password",
       submit: "Send",
@@ -120,4 +164,5 @@ export default {
     russian: "Russian",
     english: "English",
   },
+
 };
